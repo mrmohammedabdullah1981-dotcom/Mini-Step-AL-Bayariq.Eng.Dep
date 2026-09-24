@@ -7,8 +7,8 @@
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Outfit:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
 
   <!-- Firebase App & Firestore -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -27,8 +27,6 @@
       --text: #1d2923;
       --text-muted: #5e6f66;
       --border: #dbe5df;
-      --success: #15803d;
-      --danger: #dc2626;
       --radius-sm: 10px;
       --radius-md: 16px;
       --radius-lg: 24px;
@@ -52,7 +50,6 @@
       flex-direction: column;
     }
 
-    /* Top Bar */
     header {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: #fff;
@@ -106,6 +103,26 @@
       letter-spacing: 0.3px;
     }
 
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-icon-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: #fff;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
     .user-pill {
       background: rgba(255, 255, 255, 0.12);
       border: 1px solid rgba(212, 175, 55, 0.4);
@@ -153,7 +170,6 @@
       font-size: 13px;
       cursor: pointer;
       color: var(--text-muted);
-      transition: all 0.2s;
     }
 
     .auth-toggle button.active {
@@ -216,9 +232,7 @@
       box-shadow: 0 4px 12px rgba(181, 137, 26, 0.3);
     }
 
-    .btn-gold:hover {
-      filter: brightness(1.05);
-    }
+    .btn-gold:hover { filter: brightness(1.05); }
 
     .btn-primary {
       background: var(--primary);
@@ -229,6 +243,11 @@
       background: #fff;
       border: 1.5px solid var(--border);
       color: var(--text);
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      color: #fff;
     }
 
     .audio-btn {
@@ -244,11 +263,6 @@
       align-items: center;
       gap: 4px;
       border: none;
-    }
-
-    .audio-btn:hover {
-      background: var(--gold);
-      color: #fff;
     }
 
     .dashboard-hero {
@@ -293,9 +307,6 @@
       font-size: 12px;
       font-weight: 700;
       color: var(--primary);
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
 
     .weeks-grid {
@@ -309,24 +320,31 @@
       border-radius: var(--radius-md);
       padding: 20px;
       border: 1.5px solid var(--border);
-      cursor: pointer;
-      transition: all 0.2s;
+      position: relative;
     }
 
-    .week-card.active-week {
+    .week-card.unlocked-week {
       border-color: var(--primary-light);
       box-shadow: 0 4px 14px rgba(11, 59, 36, 0.08);
+      cursor: pointer;
     }
 
-    .week-card.active-week:hover {
+    .week-card.unlocked-week:hover {
       border-color: var(--gold);
       transform: translateY(-2px);
     }
 
     .week-card.locked-week {
-      opacity: 0.6;
+      opacity: 0.65;
       cursor: not-allowed;
       background: #fbfbfb;
+    }
+
+    .final-exam-card {
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, #072617 0%, #0b3b24 100%);
+      color: #fff;
+      border: 2px solid var(--gold);
     }
 
     .module-nav {
@@ -447,12 +465,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
-    }
-
-    .lifeline-btn:hover:not(:disabled) {
-      background: var(--gold);
-      color: #05141f;
     }
 
     .lifeline-btn:disabled {
@@ -490,9 +502,7 @@
     }
 
     @media (max-width: 600px) {
-      .millionaire-grid {
-        grid-template-columns: 1fr;
-      }
+      .millionaire-grid { grid-template-columns: 1fr; }
     }
 
     .millionaire-opt {
@@ -505,12 +515,6 @@
       font-weight: 600;
       cursor: pointer;
       text-align: left;
-      transition: all 0.2s;
-    }
-
-    .millionaire-opt:hover:not(:disabled) {
-      background: #17425f;
-      border-color: var(--gold);
     }
 
     .millionaire-opt.correct {
@@ -523,44 +527,166 @@
       border-color: #ef4444 !important;
     }
 
+    /* Modal Systems */
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(4px);
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
       display: none;
       align-items: center;
       justify-content: center;
       padding: 16px;
       z-index: 1000;
+      overflow-y: auto;
     }
 
-    .cert-box {
+    /* Full-Page Certificate (Landscape A4) */
+    .cert-container {
       background: #fff;
-      max-width: 760px;
       width: 100%;
-      border-radius: var(--radius-md);
-      padding: 36px 28px;
-      border: 8px solid var(--primary);
-      text-align: center;
+      max-width: 1040px;
+      border-radius: 8px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+      padding: 20px;
     }
 
-    .cert-border {
-      border: 2px solid var(--gold);
-      padding: 24px;
+    .cert-frame-outer {
+      border: 10px solid var(--primary);
+      padding: 8px;
+      background: #fafaf7;
+    }
+
+    .cert-frame-inner {
+      border: 3px solid var(--gold);
+      padding: 40px 36px;
+      text-align: center;
+      position: relative;
+      background: #ffffff;
+    }
+
+    .cert-header-tag {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      letter-spacing: 3px;
+      color: var(--gold-dark);
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .cert-main-title {
+      font-family: 'Cinzel', serif;
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--primary);
+      margin: 10px 0 6px;
+      letter-spacing: 2px;
+    }
+
+    .cert-student-name {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin: 16px auto;
+      display: inline-block;
+      border-bottom: 2px solid var(--gold);
+      padding: 0 30px 6px;
+      letter-spacing: 1px;
+    }
+
+    .cert-signatures-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin-top: 40px;
+      border-top: 1.5px solid var(--border);
+      padding-top: 24px;
+    }
+
+    .sig-role {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .sig-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    /* Print Styles (Strict A4 Landscape) */
+    @page {
+      size: A4 landscape;
+      margin: 8mm;
     }
 
     @media print {
-      body * { visibility: hidden; }
-      .cert-box, .cert-box * { visibility: visible; }
-      .cert-box { position: fixed; inset: 0; border: 4px solid var(--primary); }
-      .no-print { display: none !important; }
+      body {
+        background: #fff !important;
+      }
+      body * {
+        visibility: hidden;
+      }
+      #certModal, #certModal * {
+        visibility: visible;
+      }
+      #certModal {
+        position: absolute;
+        inset: 0;
+        background: transparent;
+        padding: 0;
+        display: block !important;
+      }
+      .cert-container {
+        max-width: 100%;
+        box-shadow: none;
+        padding: 0;
+      }
+      .cert-frame-inner {
+        padding: 30px;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+
+    /* Admin Modal */
+    .admin-panel {
+      background: #fff;
+      max-width: 800px;
+      width: 100%;
+      border-radius: var(--radius-md);
+      padding: 24px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      font-size: 13px;
+    }
+
+    .admin-table th, .admin-table td {
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .admin-table th {
+      background: #eef3f0;
+      color: var(--primary);
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Bar -->
+  <!-- Top Navigation -->
   <header>
     <div class="brand-wrap">
       <img src="AL-Bayariq Private School.jpeg" alt="Logo" class="brand-logo-img" onerror="this.src='logo.png'; this.onerror=function(){this.outerHTML='<div class=\'brand-logo-img\' style=\'display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#d4af37,#aa8420);color:#072617;font-weight:800;font-size:20px;\'>B</div>';}">
@@ -570,15 +696,23 @@
         <p class="sub-sup">English Language Supervisor: Mohammed Abdullah Othman</p>
       </div>
     </div>
-    <div id="userBadge" style="display: none;">
-      <div class="user-pill" onclick="app.logout()">
-        <span>🔒 Logout: </span>
-        <strong id="navStudentName">Student</strong>
+    <div class="nav-actions">
+      <button class="admin-icon-btn" onclick="app.openAdminModal()" title="Admin Control Panel">⚙️</button>
+      <div id="userBadge" style="display: none;">
+        <div class="user-pill" onclick="app.logout()">
+          <span>🔒 Logout: </span>
+          <strong id="navStudentName">Student</strong>
+        </div>
       </div>
     </div>
   </header>
 
-  <main>
+  <!-- App Locked Banner -->
+  <div id="appLockBanner" style="display: none; background: #dc2626; color: #fff; text-align: center; padding: 16px; font-weight: 700;">
+    ⚠️ The learning portal is temporarily offline for maintenance by the administration. / المنصة مغلقة حالياً للصيانة بقرار الإدارة.
+  </div>
+
+  <main id="mainContainer">
     <!-- View 1: Auth (Registration & Secure Login) -->
     <div id="screenAuth" class="card" style="max-width: 520px; margin: 20px auto;">
       <div style="text-align: center; margin-bottom: 20px;">
@@ -588,7 +722,7 @@
         </div>
         <h2 style="color: var(--primary); font-size: 22px; margin-top: 8px;">Mini STEP Student Portal</h2>
         <p style="color: var(--text-muted); font-size: 12px; font-weight: 600; margin-top: 2px;">
-          Under the Supervision of English Language Department
+          Supervised by English Language Supervisor: Mohammed Abdullah Othman
         </p>
       </div>
 
@@ -664,26 +798,26 @@
         </p>
         
         <div class="progress-bar-wrap">
-          <div id="progressBar" class="progress-bar-fill" style="width: 11%;"></div>
+          <div id="progressBar" class="progress-bar-fill" style="width: 0%;"></div>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--primary);">
-          <span id="progressLabel">Active Weeks: Week 01, 02, 03 & 04 Available</span>
-          <span id="rankBadge">Rank: STEP Achiever 🌟</span>
+          <span id="progressLabel">Completed: 0 of 4 Modules</span>
+          <span id="rankBadge">Rank: STEP Explorer 🌟</span>
         </div>
 
         <!-- Student Historical Records -->
         <div style="margin-top: 14px;">
           <div style="font-size: 12px; font-weight: 700; color: var(--primary); margin-bottom: 6px;">Your Verified Weekly Scores:</div>
           <div id="scoresContainer" class="records-box">
-            <span style="font-size: 12px; color: var(--text-muted);">No quiz submissions yet. Complete your weekly quiz!</span>
+            <span style="font-size: 12px; color: var(--text-muted);">No quiz submissions yet. Complete Week 01 to unlock Week 02!</span>
           </div>
         </div>
       </div>
 
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3 style="color: var(--primary);">Curriculum Roadmap (36 Weeks)</h3>
-        <button class="btn btn-outline" style="font-size: 12px; padding: 6px 14px;" onclick="app.openCert()">
-          🏆 View Certificate
+        <h3 style="color: var(--primary);">Progressive Curriculum Roadmap</h3>
+        <button id="btnMainCert" class="btn btn-outline" style="font-size: 12px; padding: 6px 14px; opacity: 0.5;" onclick="app.checkFinalCertAccess()">
+          🏆 Course Certificate (Locked 🔒)
         </button>
       </div>
 
@@ -702,7 +836,7 @@
         </button>
       </div>
 
-      <div class="module-nav">
+      <div class="module-nav" id="moduleNavTabs">
         <button class="active" onclick="app.setTab(0)">1. 🎧 Listening</button>
         <button onclick="app.setTab(1)">2. 💬 Expressions</button>
         <button onclick="app.setTab(2)">3. 🗣️ Speaking</button>
@@ -780,59 +914,134 @@
           </div>
         </div>
 
-        <!-- 7. Weekly Quiz -->
+        <!-- 7. Weekly Quiz / Final Exam -->
         <div class="skill-block">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-            <h4 id="quizHeading" style="color: var(--primary);">Mini STEP Digital Practice (12 Questions)</h4>
-            <span style="font-size: 12px; color: var(--gold-dark); font-weight: 700;">Target: 10/12 to Master ⭐</span>
+            <h4 id="quizHeading" style="color: var(--primary);">Assessment Practice</h4>
+            <span id="quizTargetBadge" style="font-size: 12px; color: var(--gold-dark); font-weight: 700;">Passing Score: 8 / 12 ⭐</span>
           </div>
           <div id="quizFormContainer"></div>
-          <button id="btnSubmitQuiz" class="btn btn-gold" style="width: 100%; margin-top: 20px; font-size: 16px;" onclick="app.gradeFullQuiz()">
-            Submit & Save Score to Cloud • إرسال النتيجة واعتمادها ✅
+          <button id="btnSubmitQuiz" class="btn btn-gold" style="width: 100%; margin-top: 20px; font-size: 16px;" onclick="app.gradeAssessment()">
+            Submit & Record Score to Cloud • إرسال النتيجة واعتمادها ✅
           </button>
         </div>
       </div>
     </div>
   </main>
 
-  <!-- Certificate Modal -->
+  <!-- Complete Official Certificate Modal (A4 Landscape) -->
   <div id="certModal" class="modal-overlay">
-    <div class="cert-box">
-      <div class="cert-border">
-        <img src="AL-Bayariq Private School.jpeg" alt="Logo" style="height: 55px; margin-bottom: 8px; object-fit: contain;" onerror="this.src='logo.png'; this.onerror=function(){this.style.display='none';}">
-        <p style="font-size: 12px; letter-spacing: 2px; color: var(--gold-dark); font-weight: 800; text-transform: uppercase;">
-          Al Bayariq Private Schools • English Department
-        </p>
-        <p style="font-size: 11px; color: var(--text-muted); font-weight: 600; margin-top: 2px;">
-          Under the Supervision of the English Language Department
-        </p>
-        <h2 style="font-family: 'Playfair Display', serif; color: var(--primary); font-size: 28px; margin: 12px 0;">
-          Certificate of Achievement
-        </h2>
-        <p style="font-size: 13px; color: var(--text-muted);">This official certificate is proudly awarded to:</p>
-        
-        <div id="certName" style="font-size: 26px; font-weight: 800; color: var(--primary); margin: 14px 0; border-bottom: 2px solid var(--gold); display: inline-block; padding: 0 20px 4px;">
-          Student Name
-        </div>
-
-        <p style="font-size: 14px; max-width: 500px; margin: 0 auto 20px; line-height: 1.6; color: var(--text);" id="certBody">
-          For successfully completing <strong>Mini STEP</strong> benchmarks with distinction and demonstrating outstanding commitment to learning English.
-        </p>
-
-        <div style="display: flex; justify-content: space-around; margin-top: 30px; border-top: 1px solid var(--border); padding-top: 16px;">
-          <div>
-            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">CLASSROOM TEACHER</div>
-            <div id="certTeacher" style="font-size: 15px; font-weight: 800; color: var(--primary);">Teacher Name</div>
+    <div class="cert-container">
+      <div class="cert-frame-outer">
+        <div class="cert-frame-inner">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <img src="AL-Bayariq Private School.jpeg" alt="Logo" style="height: 60px; object-fit: contain;" onerror="this.src='logo.png'; this.onerror=function(){this.style.display='none';}">
+            <div>
+              <div class="cert-header-tag">AL-BAYARIQ PRIVATE SCHOOLS</div>
+              <div style="font-size: 11px; color: var(--primary); font-weight: 700; letter-spacing: 1px; margin-top: 2px;">ENGLISH LANGUAGE DEPARTMENT</div>
+            </div>
+            <img src="AL-Bayariq Private School.jpeg" alt="Logo" style="height: 60px; object-fit: contain;" onerror="this.src='logo.png'; this.onerror=function(){this.style.display='none';}">
           </div>
-          <div>
-            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">ENGLISH LANGUAGE SUPERVISOR</div>
-            <div style="font-size: 15px; font-weight: 800; color: var(--primary);">Mohammed Abdullah Othman</div>
+
+          <div class="cert-main-title">Certificate of Achievement</div>
+          <div style="font-size: 14px; color: var(--text-muted); font-style: italic; margin-bottom: 8px;">
+            This official certificate is proudly awarded to:
+          </div>
+
+          <div class="cert-student-name" id="certStudentName">STUDENT NAME</div>
+
+          <p style="font-size: 15px; max-width: 780px; margin: 12px auto; line-height: 1.8; color: var(--text);">
+            In recognition of outstanding dedication and successful completion of the <strong style="color: var(--primary);">Mini STEP Foundations Course</strong> with exemplary performance across listening, speaking, grammar, reading comprehension, and standardized assessments.
+          </p>
+
+          <div style="margin: 14px auto 0; font-size: 13px; font-weight: 700; color: var(--gold-dark); background: var(--gold-light); display: inline-block; padding: 6px 20px; border-radius: 20px; border: 1px solid var(--gold);">
+            Stage: <span id="certStageBadge">Secondary Stage</span> • Academic Year 2026 / 1447 AH
+          </div>
+
+          <!-- Official Signatures -->
+          <div class="cert-signatures-grid">
+            <div>
+              <div class="sig-role">Classroom Teacher</div>
+              <div class="sig-name" id="certTeacher">Teacher Name</div>
+            </div>
+            <div>
+              <div class="sig-role">English Language Supervisor</div>
+              <div class="sig-name">Mohammed Abdullah Othman</div>
+            </div>
+            <div>
+              <div class="sig-role">School Principal</div>
+              <div class="sig-name" id="certPrincipal">Principal Name</div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="no-print" style="margin-top: 18px; display: flex; justify-content: center; gap: 10px;">
-        <button class="btn btn-gold" onclick="window.print()">🖨️ Print / Save PDF</button>
+
+      <div class="no-print" style="margin-top: 18px; display: flex; justify-content: center; gap: 12px;">
+        <button class="btn btn-gold" onclick="window.print()">🖨️ Print Full Certificate / Save PDF</button>
         <button class="btn btn-outline" onclick="app.closeCert()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Modal -->
+  <div id="adminModal" class="modal-overlay">
+    <div class="admin-panel">
+      <!-- Admin Login -->
+      <div id="adminLoginForm">
+        <h3 style="color: var(--primary); margin-bottom: 12px;">🔒 Supervisor Admin Login</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Enter supervisor credentials to manage students and system access.</p>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="admUser" class="form-control" placeholder="admin" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="admPass" class="form-control" placeholder="••••••••" required />
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <button class="btn btn-gold" onclick="app.adminLogin()">Authorize Access</button>
+          <button class="btn btn-outline" onclick="app.closeAdminModal()">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Admin Control Center -->
+      <div id="adminControls" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid var(--border); padding-bottom: 14px; margin-bottom: 18px;">
+          <div>
+            <h3 style="color: var(--primary);">Supervisor Administration Panel</h3>
+            <span style="font-size: 12px; color: var(--gold-dark); font-weight: 700;">Supervisor: Mohammed Abdullah Othman</span>
+          </div>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;" onclick="app.closeAdminModal()">Close</button>
+        </div>
+
+        <!-- Toggle App Lock -->
+        <div style="background: #fdfaf3; border: 1.5px solid var(--gold); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <strong>Portal Availability Status:</strong>
+            <div id="appLockStatusText" style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Application is currently Open for all students.</div>
+          </div>
+          <button id="btnToggleLock" class="btn btn-primary" onclick="app.togglePortalLock()">Lock Portal (إغلاق المنصة)</button>
+        </div>
+
+        <!-- Student Management Table -->
+        <h4 style="color: var(--primary); margin-bottom: 8px;">Registered Students Database & Progress Control</h4>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Delete students or purge their records instantly from Firebase.</p>
+        
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Student Name</th>
+                <th>Stage & Grade</th>
+                <th>PIN</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminStudentsTableBody">
+              <tr><td colspan="4">Loading registered students...</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -851,14 +1060,78 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // 2. School Roster Data
+    // 2. School Leadership by Stage
+    const PRINCIPALS = {
+      Primary: "Wael Mohammed Gafary",
+      Intermediate: "Saleh Shaher Al-Dhaheri",
+      Secondary: "Dr. Ibrahim Al-Oseimi"
+    };
+
     const TEACHERS = {
       Primary: ["Mr. Khalil Mohammed", "Mr. Ibrahim Ragab", "Mr. Mohamed Abdullah"],
       Intermediate: ["Mr. Tamer Salah", "Mr. Omar Shendy"],
       Secondary: ["Mr. Amir Yacoub", "Mr. Hamada Fathy", "Mr. Atef Ashry"]
     };
 
-    // 3. Curriculum Data: Weeks 01, 02, 03 & 04
+    // 3. Audio Synth Effects for Millionaire
+    class SoundEffects {
+      constructor() {
+        this.ctx = null;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      }
+      playTone(freq, type, duration, delay = 0) {
+        this.init();
+        if (!this.ctx) return;
+        setTimeout(() => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        }, delay);
+      }
+      playCorrect() {
+        this.playTone(523.25, 'sine', 0.2, 0);
+        this.playTone(659.25, 'sine', 0.2, 120);
+        this.playTone(783.99, 'sine', 0.35, 240);
+      }
+      playWrong() {
+        this.playTone(150, 'sawtooth', 0.4, 0);
+        this.playTone(110, 'sawtooth', 0.6, 200);
+      }
+      playPhoneRing() {
+        for (let i = 0; i < 4; i++) {
+          this.playTone(440, 'sine', 0.15, i * 250);
+          this.playTone(480, 'sine', 0.15, i * 250);
+        }
+      }
+      playAudienceCheer() {
+        for (let i = 0; i < 12; i++) {
+          const freq = 200 + Math.random() * 600;
+          this.playTone(freq, 'triangle', 0.25, i * 60);
+        }
+      }
+      playWinFanfare() {
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((f, idx) => {
+          this.playTone(f, 'square', 0.3, idx * 150);
+        });
+      }
+    }
+
+    const sfx = new SoundEffects();
+
+    // 4. Curriculum Data: Weeks 01 to 04 + Comprehensive Final Exam
     const WEEKS_DATA = {
       1: {
         number: 1,
@@ -889,44 +1162,35 @@
         ],
         speakingHtml: `
           <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
-            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">تحدي التحدث الذاتي (Speaking Challenge):</p>
-            <p style="font-family: var(--font-ar); font-size: 14px; line-height: 1.6;">
-              تدرّب على نطق هذه الجمل بنفسك بصوت واضح، ثم قلها أمام معلمك أو أسرتك:
-            </p>
-            <div style="margin-top: 14px; font-size: 16px; line-height: 2; font-weight: 600;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Speaking Challenge:</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
               <div>• Hello! My name is <span style="color: var(--primary);">[Your Name]</span>.</div>
               <div>• I am <span style="color: var(--primary);">[Your Age]</span> years old.</div>
               <div>• I am from <span style="color: var(--primary);">Saudi Arabia</span>.</div>
               <div>• I live in <span style="color: var(--primary);">Riyadh</span>.</div>
               <div>• Nice to meet you!</div>
             </div>
-            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Hello! My name is Ahmed. I am eleven years old. I am from Saudi Arabia. I live in Riyadh. Nice to meet you!')">
-              🔊 استمع للنموذج الصوتي الكامل
-            </button>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Hello! My name is Ahmed. I am eleven years old. I am from Saudi Arabia. I live in Riyadh. Nice to meet you!')">🔊 Listen to Full Model</button>
           </div>
         `,
         grammarHtml: `
           <h4 style="color: var(--primary);">Grammar Capsule: Verb to Be (I am)</h4>
-          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
-            نركز هذا الأسبوع على الضمير <strong>I</strong> مع الفعل المساعد <strong>am</strong> فقط.
-          </p>
+          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">نركز هذا الأسبوع على الضمير I مع الفعل المساعد am.</p>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
             <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #166534;">✅ الشكل الصحيح (Full Form):</strong>
+              <strong style="color: #166534;">✅ Full Form:</strong>
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
                 <li>I <strong>am</strong> Ahmed.</li>
                 <li>I <strong>am</strong> a student.</li>
                 <li>I <strong>am</strong> twelve years old.</li>
-                <li>I <strong>am</strong> from Saudi Arabia.</li>
               </ul>
             </div>
             <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #854d0e;">⚡ الاختصار السريع (Short Form):</strong>
+              <strong style="color: #854d0e;">⚡ Short Form:</strong>
               <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
                 <div>I am ➔ <strong>I'm</strong></div>
                 <div>• <strong>I'm</strong> Ahmed.</div>
                 <div>• <strong>I'm</strong> a student.</div>
-                <div>• <strong>I'm</strong> happy.</div>
               </div>
             </div>
           </div>
@@ -945,17 +1209,17 @@
           { q: "Which sentence is 100% correct in English?", opts: ["I'm from Saudi Arabia.", "I from Saudi Arabia.", "I are from Saudi Arabia.", "I is from Saudi Arabia."], ans: 0, prize: "$1,000,000" }
         ],
         quiz: [
-          { q: "1. What is the boy's name in the listening dialogue?", opts: ["Ahmed", "Omar", "Ali", "Khalid"], ans: 0 },
+          { q: "1. What is the boy's name in the dialogue?", opts: ["Ahmed", "Omar", "Ali", "Khalid"], ans: 0 },
           { q: "2. How old is Omar?", opts: ["10", "11", "12", "13"], ans: 2 },
-          { q: "3. What do you say when you want to ask someone's name?", opts: ["How old are you?", "What's your name?", "Where do you live?", "How are you?"], ans: 1 },
+          { q: "3. What do you say when you ask someone's name?", opts: ["How old are you?", "What's your name?", "Where do you live?", "How are you?"], ans: 1 },
           { q: "4. Complete: 'Nice to meet ______.'", opts: ["I", "my", "you", "your"], ans: 2 },
           { q: "5. Choose the correct form: 'I ___ a student.'", opts: ["is", "are", "am", "be"], ans: 2 },
           { q: "6. Choose the correct sentence:", opts: ["I is Ahmed.", "I are Ahmed.", "I am Ahmed.", "I be Ahmed."], ans: 2 },
-          { q: "7. Choose the short form of: 'I am Omar.'", opts: ["I'm Omar.", "I's Omar.", "I'are Omar.", "I be Omar."], ans: 0 },
-          { q: "8. In the reading story, what is the boy's name?", opts: ["Ahmed", "Omar", "Mohammed", "Sami"], ans: 0 },
-          { q: "9. Where is Ahmed from?", opts: ["Egypt", "Saudi Arabia", "Kuwait", "Bahrain"], ans: 1 },
-          { q: "10. Ahmed lives in:", opts: ["Riyadh", "Jeddah", "Abha", "Tabuk"], ans: 0 },
-          { q: "11. Put the words in correct order: [ am / I / a / student ]", opts: ["Student a I am.", "I am a student.", "A student am I.", "I a student am."], ans: 1 },
+          { q: "7. Choose the contraction of: 'I am Omar.'", opts: ["I'm Omar.", "I's Omar.", "I'are Omar.", "I be Omar."], ans: 0 },
+          { q: "8. Where is Ahmed from?", opts: ["Egypt", "Saudi Arabia", "Kuwait", "Bahrain"], ans: 1 },
+          { q: "9. Ahmed lives in:", opts: ["Riyadh", "Jeddah", "Abha", "Tabuk"], ans: 0 },
+          { q: "10. In the reading story, what does Ahmed like?", opts: ["English and football", "Swimming", "Basketball", "Cooking"], ans: 0 },
+          { q: "11. Put words in order: [ am / I / a / student ]", opts: ["Student a I am.", "I am a student.", "A student am I.", "I a student am."], ans: 1 },
           { q: "12. Complete: 'Hello! My ___ is Abdullah. I ___ twelve years old.'", opts: ["name / am", "names / is", "name / are", "names / am"], ans: 0 }
         ]
       },
@@ -987,42 +1251,33 @@
         ],
         speakingHtml: `
           <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
-            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">تحدي التحدث عن العائلة (Family Speaking Challenge):</p>
-            <p style="font-family: var(--font-ar); font-size: 14px; line-height: 1.6;">
-              قدم عائلتك باللغة الإنجليزية باستخدام هذا النموذج البسيط:
-            </p>
-            <div style="margin-top: 14px; font-size: 16px; line-height: 2; font-weight: 600;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Family Speaking Drill:</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
               <div>• This is my father. He is great.</div>
               <div>• This is my mother. She is kind.</div>
-              <div>• I have <span style="color: var(--primary);">[brothers / sisters]</span>.</div>
-              <div>• We are a happy family in <span style="color: var(--primary);">Saudi Arabia</span>.</div>
-              <div>• I love my family!</div>
+              <div>• I have brothers and sisters.</div>
+              <div>• We are a happy family in Saudi Arabia!</div>
             </div>
-            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('This is my father. He is great. This is my mother. She is kind. We are a happy family in Saudi Arabia. I love my family!')">
-              🔊 استمع للنموذج الصوتي الكامل
-            </button>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('This is my father. He is great. This is my mother. She is kind. We are a happy family in Saudi Arabia!')">🔊 Listen to Model</button>
           </div>
         `,
         grammarHtml: `
-          <h4 style="color: var(--primary);">Grammar Capsule: Verb to Be (He / She / It / They / We)</h4>
-          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
-            استكمالاً للأسبوع الأول، نتعلم اليوم استخدام <strong>is</strong> للمفرد و <strong>are</strong> للجمع:
-          </p>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+          <h4 style="color: var(--primary);">Grammar: Verb to Be (He / She / It / They / We)</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
             <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #166534;">✅ المفرد مع (is):</strong>
+              <strong style="color: #166534;">✅ Singular (is):</strong>
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
                 <li>He <strong>is</strong> my father. (He's)</li>
                 <li>She <strong>is</strong> my mother. (She's)</li>
-                <li>It <strong>is</strong> a big house. (It's)</li>
+                <li>It <strong>is</strong> a house. (It's)</li>
               </ul>
             </div>
             <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #854d0e;">✅ الجمع مع (are):</strong>
+              <strong style="color: #854d0e;">✅ Plural (are):</strong>
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
                 <li>We <strong>are</strong> students. (We're)</li>
-                <li>They <strong>are</strong> my parents. (They're)</li>
-                <li>You <strong>are</strong> my friend. (You're)</li>
+                <li>They <strong>are</strong> parents. (They're)</li>
+                <li>You <strong>are</strong> kind. (You're)</li>
               </ul>
             </div>
           </div>
@@ -1045,13 +1300,13 @@
           { q: "2. What is Ahmed's mother's job?", opts: ["A doctor", "A nurse", "A teacher", "An architect"], ans: 2 },
           { q: "3. Choose the correct form: 'He ___ my brother.'", opts: ["am", "is", "are", "be"], ans: 1 },
           { q: "4. Choose the correct form: 'They ___ my parents.'", opts: ["is", "am", "are", "be"], ans: 2 },
-          { q: "5. Choose the correct pronoun: 'My sister is smart. ___ loves reading.'", opts: ["He", "She", "It", "They"], ans: 1 },
+          { q: "5. Choose pronoun: 'My sister is smart. ___ loves reading.'", opts: ["He", "She", "It", "They"], ans: 1 },
           { q: "6. What is the contraction of: 'She is'?", opts: ["She're", "She's", "She'am", "She'll"], ans: 1 },
           { q: "7. Complete: 'We ___ in Riyadh.'", opts: ["lives", "living", "live", "is live"], ans: 2 },
           { q: "8. In the reading text, what is Salman's father's profession?", opts: ["Doctor", "Teacher", "Engineer", "Officer"], ans: 2 },
           { q: "9. Salman's brother is named:", opts: ["Ahmed", "Fahad", "Omar", "Ali"], ans: 1 },
           { q: "10. When does Salman's family gather at grandparents' home?", opts: ["On Mondays", "On Fridays", "On Saturdays", "Every day"], ans: 1 },
-          { q: "11. Put the words in correct order: [ is / mother / She / my ]", opts: ["My mother she is.", "She is my mother.", "Mother is she my.", "She my is mother."], ans: 1 },
+          { q: "11. Put words in order: [ is / mother / She / my ]", opts: ["My mother she is.", "She is my mother.", "Mother is she my.", "She my is mother."], ans: 1 },
           { q: "12. Complete: 'My parents ___ kind. I love ___ very much.'", opts: ["is / they", "are / them", "are / he", "is / them"], ans: 1 }
         ]
       },
@@ -1083,43 +1338,33 @@
         ],
         speakingHtml: `
           <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
-            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">تحدي التحدث عن روتينك اليومي (Daily Routine Challenge):</p>
-            <p style="font-family: var(--font-ar); font-size: 14px; line-height: 1.6;">
-              تحدث عن روتينك الصباحي باللغة الإنجليزية في 4 جمل بسيطة:
-            </p>
-            <div style="margin-top: 14px; font-size: 16px; line-height: 2; font-weight: 600;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Routine Challenge:</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
               <div>• Every morning, I wake up at 6:00 AM.</div>
               <div>• I eat breakfast and get dressed for school.</div>
               <div>• I go to Al Bayariq School by car.</div>
               <div>• I always do my best in my classes!</div>
             </div>
-            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Every morning, I wake up at six AM. I eat breakfast and get dressed for school. I go to Al Bayariq School by car. I always do my best in my classes!')">
-              🔊 استمع للنموذج الصوتي الكامل
-            </button>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Every morning, I wake up at six AM. I eat breakfast and get dressed for school. I go to Al Bayariq School by car. I always do my best!')">🔊 Listen to Model</button>
           </div>
         `,
         grammarHtml: `
-          <h4 style="color: var(--primary);">Grammar Capsule: Present Simple (I / You / We / They)</h4>
-          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
-            نستخدم المضارع البسيط للحديث عن العادات والروتين اليومي المتكرر:
-          </p>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+          <h4 style="color: var(--primary);">Grammar: Present Simple (I / You / We / They)</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
             <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #166534;">✅ الفعل في المصدر بدون إضافات:</strong>
+              <strong style="color: #166534;">✅ Base Form:</strong>
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
                 <li>I <strong>wake</strong> up early.</li>
                 <li>We <strong>go</strong> to school.</li>
                 <li>They <strong>study</strong> English.</li>
-                <li>You <strong>eat</strong> healthy food.</li>
               </ul>
             </div>
             <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #854d0e;">⚡ ظروف التكرار (Adverbs of Frequency):</strong>
+              <strong style="color: #854d0e;">⚡ Adverbs of Frequency:</strong>
               <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
-                <div>تأتي قبل الفعل الأساسي:</div>
-                <div>• I <strong>always</strong> wake up at 6:00. (دائماً)</div>
-                <div>• We <strong>usually</strong> walk to school. (عادةً)</div>
-                <div>• They <strong>never</strong> arrive late. (أبداً)</div>
+                <div>• I <strong>always</strong> wake up at 6:00.</div>
+                <div>• We <strong>usually</strong> walk to school.</div>
+                <div>• They <strong>never</strong> arrive late.</div>
               </div>
             </div>
           </div>
@@ -1142,12 +1387,12 @@
           { q: "2. How does Rashed go to school?", opts: ["By car", "On foot", "By bus", "By bike"], ans: 2 },
           { q: "3. Choose the correct form: 'I ___ English every day.'", opts: ["study", "studies", "studying", "is study"], ans: 0 },
           { q: "4. Choose the correct form: 'We ___ our teeth in the morning.'", opts: ["brushes", "brush", "brushing", "are brush"], ans: 1 },
-          { q: "5. Where does the adverb go? 'I (always) sleep early.'", opts: ["Before the verb (I always sleep)", "After the verb (I sleep always)", "At the very end", "At the very start only"], ans: 0 },
+          { q: "5. Where does the adverb go? 'I (always) sleep early.'", opts: ["Before verb (I always sleep)", "After verb (I sleep always)", "At end", "At start"], ans: 0 },
           { q: "6. Complete: 'They ___ Fajr prayer on time.'", opts: ["prays", "pray", "praying", "is pray"], ans: 1 },
           { q: "7. What time does school finish for Rashed?", opts: ["12:00 PM", "1:30 PM", "3:00 PM", "11:30 AM"], ans: 1 },
           { q: "8. In the reading story, what school does Ziyad attend?", opts: ["Al Bayariq Private Schools", "Riyadh Academy", "Future Schools", "Noor School"], ans: 0 },
           { q: "9. What does Ziyad drink during break time?", opts: ["Soda", "Juice", "Milk", "Tea"], ans: 2 },
-          { q: "10. Choose the correct word order: [ school / go / to / We ]", opts: ["School to go we.", "To school we go.", "We go to school.", "Go we to school."], ans: 2 },
+          { q: "10. Choose correct word order: [ school / go / to / We ]", opts: ["School to go we.", "To school we go.", "We go to school.", "Go we to school."], ans: 2 },
           { q: "11. Complete: 'You ___ a healthy breakfast every day.'", opts: ["eats", "eat", "eating", "is eat"], ans: 1 },
           { q: "12. Which sentence is 100% correct in English?", opts: ["I always wash my hands before eating.", "I washes always my hands.", "Always I wash hands my.", "I wash always hands."], ans: 0 }
         ]
@@ -1178,29 +1423,21 @@
         ],
         speakingHtml: `
           <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
-            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">تحدي التحدث عن هواياتك (Hobbies Speaking Drill):</p>
-            <p style="font-family: var(--font-ar); font-size: 14px; line-height: 1.6;">
-              تحدّث عن هوايتك المفضلة وما تفعله في عطلة نهاية الأسبوع:
-            </p>
-            <div style="margin-top: 14px; font-size: 16px; line-height: 2; font-weight: 600;">
-              <div>• My favorite hobby is <span style="color: var(--primary);">[football / reading / swimming]</span>.</div>
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Hobbies Speaking Drill:</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
+              <div>• My favorite hobby is playing football.</div>
               <div>• I like playing with my friends on weekends.</div>
               <div>• It makes me happy, healthy, and energized.</div>
               <div>• What is your favorite hobby?</div>
             </div>
-            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('My favorite hobby is playing football. I like playing with my friends on weekends. It makes me happy, healthy, and energized. What is your favorite hobby?')">
-              🔊 استمع للنموذج الصوتي الكامل
-            </button>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('My favorite hobby is playing football. I like playing with my friends on weekends. It makes me healthy and energized!')">🔊 Listen to Model</button>
           </div>
         `,
         grammarHtml: `
-          <h4 style="color: var(--primary);">Grammar Capsule: Expressing Likes & Plurals</h4>
-          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
-            قاعدة هامة جداً لاختبار STEP عند التعبير عن الإعجاب والهوايات:
-          </p>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+          <h4 style="color: var(--primary);">Grammar: Expressing Likes & Plurals</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
             <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #166534;">✅ قاعدة (like / love / enjoy + ing):</strong>
+              <strong style="color: #166534;">✅ (like / love / enjoy + ing):</strong>
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
                 <li>I like <strong>reading</strong> stories.</li>
                 <li>We love <strong>playing</strong> sports.</li>
@@ -1208,11 +1445,11 @@
               </ul>
             </div>
             <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #854d0e;">⚡ الجمع المنتظم وغير المنتظم (Plurals):</strong>
+              <strong style="color: #854d0e;">⚡ Plurals:</strong>
               <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
-                <div>• hobby ➔ <strong>hobbies</strong> (استبدال y بـ ies)</div>
-                <div>• friend ➔ <strong>friends</strong> (+ s)</div>
-                <div>• child ➔ <strong>children</strong> (جمع شاذ)</div>
+                <div>• hobby ➔ <strong>hobbies</strong></div>
+                <div>• friend ➔ <strong>friends</strong></div>
+                <div>• child ➔ <strong>children</strong> (irregular)</div>
               </div>
             </div>
           </div>
@@ -1224,7 +1461,7 @@
           { q: "2. How long does Majed ride his bicycle on Saturday?", c1: "Thirty minutes ✅", c2: "Two hours" }
         ],
         millionaire: [
-          { q: "Choose the correct grammar: 'I like ___ football.'", opts: ["play", "plays", "playing", "played"], ans: 2, prize: "$100" },
+          { q: "Choose correct grammar: 'I like ___ football.'", opts: ["play", "plays", "playing", "played"], ans: 2, prize: "$100" },
           { q: "What is the plural of 'hobby'?", opts: ["hobbys", "hobbies", "hobbyes", "hobbiez"], ans: 1, prize: "$1,000" },
           { q: "Complete: 'We enjoy ___ in the swimming pool.'", opts: ["swim", "swimming", "swims", "swam"], ans: 1, prize: "$10,000" },
           { q: "Which activity is an outdoor hobby?", opts: ["Riding a bicycle", "Sleeping", "Watching TV inside", "Sitting alone"], ans: 0, prize: "$100,000" },
@@ -1240,27 +1477,84 @@
           { q: "7. Complete: 'We ___ video games on the weekend.'", opts: ["play", "plays", "playing", "is play"], ans: 0 },
           { q: "8. In the reading text, who does Majed play basketball with?", opts: ["His cousins", "His teacher", "His neighbors", "Alone"], ans: 0 },
           { q: "9. When does Majed ride his bicycle in the park?", opts: ["On Thursday night", "On Saturday morning", "On Monday", "On Wednesday"], ans: 1 },
-          { q: "10. What kind of books does Majed enjoy reading?", opts: ["Science fiction", "Historical books about Saudi Arabia", "Math formulas", "Cooking books"], ans: 1 },
+          { q: "10. What kind of books does Majed enjoy reading?", opts: ["Science fiction", "Historical books about Saudi Arabia", "Math formulas", "Cooking"], ans: 1 },
           { q: "11. Put words in order: [ hobby / My / reading / is / favorite ]", opts: ["My reading is hobby favorite.", "My favorite hobby is reading.", "Reading is favorite my hobby.", "Hobby is reading my favorite."], ans: 1 },
           { q: "12. Choose the correct sentence for STEP:", opts: ["He like play football.", "We likes reading books.", "I enjoy drawing pictures.", "They loves swim."], ans: 2 }
         ]
       }
     };
 
-    // 4. App Engine with PIN Auth
+    // 5. Final Comprehensive Benchmark Exam (20 Questions)
+    const FINAL_EXAM = {
+      title: "Comprehensive Course Benchmark Exam (الاختبار الشامل للشهادة)",
+      target: 16,
+      total: 20,
+      questions: [
+        { q: "1. Choose the correct contraction: 'I am a student.'", opts: ["I'm", "I's", "I'are", "I'be"], ans: 0 },
+        { q: "2. Complete: 'He ___ a kind doctor.'", opts: ["am", "is", "are", "be"], ans: 1 },
+        { q: "3. Complete: 'They ___ my brothers.'", opts: ["am", "is", "are", "be"], ans: 2 },
+        { q: "4. What is the plural of 'child'?", opts: ["children", "childs", "childrens", "childes"], ans: 0 },
+        { q: "5. Choose correct grammar: 'I like ___ adventure books.'", opts: ["read", "reads", "reading", "is read"], ans: 2 },
+        { q: "6. Complete: 'We ___ to school by bus every morning.'", opts: ["goes", "go", "going", "are go"], ans: 1 },
+        { q: "7. What is the plural of 'hobby'?", opts: ["hobbies", "hobbys", "hobbyes", "hobbiez"], ans: 0 },
+        { q: "8. Choose the correct adverb position:", opts: ["I always wake up early.", "I wake always up early.", "Always I wake up early.", "I wake up always early."], ans: 0 },
+        { q: "9. Complete: 'She ___ her homework after school.'", opts: ["do", "does", "doing", "is do"], ans: 1 },
+        { q: "10. Polite response to 'Nice to meet you':", opts: ["Nice to meet you, too.", "Good morning.", "I am twelve.", "Thank you no."], ans: 0 },
+        { q: "11. Complete: 'We live ___ a beautiful home in Riyadh.'", opts: ["on", "at", "in", "to"], ans: 2 },
+        { q: "12. Which sentence is 100% correct?", opts: ["He are an engineer.", "They is doctors.", "She is a teacher.", "I are happy."], ans: 2 },
+        { q: "13. Complete: 'They enjoy ___ in the swimming pool.'", opts: ["swimming", "swim", "swims", "swam"], ans: 0 },
+        { q: "14. Complete: 'My parents ___ proud of me.'", opts: ["is", "are", "am", "be"], ans: 1 },
+        { q: "15. Choose correct spelling of 12:", opts: ["Twelv", "Twelve", "Twelf", "Twleve"], ans: 1 },
+        { q: "16. Complete: 'What ___ your favorite sport?'", opts: ["is", "are", "am", "do"], ans: 0 },
+        { q: "17. What do you do with breakfast?", opts: ["Drink", "Eat", "Write", "Play"], ans: 1 },
+        { q: "18. Complete: 'We ___ happy students at Al Bayariq School.'", opts: ["is", "am", "are", "be"], ans: 2 },
+        { q: "19. Choose correct pronoun: 'My sister is very smart. ___ loves science.'", opts: ["He", "She", "They", "We"], ans: 1 },
+        { q: "20. Put in order: [ enjoy / We / English / studying ]", opts: ["English studying we enjoy.", "We enjoy studying English.", "Studying we enjoy English.", "We studying enjoy English."], ans: 1 }
+      ]
+    };
+
+    // 6. Application Controller
     class MiniStepApp {
       constructor() {
         this.student = JSON.parse(localStorage.getItem('miniStep_user')) || null;
+        this.studentScores = {};
         this.currentWeek = 1;
+        this.isFinalExam = false;
         this.quizAnswers = {};
         this.millIdx = 0;
+        this.isPortalLocked = false;
       }
 
-      init() {
+      async init() {
+        await this.checkPortalLock();
         if (this.student) {
           this.showDash();
         } else {
           document.getElementById('screenAuth').style.display = 'block';
+        }
+      }
+
+      async checkPortalLock() {
+        try {
+          const doc = await db.collection("system_settings").doc("portal").get();
+          if (doc.exists) {
+            this.isPortalLocked = doc.data().isLocked || false;
+            this.renderLockState();
+          }
+        } catch (e) {
+          console.log("Portal settings check:", e.message);
+        }
+      }
+
+      renderLockState() {
+        const banner = document.getElementById('appLockBanner');
+        const main = document.getElementById('mainContainer');
+        if (this.isPortalLocked) {
+          banner.style.display = 'block';
+          if (!this.isAdmin) main.style.opacity = '0.3';
+        } else {
+          banner.style.display = 'none';
+          main.style.opacity = '1';
         }
       }
 
@@ -1291,9 +1585,12 @@
 
       async register(e) {
         e.preventDefault();
+        if (this.isPortalLocked) {
+          alert("The portal is currently locked for maintenance.");
+          return;
+        }
         const btn = document.getElementById('btnRegSubmit');
         btn.disabled = true;
-        btn.textContent = 'Verifying and saving...';
 
         const name = document.getElementById('regName').value.trim();
         const stage = document.getElementById('regStage').value;
@@ -1308,7 +1605,6 @@
             this.switchAuthTab('login');
             document.getElementById('logName').value = name;
             btn.disabled = false;
-            btn.textContent = 'Create Account & Start • حفظ الحساب وبدء التعلم 🚀';
             return;
           }
 
@@ -1322,10 +1618,9 @@
           localStorage.setItem('miniStep_user', JSON.stringify(this.student));
           this.showDash();
         } catch (err) {
-          alert("Error saving account: " + err.message);
+          alert("Error: " + err.message);
         } finally {
           btn.disabled = false;
-          btn.textContent = 'Create Account & Start • حفظ الحساب وبدء التعلم 🚀';
         }
       }
 
@@ -1333,7 +1628,6 @@
         e.preventDefault();
         const btn = document.getElementById('btnLoginSubmit');
         btn.disabled = true;
-        btn.textContent = 'Authenticating...';
 
         const name = document.getElementById('logName').value.trim();
         const pin = document.getElementById('logPin').value.trim();
@@ -1345,7 +1639,7 @@
             .get();
 
           if (snap.empty) {
-            alert("Invalid student name or PIN. Please check and try again.");
+            alert("Invalid student name or PIN. Please verify your credentials.");
           } else {
             const data = snap.docs[0].data();
             this.student = {
@@ -1362,7 +1656,6 @@
           alert("Login error: " + err.message);
         } finally {
           btn.disabled = false;
-          btn.textContent = 'Login to My Portal • تسجيل الدخول 🔑';
         }
       }
 
@@ -1380,81 +1673,137 @@
         document.getElementById('userBadge').style.display = 'block';
 
         document.getElementById('navStudentName').textContent = this.student.name.split(' ')[0];
-        document.getElementById('dashWelcome').textContent = `Welcome back, ${this.student.name}! 👋`;
+        document.getElementById('dashWelcome').textContent = `Welcome, ${this.student.name}! 👋`;
         document.getElementById('dashMeta').textContent = `${this.student.stage} Stage • ${this.student.grade} • Teacher: ${this.student.teacher}`;
         
-        this.renderRoadmap();
-        this.fetchStudentScores();
+        await this.loadScoresAndRenderRoadmap();
       }
 
-      async fetchStudentScores() {
+      async loadScoresAndRenderRoadmap() {
         const box = document.getElementById('scoresContainer');
-        box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">Fetching your scores from cloud...</span>';
+        box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">Syncing verified records...</span>';
 
+        this.studentScores = {};
         try {
           const snap = await db.collection("submissions")
             .where("studentName", "==", this.student.name)
             .get();
 
           if (snap.empty) {
-            box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">No quiz submissions yet. Complete Week 01, 02, 03 or 04!</span>';
-            return;
+            box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">No quiz submissions yet. Complete Week 01 to unlock Week 02!</span>';
+          } else {
+            box.innerHTML = '';
+            snap.forEach(doc => {
+              const s = doc.data();
+              this.studentScores[s.week] = s.score;
+              const badge = document.createElement('div');
+              badge.className = 'score-badge';
+              badge.innerHTML = `
+                <span>${s.week === 'final' ? 'FINAL EXAM' : 'Week 0' + s.week}:</span>
+                <strong>${s.score}/${s.total} (${s.percentage}%)</strong>
+                ${s.score >= (s.week === 'final' ? 16 : 8) ? '⭐ Passed' : '⚠️ Retake'}
+              `;
+              box.appendChild(badge);
+            });
           }
-
-          box.innerHTML = '';
-          snap.forEach(doc => {
-            const s = doc.data();
-            const badge = document.createElement('div');
-            badge.className = 'score-badge';
-            badge.innerHTML = `
-              <span>Week 0${s.week}:</span>
-              <strong>${s.score}/${s.total} (${s.percentage}%)</strong>
-              ${s.score >= 10 ? '⭐' : '✅'}
-            `;
-            box.appendChild(badge);
-          });
         } catch (e) {
-          box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">Scores will appear here after taking a quiz.</span>';
+          box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">Start learning below.</span>';
         }
+
+        this.renderRoadmap();
       }
 
       renderRoadmap() {
         const grid = document.getElementById('weeksList');
         grid.innerHTML = '';
         
+        let completedCount = 0;
+        const totalWeeks = 4;
+
         for (let i = 1; i <= 36; i++) {
           const card = document.createElement('div');
-          const isAvailable = Boolean(WEEKS_DATA[i]);
-          card.className = `week-card ${isAvailable ? 'active-week' : 'locked-week'}`;
           
-          let title = `Skills Enhancement Week ${i}`;
-          let desc = 'محتوى أسبوعي متدرج';
-          if (WEEKS_DATA[i]) {
-            title = WEEKS_DATA[i].title.split('(')[0].trim();
-            desc = WEEKS_DATA[i].title.includes('(') ? WEEKS_DATA[i].title.match(/\((.*?)\)/)[1] : 'متاح للتعلم الآن';
-          }
+          if (i <= totalWeeks) {
+            // Sequential Unlocking: Week 1 is open; Week N opens if Week N-1 is passed (score >= 8)
+            const isUnlocked = (i === 1) || (this.studentScores[i - 1] && this.studentScores[i - 1] >= 8);
+            const isPassed = (this.studentScores[i] && this.studentScores[i] >= 8);
+            if (isPassed) completedCount++;
 
-          card.innerHTML = `
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-              <span style="font-size:11px; font-weight:800; color:var(--primary); background:#e1ede6; padding:3px 8px; border-radius:12px;">WEEK ${i < 10 ? '0' + i : i}</span>
-              ${isAvailable ? '<span style="font-size:11px; color:var(--gold-dark); font-weight:700;">Active 🟢</span>' : '<span>🔒</span>'}
-            </div>
-            <h4 style="font-size:15px; margin-bottom:4px;">${title}</h4>
-            <p style="font-size:12px; color:var(--text-muted); font-family:var(--font-ar);">${desc}</p>
-          `;
+            card.className = `week-card ${isUnlocked ? 'unlocked-week' : 'locked-week'}`;
+            
+            const title = WEEKS_DATA[i] ? WEEKS_DATA[i].title.split('(')[0].trim() : `Week ${i}`;
+            const desc = WEEKS_DATA[i] ? WEEKS_DATA[i].title.match(/\((.*?)\)/)[1] : 'Curriculum Unit';
 
-          if (isAvailable) {
-            card.onclick = () => this.openWeek(i);
+            card.innerHTML = `
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span style="font-size:11px; font-weight:800; color:var(--primary); background:#e1ede6; padding:3px 8px; border-radius:12px;">WEEK ${i < 10 ? '0' + i : i}</span>
+                ${isPassed ? '<span style="font-size:11px; color:#15803d; font-weight:800;">Passed ⭐</span>' : (isUnlocked ? '<span style="font-size:11px; color:var(--gold-dark); font-weight:700;">Unlocked 🟢</span>' : '<span style="font-size:11px; color:#991b1b; font-weight:700;">Locked 🔒</span>')}
+              </div>
+              <h4 style="font-size:15px; margin-bottom:4px;">${title}</h4>
+              <p style="font-size:12px; color:var(--text-muted); font-family:var(--font-ar);">${desc}</p>
+            `;
+
+            if (isUnlocked) {
+              card.onclick = () => this.openWeek(i);
+            } else {
+              card.onclick = () => alert(`🔒 Unit Locked! You must pass Week 0${i - 1} quiz with at least 8/12 to unlock this week.`);
+            }
+          } else {
+            // Locked future roadmap units
+            card.className = 'week-card locked-week';
+            card.innerHTML = `
+              <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                <span style="font-size:11px; font-weight:800; color:var(--text-muted); background:#eee; padding:3px 8px; border-radius:12px;">WEEK ${i < 10 ? '0' + i : i}</span>
+                <span>🔒</span>
+              </div>
+              <h4 style="font-size:15px; margin-bottom:4px; color:#777;">Skills Enhancement Week ${i}</h4>
+              <p style="font-size:12px; color:#999; font-family:var(--font-ar);">وحدة مهارات متقدمة</p>
+            `;
           }
           grid.appendChild(card);
+        }
+
+        // Final Benchmark Exam Card at the end of roadmap
+        const allFourPassed = (completedCount >= 4);
+        const finalCard = document.createElement('div');
+        finalCard.className = `week-card final-exam-card ${allFourPassed ? 'unlocked-week' : 'locked-week'}`;
+        finalCard.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span style="font-size:11px; font-weight:800; background:var(--gold); color:#000; padding:4px 10px; border-radius:12px;">COURSE BENCHMARK</span>
+            <span>${allFourPassed ? 'Ready 🎯' : 'Locked 🔒 (Requires Weeks 1-4)'}</span>
+          </div>
+          <h3 style="font-size:18px; margin-bottom:6px;">Comprehensive Final STEP Exam (20 Questions)</h3>
+          <p style="font-size:13px; color:#d1ded7;">Score 16/20 or higher to earn the official Al-Bayariq Achievement Certificate.</p>
+        `;
+        if (allFourPassed) {
+          finalCard.onclick = () => this.openFinalExam();
+        } else {
+          finalCard.onclick = () => alert("🔒 Final Exam is locked! Pass all 4 weekly modules first.");
+        }
+        grid.appendChild(finalCard);
+
+        // Progress bar updates
+        const pct = Math.round((completedCount / totalWeeks) * 100);
+        document.getElementById('progressBar').style.width = `${pct}%`;
+        document.getElementById('progressLabel').textContent = `Completed: ${completedCount} of 4 Modules (${pct}%)`;
+
+        const certBtn = document.getElementById('btnMainCert');
+        if (this.studentScores['final'] && this.studentScores['final'] >= 16) {
+          certBtn.style.opacity = '1';
+          certBtn.textContent = '🏆 View Official Certificate';
+        } else {
+          certBtn.style.opacity = '0.5';
+          certBtn.textContent = '🏆 Course Certificate (Locked 🔒)';
         }
       }
 
       openWeek(weekNum) {
+        this.isFinalExam = false;
         this.currentWeek = weekNum;
         const data = WEEKS_DATA[weekNum];
         if (!data) return;
 
+        document.getElementById('moduleNavTabs').style.display = 'flex';
         document.getElementById('modBadge').textContent = `WEEK ${weekNum < 10 ? '0' + weekNum : weekNum}`;
         document.getElementById('modTitle').textContent = data.title;
         document.getElementById('listenTitle').textContent = data.dialogueTitle;
@@ -1503,12 +1852,29 @@
           </div>
         `).join('');
 
-        this.renderQuiz(data.quiz);
+        this.renderAssessment(data.quiz, 12, 8);
         this.startMillionaire(data.millionaire);
 
         document.getElementById('screenDashboard').style.display = 'none';
         document.getElementById('screenModule').style.display = 'block';
         this.setTab(0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      openFinalExam() {
+        this.isFinalExam = true;
+        document.getElementById('moduleNavTabs').style.display = 'none';
+        document.getElementById('modBadge').textContent = 'FINAL STEP BENCHMARK';
+        document.getElementById('modTitle').textContent = FINAL_EXAM.title;
+
+        // Jump straight to Assessment Tab
+        this.renderAssessment(FINAL_EXAM.questions, 20, 16);
+        document.getElementById('quizHeading').textContent = 'Final Comprehensive Benchmark Exam (20 Questions)';
+        document.getElementById('quizTargetBadge').textContent = 'Target: 16 / 20 to Earn Certificate 🏆';
+
+        document.getElementById('screenDashboard').style.display = 'none';
+        document.getElementById('screenModule').style.display = 'block';
+        this.setTab(6);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
@@ -1540,6 +1906,7 @@
         this.speak(data.readingText);
       }
 
+      /* Millionaire Game with SFX */
       startMillionaire(questions) {
         this.millList = questions || WEEKS_DATA[this.currentWeek].millionaire;
         this.millIdx = 0;
@@ -1577,16 +1944,19 @@
         });
 
         if (selected === correct) {
+          sfx.playCorrect();
           setTimeout(() => {
             this.millIdx++;
             if (this.millIdx < this.millList.length) {
               this.loadMillQ();
             } else {
+              sfx.playWinFanfare();
               alert("🎉 CONGRATULATIONS! You won the $1,000,000 English Challenge!");
               this.startMillionaire();
             }
           }, 1100);
         } else {
+          sfx.playWrong();
           setTimeout(() => {
             alert("Hard luck! Let's try again from question one.");
             this.startMillionaire();
@@ -1607,24 +1977,35 @@
       }
 
       useFriend() {
+        sfx.playPhoneRing();
         const cur = this.millList[this.millIdx];
         const friendLetter = String.fromCharCode(65 + cur.ans);
-        document.getElementById('millHelpBox').textContent = `📞 صديقك المتصل يقول: أنا متأكد بنسبة 95% أن الإجابة الصحيحة هي (${friendLetter})`;
+        setTimeout(() => {
+          document.getElementById('millHelpBox').textContent = `📞 Friend on the Phone: "I am 95% confident that the answer is (${friendLetter})"`;
+        }, 1000);
         document.getElementById('lifeFriend').disabled = true;
       }
 
       useAudience() {
+        sfx.playAudienceCheer();
         const cur = this.millList[this.millIdx];
         const audLetter = String.fromCharCode(65 + cur.ans);
-        document.getElementById('millHelpBox').textContent = `👥 تصويت الجمهور في القاعة: 82% صوتوا لصالح الخيار (${audLetter})`;
+        setTimeout(() => {
+          document.getElementById('millHelpBox').textContent = `👥 Audience Poll: 84% voted for option (${audLetter})`;
+        }, 800);
         document.getElementById('lifeAudience').disabled = true;
       }
 
-      renderQuiz(quizList) {
+      /* Quiz Engine */
+      renderAssessment(qList, total, target) {
         this.quizAnswers = {};
+        this.activeQList = qList;
+        this.activeTotal = total;
+        this.activeTarget = target;
+
         const box = document.getElementById('quizFormContainer');
         box.innerHTML = '';
-        quizList.forEach((item, qIdx) => {
+        qList.forEach((item, qIdx) => {
           const div = document.createElement('div');
           div.style.marginBottom = '18px';
           div.style.paddingBottom = '14px';
@@ -1653,14 +2034,13 @@
         });
       }
 
-      async gradeFullQuiz() {
+      async gradeAssessment() {
         const btn = document.getElementById('btnSubmitQuiz');
         btn.disabled = true;
-        btn.textContent = 'Grading & syncing...';
+        btn.textContent = 'Grading...';
 
-        const quizList = WEEKS_DATA[this.currentWeek].quiz;
         let score = 0;
-        quizList.forEach((item, idx) => {
+        this.activeQList.forEach((item, idx) => {
           const userChoice = this.quizAnswers[idx];
           const grid = document.getElementById(`q_grid_${idx}`);
           const btns = grid.querySelectorAll('button');
@@ -1678,56 +2058,175 @@
           if (userChoice === item.ans) score++;
         });
 
-        const pct = Math.round((score / 12) * 100);
-        let feedback = "";
-        if (score >= 10) feedback = "Excellent! 🌟 إتقان كامل للمهارات بنجاح.";
-        else if (score >= 7) feedback = "Great Job! 👏 مستوى رائع جداً، استمر.";
-        else if (score >= 5) feedback = "Good Start! 💪 بداية جيدة، راجع الدرس وجرب مجدداً.";
-        else feedback = "Keep Practicing! 📚 تدرب أكثر لتحقيق معايير الإتقان.";
+        const pct = Math.round((score / this.activeTotal) * 100);
+        const passed = (score >= this.activeTarget);
 
-        // Cloud sync to Firestore
         if (this.student) {
-          const submissionData = {
+          const weekKey = this.isFinalExam ? 'final' : this.currentWeek;
+          const subData = {
             studentName: this.student.name,
             stage: this.student.stage,
             teacher: this.student.teacher,
             grade: this.student.grade,
-            week: this.currentWeek,
-            weekTitle: WEEKS_DATA[this.currentWeek].title,
+            week: weekKey,
             score: score,
-            total: 12,
+            total: this.activeTotal,
             percentage: pct,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
           };
 
           try {
-            await db.collection("submissions").add(submissionData);
+            await db.collection("submissions").add(subData);
+            this.studentScores[weekKey] = score;
           } catch (err) {
             console.warn("Firestore sync:", err.message);
           }
         }
 
-        alert(`النتيجة: ${score} من 12 (${pct}%)\n\n${feedback}\n\nتم توثيق درجتك في حسابك السحابي بنجاح! ☁️`);
         btn.disabled = false;
-        btn.textContent = 'Submit & Save Score to Cloud • إرسال النتيجة واعتمادها ✅';
+        btn.textContent = 'Submit & Record Score to Cloud • إرسال النتيجة واعتمادها ✅';
 
-        if (score >= 8) {
+        if (passed) {
+          sfx.playCorrect();
+          if (this.isFinalExam) {
+            sfx.playWinFanfare();
+            alert(`🎉 Congratulations! You scored ${score}/${this.activeTotal} (${pct}%).\nYou have successfully graduated and unlocked your official certificate!`);
+            this.openCert();
+          } else {
+            alert(`🌟 Well Done! You scored ${score}/${this.activeTotal} (${pct}%).\nYou unlocked the next week on your roadmap!`);
+            this.showDash();
+          }
+        } else {
+          sfx.playWrong();
+          alert(`Result: ${score}/${this.activeTotal} (${pct}%).\nYou need at least ${this.activeTarget} to pass. Please review the lesson and try again.`);
+        }
+      }
+
+      checkFinalCertAccess() {
+        if (this.studentScores['final'] && this.studentScores['final'] >= 16) {
           this.openCert();
+        } else {
+          alert("🔒 Certificate is locked!\nYou must complete all 4 weeks and pass the Final Comprehensive Benchmark Exam with 16/20 or higher.");
         }
       }
 
       openCert() {
         if (!this.student) return;
-        document.getElementById('certName').textContent = this.student.name;
+        document.getElementById('certStudentName').textContent = this.student.name.toUpperCase();
+        document.getElementById('certStageBadge').textContent = `${this.student.stage} Stage`;
         document.getElementById('certTeacher').textContent = this.student.teacher;
-        document.getElementById('certBody').innerHTML = `
-          For successfully completing <strong>Mini STEP Week ${this.currentWeek < 10 ? '0' + this.currentWeek : this.currentWeek}</strong> benchmarks with distinction and demonstrating outstanding commitment to learning English.
-        `;
+        document.getElementById('certPrincipal').textContent = PRINCIPALS[this.student.stage] || "School Principal";
         document.getElementById('certModal').style.display = 'flex';
       }
 
       closeCert() {
         document.getElementById('certModal').style.display = 'none';
+      }
+
+      /* Admin Control Logic */
+      openAdminModal() {
+        document.getElementById('adminModal').style.display = 'flex';
+        document.getElementById('adminLoginForm').style.display = 'block';
+        document.getElementById('adminControls').style.display = 'none';
+      }
+
+      closeAdminModal() {
+        document.getElementById('adminModal').style.display = 'none';
+      }
+
+      adminLogin() {
+        const u = document.getElementById('admUser').value.trim();
+        const p = document.getElementById('admPass').value.trim();
+
+        if (u === 'admin' && p === 'admin135790') {
+          this.isAdmin = true;
+          document.getElementById('adminLoginForm').style.display = 'none';
+          document.getElementById('adminControls').style.display = 'block';
+          this.updateLockUI();
+          this.loadAdminStudents();
+        } else {
+          alert("Invalid administrator credentials!");
+        }
+      }
+
+      updateLockUI() {
+        const btn = document.getElementById('btnToggleLock');
+        const txt = document.getElementById('appLockStatusText');
+        if (this.isPortalLocked) {
+          btn.textContent = 'Unlock Portal (فتح المنصة للطلاب)';
+          btn.className = 'btn btn-primary';
+          txt.textContent = 'Portal is currently LOCKED for students.';
+        } else {
+          btn.textContent = 'Lock Portal (إغلاق المنصة للصيانة)';
+          btn.className = 'btn btn-danger';
+          txt.textContent = 'Portal is currently OPEN for all students.';
+        }
+      }
+
+      async togglePortalLock() {
+        this.isPortalLocked = !this.isPortalLocked;
+        try {
+          await db.collection("system_settings").doc("portal").set({
+            isLocked: this.isPortalLocked
+          }, { merge: true });
+          this.updateLockUI();
+          this.renderLockState();
+        } catch (e) {
+          alert("Error updating setting: " + e.message);
+        }
+      }
+
+      async loadAdminStudents() {
+        const tbody = document.getElementById('adminStudentsTableBody');
+        tbody.innerHTML = '<tr><td colspan="4">Fetching student records...</td></tr>';
+        
+        try {
+          const snap = await db.collection("students").orderBy("createdAt", "desc").get();
+          if (snap.empty) {
+            tbody.innerHTML = '<tr><td colspan="4">No students currently registered.</td></tr>';
+            return;
+          }
+          tbody.innerHTML = '';
+          snap.forEach(doc => {
+            const data = doc.data();
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td><strong>${data.name}</strong></td>
+              <td>${data.stage} • ${data.grade}</td>
+              <td><code>${data.pin}</code></td>
+              <td>
+                <button class="btn btn-danger" style="padding: 4px 10px; font-size: 11px;" onclick="app.purgeStudent('${doc.id}', '${data.name}')">
+                  Delete / تفريغ
+                </button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } catch (e) {
+          tbody.innerHTML = `<tr><td colspan="4">Error loading data: ${e.message}</td></tr>`;
+        }
+      }
+
+      async purgeStudent(docId, studentName) {
+        if (!confirm(`Are you sure you want to completely purge student: ${studentName}? This deletes the account and all test submissions.`)) {
+          return;
+        }
+
+        try {
+          // Delete from students
+          await db.collection("students").doc(docId).delete();
+
+          // Delete from submissions
+          const subSnap = await db.collection("submissions").where("studentName", "==", studentName).get();
+          const batch = db.batch();
+          subSnap.forEach(subDoc => batch.delete(subDoc.ref));
+          await batch.commit();
+
+          alert(`Student [${studentName}] has been purged successfully.`);
+          this.loadAdminStudents();
+        } catch (e) {
+          alert("Purge failed: " + e.message);
+        }
       }
     }
 
