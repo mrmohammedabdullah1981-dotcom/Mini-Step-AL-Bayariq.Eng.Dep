@@ -52,6 +52,7 @@
       flex-direction: column;
     }
 
+    /* Top Bar */
     header {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: #fff;
@@ -71,18 +72,15 @@
       gap: 12px;
     }
 
-    .brand-crest {
-      width: 44px;
-      height: 44px;
+    .brand-logo-img {
+      width: 48px;
+      height: 48px;
       border-radius: 12px;
-      background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary-dark);
-      font-weight: 800;
-      font-size: 20px;
+      background: #ffffff;
+      padding: 3px;
+      object-fit: contain;
       box-shadow: 0 2px 8px rgba(212, 175, 55, 0.4);
+      border: 1.5px solid var(--gold);
     }
 
     .brand-text h1 {
@@ -95,10 +93,17 @@
       color: var(--gold);
     }
 
-    .brand-text p {
+    .brand-text p.sub-desc {
       font-size: 11px;
       color: #d1ded7;
-      font-family: var(--font-ar);
+      margin-top: 2px;
+    }
+
+    .brand-text p.sub-sup {
+      font-size: 10px;
+      color: var(--gold);
+      font-weight: 700;
+      letter-spacing: 0.3px;
     }
 
     .user-pill {
@@ -184,6 +189,10 @@
       box-shadow: 0 4px 12px rgba(181, 137, 26, 0.3);
     }
 
+    .btn-gold:hover {
+      filter: brightness(1.05);
+    }
+
     .btn-primary {
       background: var(--primary);
       color: #fff;
@@ -208,6 +217,11 @@
       align-items: center;
       gap: 4px;
       border: none;
+    }
+
+    .audio-btn:hover {
+      background: var(--gold);
+      color: #fff;
     }
 
     .dashboard-hero {
@@ -484,12 +498,14 @@
 </head>
 <body>
 
+  <!-- Top Bar -->
   <header>
     <div class="brand-wrap">
-      <div class="brand-crest">B</div>
+      <img src="logo.png" alt="Logo" class="brand-logo-img" onerror="this.outerHTML='<div class=\'brand-logo-img\' style=\'display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#d4af37,#aa8420);color:#072617;font-weight:800;font-size:20px;\'>B</div>'">
       <div class="brand-text">
         <h1>MINI <span>STEP</span></h1>
-        <p>مدارس البيارق الأهلية • قسم اللغة الإنجليزية</p>
+        <p class="sub-desc">Under the Supervision of the English Language Department</p>
+        <p class="sub-sup">English Language Supervisor: Mohammed Abdullah Othman</p>
       </div>
     </div>
     <div id="userBadge" style="display: none;">
@@ -502,11 +518,17 @@
 
   <main>
     <!-- View 1: Student Setup -->
-    <div id="screenRegister" class="card" style="max-width: 520px; margin: 20px auto;">
+    <div id="screenRegister" class="card" style="max-width: 540px; margin: 20px auto;">
       <div style="text-align: center; margin-bottom: 24px;">
-        <span style="background: var(--gold-light); color: var(--gold-dark); border: 1px solid var(--gold); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800;">AL-BAYARIQ SCHOOLS</span>
-        <h2 style="color: var(--primary); font-size: 24px; margin-top: 8px;">Mini STEP Registration</h2>
-        <p style="font-family: var(--font-ar); color: var(--text-muted); font-size: 13px;">برنامج التطوير اللغوي الأسبوعي للطلاب</p>
+        <img src="logo.png" alt="Logo" style="height: 56px; margin-bottom: 10px; object-fit: contain;" onerror="this.style.display='none'">
+        <div>
+          <span style="background: var(--gold-light); color: var(--gold-dark); border: 1px solid var(--gold); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px;">AL-BAYARIQ PRIVATE SCHOOLS</span>
+        </div>
+        <h2 style="color: var(--primary); font-size: 24px; margin-top: 10px;">Mini STEP Learning Hub</h2>
+        <p style="color: var(--text-muted); font-size: 12px; font-weight: 600; margin-top: 4px;">
+          Under the Supervision of the English Language Department<br>
+          <span style="color: var(--primary); font-size: 12px; font-weight: 700;">Supervisor: Mohammed Abdullah Othman</span>
+        </p>
       </div>
 
       <form onsubmit="app.register(event)">
@@ -518,7 +540,7 @@
         <div class="form-group">
           <label>Educational Stage <small>(المرحلة الدراسية)</small></label>
           <select id="inStage" class="form-control" onchange="app.onStageSelect()" required>
-            <option value="">اختر المرحلة الدراسية...</option>
+            <option value="">Select Stage / اختر المرحلة الدراسية...</option>
             <option value="Primary">Primary Stage (المرحلة الابتدائية)</option>
             <option value="Intermediate">Intermediate Stage (المرحلة المتوسطة)</option>
             <option value="Secondary">Secondary Stage (المرحلة الثانوية)</option>
@@ -528,7 +550,7 @@
         <div class="form-group">
           <label>English Teacher <small>(معلم اللغة الإنجليزية)</small></label>
           <select id="inTeacher" class="form-control" required disabled>
-            <option value="">اختر المرحلة أولاً لظهور معلمك...</option>
+            <option value="">Select stage first...</option>
           </select>
         </div>
 
@@ -547,7 +569,10 @@
     <div id="screenDashboard" style="display: none;">
       <div class="dashboard-hero">
         <h2 id="dashWelcome" style="color: var(--primary); font-size: 22px;">Welcome!</h2>
-        <p id="dashMeta" style="color: var(--text-muted); font-size: 13px; margin-bottom: 12px;"></p>
+        <p id="dashMeta" style="color: var(--text-muted); font-size: 13px; margin-bottom: 6px;"></p>
+        <p style="font-size: 11px; color: var(--gold-dark); font-weight: 700; margin-bottom: 12px;">
+          Under the Supervision of English Language Supervisor: Mohammed Abdullah Othman
+        </p>
         
         <div class="progress-bar-wrap">
           <div id="progressBar" class="progress-bar-fill" style="width: 3%;"></div>
@@ -765,8 +790,12 @@
   <div id="certModal" class="modal-overlay">
     <div class="cert-box">
       <div class="cert-border">
+        <img src="logo.png" alt="Logo" style="height: 55px; margin-bottom: 8px; object-fit: contain;" onerror="this.style.display='none'">
         <p style="font-size: 12px; letter-spacing: 2px; color: var(--gold-dark); font-weight: 800; text-transform: uppercase;">
           Al Bayariq Private Schools • English Department
+        </p>
+        <p style="font-size: 11px; color: var(--text-muted); font-weight: 600; margin-top: 2px;">
+          Under the Supervision of the English Language Department
         </p>
         <h2 style="font-family: 'Playfair Display', serif; color: var(--primary); font-size: 28px; margin: 12px 0;">
           Certificate of Achievement
@@ -787,7 +816,7 @@
             <div id="certTeacher" style="font-size: 15px; font-weight: 800; color: var(--primary);">Teacher Name</div>
           </div>
           <div>
-            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">ENGLISH SUPERVISOR</div>
+            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">ENGLISH LANGUAGE SUPERVISOR</div>
             <div style="font-size: 15px; font-weight: 800; color: var(--primary);">Mohammed Abdullah Othman</div>
           </div>
         </div>
@@ -878,7 +907,7 @@
       onStageSelect() {
         const stage = document.getElementById('inStage').value;
         const sel = document.getElementById('inTeacher');
-        sel.innerHTML = '<option value="">اختر معلمك...</option>';
+        sel.innerHTML = '<option value="">Select your teacher...</option>';
         if (stage && TEACHERS[stage]) {
           TEACHERS[stage].forEach(t => {
             const opt = document.createElement('option');
@@ -1195,7 +1224,7 @@
       }
 
       resetProfile() {
-        if (confirm("هل ترغب في تغيير بيانات الطالب والمعلم؟")) {
+        if (confirm("Do you want to change student or teacher details? / هل ترغب في تعديل بيانات الطالب؟")) {
           localStorage.removeItem('miniStep_user');
           location.reload();
         }
