@@ -52,7 +52,6 @@
       flex-direction: column;
     }
 
-    /* Top Bar */
     header {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: #fff;
@@ -262,9 +261,20 @@
       transition: all 0.2s;
     }
 
-    .week-card:hover {
+    .week-card.active-week {
+      border-color: var(--primary-light);
+      box-shadow: 0 4px 14px rgba(11, 59, 36, 0.08);
+    }
+
+    .week-card.active-week:hover {
       border-color: var(--gold);
       transform: translateY(-2px);
+    }
+
+    .week-card.locked-week {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: #fbfbfb;
     }
 
     .module-nav {
@@ -501,7 +511,7 @@
   <!-- Top Bar -->
   <header>
     <div class="brand-wrap">
-      <img src="logo.png" alt="Logo" class="brand-logo-img" onerror="this.outerHTML='<div class=\'brand-logo-img\' style=\'display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#d4af37,#aa8420);color:#072617;font-weight:800;font-size:20px;\'>B</div>'">
+      <img src="AL-Bayariq Private School.jpeg" alt="Logo" class="brand-logo-img" onerror="this.src='logo.png'; this.onerror=function(){this.outerHTML='<div class=\'brand-logo-img\' style=\'display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#d4af37,#aa8420);color:#072617;font-weight:800;font-size:20px;\'>B</div>';}">
       <div class="brand-text">
         <h1>MINI <span>STEP</span></h1>
         <p class="sub-desc">Under the Supervision of the English Language Department</p>
@@ -517,10 +527,10 @@
   </header>
 
   <main>
-    <!-- View 1: Student Setup -->
+    <!-- View 1: Registration -->
     <div id="screenRegister" class="card" style="max-width: 540px; margin: 20px auto;">
       <div style="text-align: center; margin-bottom: 24px;">
-        <img src="logo.png" alt="Logo" style="height: 56px; margin-bottom: 10px; object-fit: contain;" onerror="this.style.display='none'">
+        <img src="AL-Bayariq Private School.jpeg" alt="Logo" style="height: 56px; margin-bottom: 10px; object-fit: contain;" onerror="this.src='logo.png'; this.onerror=function(){this.style.display='none';}">
         <div>
           <span style="background: var(--gold-light); color: var(--gold-dark); border: 1px solid var(--gold); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px;">AL-BAYARIQ PRIVATE SCHOOLS</span>
         </div>
@@ -565,7 +575,7 @@
       </form>
     </div>
 
-    <!-- View 2: Dashboard -->
+    <!-- View 2: Dashboard Roadmap -->
     <div id="screenDashboard" style="display: none;">
       <div class="dashboard-hero">
         <h2 id="dashWelcome" style="color: var(--primary); font-size: 22px;">Welcome!</h2>
@@ -575,11 +585,11 @@
         </p>
         
         <div class="progress-bar-wrap">
-          <div id="progressBar" class="progress-bar-fill" style="width: 3%;"></div>
+          <div id="progressBar" class="progress-bar-fill" style="width: 6%;"></div>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--primary);">
-          <span id="progressLabel">Completed: 0 of 36 Weeks</span>
-          <span id="rankBadge">Rank: STEP Starter 🌟</span>
+          <span id="progressLabel">Active Weeks: Week 01 & Week 02 Available</span>
+          <span id="rankBadge">Rank: STEP Explorer 🌟</span>
         </div>
       </div>
 
@@ -597,8 +607,8 @@
     <div id="screenModule" style="display: none;">
       <div style="background: var(--primary); color: #fff; padding: 18px 24px; border-radius: var(--radius-md) var(--radius-md) 0 0; display: flex; justify-content: space-between; align-items: center;">
         <div>
-          <span style="font-size: 11px; font-weight: 800; background: var(--gold); color: #000; padding: 3px 8px; border-radius: 4px;">WEEK 01</span>
-          <h2 style="font-size: 20px; margin-top: 4px;">Introducing Myself (التعريف بالنفس)</h2>
+          <span id="modBadge" style="font-size: 11px; font-weight: 800; background: var(--gold); color: #000; padding: 3px 8px; border-radius: 4px;">WEEK 01</span>
+          <h2 id="modTitle" style="font-size: 20px; margin-top: 4px;">Introducing Myself (التعريف بالنفس)</h2>
         </div>
         <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;" onclick="app.showDash()">
           ← Roadmap
@@ -619,53 +629,16 @@
         <!-- 1. Listening -->
         <div class="skill-block active">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-            <h4 style="color: var(--primary);">Dialogue: Ahmed & Omar</h4>
+            <h4 id="listenTitle" style="color: var(--primary);">Dialogue</h4>
             <button class="audio-btn" onclick="app.playDialogue()">🔊 Play Full Dialogue (US)</button>
           </div>
-          
-          <div class="dialogue-row">
-            <div><strong>Ahmed:</strong> Hello! My name is Ahmed. What's your name?</div>
-            <button class="audio-btn" onclick="app.speak('Hello! My name is Ahmed. What\'s your name?')">🔊</button>
-          </div>
-          <div class="dialogue-row">
-            <div><strong>Omar:</strong> Hi! My name is Omar.</div>
-            <button class="audio-btn" onclick="app.speak('Hi! My name is Omar.')">🔊</button>
-          </div>
-          <div class="dialogue-row">
-            <div><strong>Ahmed:</strong> How old are you?</div>
-            <button class="audio-btn" onclick="app.speak('How old are you?')">🔊</button>
-          </div>
-          <div class="dialogue-row">
-            <div><strong>Omar:</strong> I am twelve years old. How old are you?</div>
-            <button class="audio-btn" onclick="app.speak('I am twelve years old. How old are you?')">🔊</button>
-          </div>
-          <div class="dialogue-row">
-            <div><strong>Ahmed:</strong> I am eleven years old.</div>
-            <button class="audio-btn" onclick="app.speak('I am eleven years old.')">🔊</button>
-          </div>
-          <div class="dialogue-row">
-            <div><strong>Omar:</strong> Where are you from?</div>
-            <button class="audio-btn" onclick="app.speak('Where are you from?')">🔊</button>
-          </div>
-          <div class="dialogue-row">
-            <div><strong>Ahmed:</strong> I am from Saudi Arabia. I live in Riyadh.</div>
-            <button class="audio-btn" onclick="app.speak('I am from Saudi Arabia. I live in Riyadh.')">🔊</button>
-          </div>
-          <div class="dialogue-row">
-            <div><strong>Omar:</strong> Nice to meet you.</div>
-            <button class="audio-btn" onclick="app.speak('Nice to meet you.')">🔊</button>
-          </div>
-          <div class="dialogue-row">
-            <div><strong>Ahmed:</strong> Nice to meet you, too.</div>
-            <button class="audio-btn" onclick="app.speak('Nice to meet you, too.')">🔊</button>
-          </div>
+          <div id="dialogueContainer"></div>
         </div>
 
         <!-- 2. Daily Expressions -->
         <div class="skill-block">
           <h4 style="color: var(--primary); margin-bottom: 8px;">Key Daily Phrases & Arabic Translation</h4>
           <p style="font-family: var(--font-ar); color: var(--text-muted); font-size: 13px; margin-bottom: 12px;">تدرب على فهم العبارات واستخدامها بسهولة:</p>
-          
           <table class="vocab-table">
             <thead>
               <tr>
@@ -680,73 +653,22 @@
 
         <!-- 3. Speaking -->
         <div class="skill-block">
-          <h4 style="color: var(--primary); margin-bottom: 14px;">Speaking Drills: Mini Introduction</h4>
-          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
-            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">تحدي التحدث المنزلي (Home Speaking Practice):</p>
-            <p style="font-family: var(--font-ar); font-size: 14px; line-height: 1.6;">
-              تدرّب على نطق هذه الجمل بنفسك بصوت واضح، ثم قلها أمام معلمك أو أسرتك:
-            </p>
-            <div style="margin-top: 14px; font-size: 16px; line-height: 2; font-weight: 600;">
-              <div>• Hello! My name is <span style="color: var(--primary);">[Your Name]</span>.</div>
-              <div>• I am <span style="color: var(--primary);">[Your Age]</span> years old.</div>
-              <div>• I am from <span style="color: var(--primary);">Saudi Arabia</span>.</div>
-              <div>• I live in <span style="color: var(--primary);">Riyadh</span>.</div>
-              <div>• Nice to meet you!</div>
-            </div>
-            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Hello! My name is Ahmed. I am eleven years old. I am from Saudi Arabia. I live in Riyadh. Nice to meet you!')">
-              🔊 استمع للنموذج الصوتي الكامل
-            </button>
-          </div>
+          <h4 style="color: var(--primary); margin-bottom: 14px;">Speaking Drills: Challenge</h4>
+          <div id="speakingContainer"></div>
         </div>
 
         <!-- 4. Grammar -->
         <div class="skill-block">
-          <h4 style="color: var(--primary);">Grammar Capsule: Verb to Be (I am)</h4>
-          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
-            نركز هذا الأسبوع على الضمير <strong>I</strong> مع الفعل المساعد <strong>am</strong> فقط.
-          </p>
-
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
-            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #166534;">✅ الشكل الصحيح (Full Form):</strong>
-              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
-                <li>I <strong>am</strong> Ahmed.</li>
-                <li>I <strong>am</strong> a student.</li>
-                <li>I <strong>am</strong> twelve years old.</li>
-                <li>I <strong>am</strong> from Saudi Arabia.</li>
-              </ul>
-            </div>
-            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #854d0e;">⚡ الاختصار السريع (Short Form):</strong>
-              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
-                <div>I am ➔ <strong>I'm</strong></div>
-                <div>• <strong>I'm</strong> Ahmed.</div>
-                <div>• <strong>I'm</strong> a student.</div>
-                <div>• <strong>I'm</strong> happy.</div>
-              </div>
-            </div>
-          </div>
-
-          <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 14px; border-radius: var(--radius-sm);">
-            <strong style="color: #991b1b; font-family: var(--font-ar);">❌ أخطاء شائعة تجنبها:</strong>
-            <div style="font-size: 14px; margin-top: 6px; color: #7f1d1d;">
-              <div>• لا تقل: <del>I is Ahmed</del> ➔ الصح: <strong>I am Ahmed</strong></div>
-              <div>• لا تقل: <del>I are a student</del> ➔ الصح: <strong>I am a student</strong></div>
-            </div>
-          </div>
+          <div id="grammarContainer"></div>
         </div>
 
         <!-- 5. Reading -->
         <div class="skill-block">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-            <h4 style="color: var(--primary);">Reading Passage: Meet Ahmed</h4>
+            <h4 id="readingHeading" style="color: var(--primary);">Reading Passage</h4>
             <button class="audio-btn" onclick="app.playReadingPassage()">🔊 Read Passage Aloud</button>
           </div>
-
-          <div id="readPassageText" style="background: #fafdfb; border: 1.5px solid var(--border); padding: 18px; border-radius: var(--radius-sm); font-size: 16px; line-height: 1.9; color: var(--text); margin-bottom: 20px;">
-            "Hello! My name is Ahmed. I am twelve years old. I am a student. I am from Saudi Arabia. I live in Riyadh. I like English and football. I am happy to meet you."
-          </div>
-
+          <div id="readPassageText" style="background: #fafdfb; border: 1.5px solid var(--border); padding: 18px; border-radius: var(--radius-sm); font-size: 16px; line-height: 1.9; color: var(--text); margin-bottom: 20px;"></div>
           <h5 style="color: var(--primary); margin-bottom: 12px;">Check your understanding (فهم المقروء):</h5>
           <div id="readingMiniQuestions"></div>
         </div>
@@ -774,7 +696,7 @@
         <!-- 7. Weekly Quiz -->
         <div class="skill-block">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
-            <h4 style="color: var(--primary);">Mini STEP Digital Practice (12 Questions)</h4>
+            <h4 id="quizHeading" style="color: var(--primary);">Mini STEP Digital Practice (12 Questions)</h4>
             <span style="font-size: 12px; color: var(--gold-dark); font-weight: 700;">Target: 10/12 to Master ⭐</span>
           </div>
           <div id="quizFormContainer"></div>
@@ -790,7 +712,7 @@
   <div id="certModal" class="modal-overlay">
     <div class="cert-box">
       <div class="cert-border">
-        <img src="logo.png" alt="Logo" style="height: 55px; margin-bottom: 8px; object-fit: contain;" onerror="this.style.display='none'">
+        <img src="AL-Bayariq Private School.jpeg" alt="Logo" style="height: 55px; margin-bottom: 8px; object-fit: contain;" onerror="this.src='logo.png'; this.onerror=function(){this.style.display='none';}">
         <p style="font-size: 12px; letter-spacing: 2px; color: var(--gold-dark); font-weight: 800; text-transform: uppercase;">
           Al Bayariq Private Schools • English Department
         </p>
@@ -806,8 +728,8 @@
           Student Name
         </div>
 
-        <p style="font-size: 14px; max-width: 500px; margin: 0 auto 20px; line-height: 1.6; color: var(--text);">
-          For successfully completing <strong>Mini STEP Week 01</strong> benchmarks with distinction and demonstrating outstanding commitment to learning English.
+        <p style="font-size: 14px; max-width: 500px; margin: 0 auto 20px; line-height: 1.6; color: var(--text);" id="certBody">
+          For successfully completing <strong>Mini STEP</strong> benchmarks with distinction and demonstrating outstanding commitment to learning English.
         </p>
 
         <div style="display: flex; justify-content: space-around; margin-top: 30px; border-top: 1px solid var(--border); padding-top: 16px;">
@@ -829,7 +751,7 @@
   </div>
 
   <script>
-    // 1. Firebase Project Initialization
+    // 1. Firebase Initialization
     const firebaseConfig = {
       apiKey: "AIzaSyCYYa40PX0V-PvFTAO8C2mMCVcPqf3Yz-g",
       authDomain: "mini-step-bayariq-en-dep.firebaseapp.com",
@@ -849,54 +771,229 @@
       Secondary: ["Mr. Amir Yacoub", "Mr. Hamada Fathy", "Mr. Atef Ashry"]
     };
 
-    const EXPRESSIONS = [
-      { en: "Hello!", ar: "مرحبًا" },
-      { en: "My name is Ahmed.", ar: "اسمي أحمد" },
-      { en: "What's your name?", ar: "ما اسمك؟" },
-      { en: "How old are you?", ar: "كم عمرك؟" },
-      { en: "I am twelve years old.", ar: "عمري 12 سنة" },
-      { en: "Where are you from?", ar: "من أين أنت؟" },
-      { en: "I am from Saudi Arabia.", ar: "أنا من السعودية" },
-      { en: "I live in Riyadh.", ar: "أعيش في الرياض" },
-      { en: "Nice to meet you.", ar: "سعيد بلقائك" },
-      { en: "Nice to meet you, too.", ar: "سعيد بلقائك أيضًا" }
-    ];
+    // 3. Complete Pedagogical Data for Week 01 & Week 02
+    const WEEKS_DATA = {
+      1: {
+        number: 1,
+        title: "Introducing Myself (التعريف بالنفس)",
+        dialogueTitle: "Dialogue: Ahmed & Omar",
+        dialogue: [
+          { speaker: "Ahmed", text: "Hello! My name is Ahmed. What's your name?" },
+          { speaker: "Omar", text: "Hi! My name is Omar." },
+          { speaker: "Ahmed", text: "How old are you?" },
+          { speaker: "Omar", text: "I am twelve years old. How old are you?" },
+          { speaker: "Ahmed", text: "I am eleven years old." },
+          { speaker: "Omar", text: "Where are you from?" },
+          { speaker: "Ahmed", text: "I am from Saudi Arabia. I live in Riyadh." },
+          { speaker: "Omar", text: "Nice to meet you." },
+          { speaker: "Ahmed", text: "Nice to meet you, too." }
+        ],
+        expressions: [
+          { en: "Hello!", ar: "مرحبًا" },
+          { en: "My name is Ahmed.", ar: "اسمي أحمد" },
+          { en: "What's your name?", ar: "ما اسمك؟" },
+          { en: "How old are you?", ar: "كم عمرك؟" },
+          { en: "I am twelve years old.", ar: "عمري 12 سنة" },
+          { en: "Where are you from?", ar: "من أين أنت؟" },
+          { en: "I am from Saudi Arabia.", ar: "أنا من السعودية" },
+          { en: "I live in Riyadh.", ar: "أعيش في الرياض" },
+          { en: "Nice to meet you.", ar: "سعيد بلقائك" },
+          { en: "Nice to meet you, too.", ar: "سعيد بلقائك أيضًا" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">تحدي التحدث الذاتي (Speaking Challenge):</p>
+            <p style="font-family: var(--font-ar); font-size: 14px; line-height: 1.6;">
+              تدرّب على نطق هذه الجمل بنفسك بصوت واضح، ثم قلها أمام معلمك أو أسرتك:
+            </p>
+            <div style="margin-top: 14px; font-size: 16px; line-height: 2; font-weight: 600;">
+              <div>• Hello! My name is <span style="color: var(--primary);">[Your Name]</span>.</div>
+              <div>• I am <span style="color: var(--primary);">[Your Age]</span> years old.</div>
+              <div>• I am from <span style="color: var(--primary);">Saudi Arabia</span>.</div>
+              <div>• I live in <span style="color: var(--primary);">Riyadh</span>.</div>
+              <div>• Nice to meet you!</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Hello! My name is Ahmed. I am eleven years old. I am from Saudi Arabia. I live in Riyadh. Nice to meet you!')">
+              🔊 استمع للنموذج الصوتي الكامل
+            </button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar Capsule: Verb to Be (I am)</h4>
+          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
+            نركز هذا الأسبوع على الضمير <strong>I</strong> مع الفعل المساعد <strong>am</strong> فقط.
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ الشكل الصحيح (Full Form):</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>I <strong>am</strong> Ahmed.</li>
+                <li>I <strong>am</strong> a student.</li>
+                <li>I <strong>am</strong> twelve years old.</li>
+                <li>I <strong>am</strong> from Saudi Arabia.</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ الاختصار السريع (Short Form):</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>I am ➔ <strong>I'm</strong></div>
+                <div>• <strong>I'm</strong> Ahmed.</div>
+                <div>• <strong>I'm</strong> a student.</div>
+                <div>• <strong>I'm</strong> happy.</div>
+              </div>
+            </div>
+          </div>
+          <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 14px; border-radius: var(--radius-sm);">
+            <strong style="color: #991b1b; font-family: var(--font-ar);">❌ أخطاء شائعة تجنبها:</strong>
+            <div style="font-size: 14px; margin-top: 6px; color: #7f1d1d;">
+              <div>• لا تقل: <del>I is Ahmed</del> ➔ الصح: <strong>I am Ahmed</strong></div>
+              <div>• لا تقل: <del>I are a student</del> ➔ الصح: <strong>I am a student</strong></div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: Meet Ahmed",
+        readingText: "Hello! My name is Ahmed. I am twelve years old. I am a student. I am from Saudi Arabia. I live in Riyadh. I like English and football. I am happy to meet you.",
+        readingQuestions: [
+          { q: "1. How old is Ahmed?", c1: "12 Years old ✅", c2: "10 Years old" },
+          { q: "2. What does Ahmed like?", c1: "English and football ✅", c2: "Math and tennis" }
+        ],
+        millionaire: [
+          { q: "Complete: 'Hello! My name ___ Ahmed.'", opts: ["am", "is", "are", "be"], ans: 1, prize: "$100" },
+          { q: "What is the capital city where Ahmed lives?", opts: ["Jeddah", "Dammam", "Riyadh", "Mecca"], ans: 2, prize: "$1,000" },
+          { q: "Choose the correct pronoun combination:", opts: ["I am", "I is", "I are", "I be"], ans: 0, prize: "$10,000" },
+          { q: "How do you respond politely to: 'Nice to meet you'?", opts: ["Good night.", "Nice to meet you, too.", "I am twelve.", "No, thanks."], ans: 1, prize: "$100,000" },
+          { q: "Which sentence is 100% correct in English?", opts: ["I'm from Saudi Arabia.", "I from Saudi Arabia.", "I are from Saudi Arabia.", "I is from Saudi Arabia."], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. What is the boy's name in the listening dialogue?", opts: ["Ahmed", "Omar", "Ali", "Khalid"], ans: 0 },
+          { q: "2. How old is Omar?", opts: ["10", "11", "12", "13"], ans: 2 },
+          { q: "3. What do you say when you want to ask someone's name?", opts: ["How old are you?", "What's your name?", "Where do you live?", "How are you?"], ans: 1 },
+          { q: "4. Complete: 'Nice to meet ______.'", opts: ["I", "my", "you", "your"], ans: 2 },
+          { q: "5. Choose the correct form: 'I ___ a student.'", opts: ["is", "are", "am", "be"], ans: 2 },
+          { q: "6. Choose the correct sentence:", opts: ["I is Ahmed.", "I are Ahmed.", "I am Ahmed.", "I be Ahmed."], ans: 2 },
+          { q: "7. Choose the short form of: 'I am Omar.'", opts: ["I'm Omar.", "I's Omar.", "I'are Omar.", "I be Omar."], ans: 0 },
+          { q: "8. In the reading story, what is the boy's name?", opts: ["Ahmed", "Omar", "Mohammed", "Sami"], ans: 0 },
+          { q: "9. Where is Ahmed from?", opts: ["Egypt", "Saudi Arabia", "Kuwait", "Bahrain"], ans: 1 },
+          { q: "10. Ahmed lives in:", opts: ["Riyadh", "Jeddah", "Abha", "Tabuk"], ans: 0 },
+          { q: "11. Put the words in correct order: [ am / I / a / student ]", opts: ["Student a I am.", "I am a student.", "A student am I.", "I a student am."], ans: 1 },
+          { q: "12. Complete: 'Hello! My ___ is Abdullah. I ___ twelve years old.'", opts: ["name / am", "names / is", "name / are", "names / am"], ans: 0 }
+        ]
+      },
+      2: {
+        number: 2,
+        title: "Family & Home (عائلتي ومنزلي)",
+        dialogueTitle: "Dialogue: Ahmed & Salman",
+        dialogue: [
+          { speaker: "Salman", text: "Hello Ahmed! Who is this in the photo?" },
+          { speaker: "Ahmed", text: "This is my father. He is a doctor." },
+          { speaker: "Salman", text: "And who is that next to him?" },
+          { speaker: "Ahmed", text: "She is my mother. She is a kind teacher." },
+          { speaker: "Salman", text: "Do you have any brothers or sisters?" },
+          { speaker: "Ahmed", text: "Yes, I have one brother and two sisters. We are a happy family." },
+          { speaker: "Salman", text: "Where do you all live?" },
+          { speaker: "Ahmed", text: "We live in a beautiful house in Riyadh." }
+        ],
+        expressions: [
+          { en: "This is my father.", ar: "هذا والدي" },
+          { en: "This is my mother.", ar: "هذه والدتي" },
+          { en: "He is a doctor.", ar: "هو طبيب" },
+          { en: "She is a teacher.", ar: "هي معلمة" },
+          { en: "I have one brother.", ar: "لدي أخ واحد" },
+          { en: "I have two sisters.", ar: "لدي أختان" },
+          { en: "We are a happy family.", ar: "نحن عائلة سعيدة" },
+          { en: "We live in a big house.", ar: "نحن نعيش في بيت كبير" },
+          { en: "They are my parents.", ar: "هما والداي" },
+          { en: "I love my family.", ar: "أنا أحب عائلتي" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">تحدي التحدث عن العائلة (Family Speaking Challenge):</p>
+            <p style="font-family: var(--font-ar); font-size: 14px; line-height: 1.6;">
+              قدم عائلتك باللغة الإنجليزية باستخدام هذا النموذج البسيط:
+            </p>
+            <div style="margin-top: 14px; font-size: 16px; line-height: 2; font-weight: 600;">
+              <div>• This is my father. He is great.</div>
+              <div>• This is my mother. She is kind.</div>
+              <div>• I have <span style="color: var(--primary);">[brothers / sisters]</span>.</div>
+              <div>• We are a happy family in <span style="color: var(--primary);">Saudi Arabia</span>.</div>
+              <div>• I love my family!</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('This is my father. He is great. This is my mother. She is kind. We are a happy family in Saudi Arabia. I love my family!')">
+              🔊 استمع للنموذج الصوتي الكامل
+            </button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar Capsule: Verb to Be (He / She / It / They / We)</h4>
+          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
+            استكمالاً للأسبوع الأول، نتعلم اليوم استخدام <strong>is</strong> للمفرد و <strong>are</strong> للجمع:
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ المفرد مع (is):</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>He <strong>is</strong> my father. (He's)</li>
+                <li>She <strong>is</strong> my mother. (She's)</li>
+                <li>It <strong>is</strong> a big house. (It's)</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">✅ الجمع مع (are):</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>We <strong>are</strong> students. (We're)</li>
+                <li>They <strong>are</strong> my parents. (They're)</li>
+                <li>You <strong>are</strong> my friend. (You're)</li>
+              </ul>
+            </div>
+          </div>
+          <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 14px; border-radius: var(--radius-sm);">
+            <strong style="color: #991b1b; font-family: var(--font-ar);">❌ احذر هذه الأخطاء في اختبار STEP:</strong>
+            <div style="font-size: 14px; margin-top: 6px; color: #7f1d1d;">
+              <div>• لا تقل: <del>He are a doctor</del> ➔ الصح: <strong>He is a doctor</strong></div>
+              <div>• لا تقل: <del>They is my brothers</del> ➔ الصح: <strong>They are my brothers</strong></div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: My Lovely Family",
+        readingText: "My name is Salman. I have a wonderful family. My father is an engineer and my mother is a teacher. I have one brother, his name is Fahad. We live in a quiet neighborhood in Riyadh. On Fridays, we all gather at our grandparents' home. I love my family very much.",
+        readingQuestions: [
+          { q: "1. What is Salman's father's job?", c1: "An engineer ✅", c2: "A doctor" },
+          { q: "2. What is the name of Salman's brother?", c1: "Fahad ✅", c2: "Ahmed" }
+        ],
+        millionaire: [
+          { q: "Choose the correct pronoun: '___ is my mother.'", opts: ["He", "She", "They", "We"], ans: 1, prize: "$100" },
+          { q: "Complete: 'My brothers ___ playing football.'", opts: ["is", "am", "are", "be"], ans: 2, prize: "$1,000" },
+          { q: "What is the short form of 'They are'?", opts: ["They'is", "They're", "They'am", "They's"], ans: 1, prize: "$10,000" },
+          { q: "Which sentence is grammatically correct?", opts: ["He is an engineer.", "He are an engineer.", "He am an engineer.", "He be an engineer."], ans: 0, prize: "$100,000" },
+          { q: "Choose the correct sentence for STEP:", opts: ["We are a happy family.", "We is a happy family.", "We am a happy family.", "We be a happy family."], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. What is Ahmed's father's job in the dialogue?", opts: ["A teacher", "A doctor", "An engineer", "A pilot"], ans: 1 },
+          { q: "2. What is Ahmed's mother's job?", opts: ["A doctor", "A nurse", "A teacher", "An architect"], ans: 2 },
+          { q: "3. Choose the correct form: 'He ___ my brother.'", opts: ["am", "is", "are", "be"], ans: 1 },
+          { q: "4. Choose the correct form: 'They ___ my parents.'", opts: ["is", "am", "are", "be"], ans: 2 },
+          { q: "5. Choose the correct pronoun: 'My sister is smart. ___ loves reading.'", opts: ["He", "She", "It", "They"], ans: 1 },
+          { q: "6. What is the contraction of: 'She is'?", opts: ["She're", "She's", "She'am", "She'll"], ans: 1 },
+          { q: "7. Complete: 'We ___ in Riyadh.'", opts: ["lives", "living", "live", "is live"], ans: 2 },
+          { q: "8. In the reading text, what is Salman's father's profession?", opts: ["Doctor", "Teacher", "Engineer", "Officer"], ans: 2 },
+          { q: "9. Salman's brother is named:", opts: ["Ahmed", "Fahad", "Omar", "Ali"], ans: 1 },
+          { q: "10. When does Salman's family gather at grandparents' home?", opts: ["On Mondays", "On Fridays", "On Saturdays", "Every day"], ans: 1 },
+          { q: "11. Put the words in correct order: [ is / mother / She / my ]", opts: ["My mother she is.", "She is my mother.", "Mother is she my.", "She my is mother."], ans: 1 },
+          { q: "12. Complete: 'My parents ___ kind. I love ___ very much.'", opts: ["is / they", "are / them", "are / he", "is / them"], ans: 1 }
+        ]
+      }
+    };
 
-    const QUIZ_12 = [
-      { q: "1. What is the boy's name in the listening dialogue?", opts: ["Ahmed", "Omar", "Ali", "Khalid"], ans: 0 },
-      { q: "2. How old is Omar?", opts: ["10", "11", "12", "13"], ans: 2 },
-      { q: "3. What do you say when you want to ask someone's name?", opts: ["How old are you?", "What's your name?", "Where do you live?", "How are you?"], ans: 1 },
-      { q: "4. Complete: 'Nice to meet ______.'", opts: ["I", "my", "you", "your"], ans: 2 },
-      { q: "5. Choose the correct form: 'I ___ a student.'", opts: ["is", "are", "am", "be"], ans: 2 },
-      { q: "6. Choose the correct sentence:", opts: ["I is Ahmed.", "I are Ahmed.", "I am Ahmed.", "I be Ahmed."], ans: 2 },
-      { q: "7. Choose the short form of: 'I am Omar.'", opts: ["I'm Omar.", "I's Omar.", "I'are Omar.", "I be Omar."], ans: 0 },
-      { q: "8. In the reading story, what is the boy's name?", opts: ["Ahmed", "Omar", "Mohammed", "Sami"], ans: 0 },
-      { q: "9. Where is Ahmed from?", opts: ["Egypt", "Saudi Arabia", "Kuwait", "Bahrain"], ans: 1 },
-      { q: "10. Ahmed lives in:", opts: ["Riyadh", "Jeddah", "Abha", "Tabuk"], ans: 0 },
-      { q: "11. Put the words in correct order: [ am / I / a / student ]", opts: ["Student a I am.", "I am a student.", "A student am I.", "I a student am."], ans: 1 },
-      { q: "12. Complete: 'Hello! My ___ is Abdullah. I ___ twelve years old.'", opts: ["name / am", "names / is", "name / are", "names / am"], ans: 0 }
-    ];
-
-    const MILLIONAIRE_QUESTIONS = [
-      { q: "Complete: 'Hello! My name ___ Ahmed.'", opts: ["am", "is", "are", "be"], ans: 1, prize: "$100" },
-      { q: "What is the capital city where Ahmed lives?", opts: ["Jeddah", "Dammam", "Riyadh", "Mecca"], ans: 2, prize: "$1,000" },
-      { q: "Choose the correct pronoun combination:", opts: ["I am", "I is", "I are", "I be"], ans: 0, prize: "$10,000" },
-      { q: "How do you respond politely to: 'Nice to meet you'?", opts: ["Good night.", "Nice to meet you, too.", "I am twelve.", "No, thanks."], ans: 1, prize: "$100,000" },
-      { q: "Which sentence is 100% correct in English?", opts: ["I'm from Saudi Arabia.", "I from Saudi Arabia.", "I are from Saudi Arabia.", "I is from Saudi Arabia."], ans: 0, prize: "$1,000,000" }
-    ];
-
-    // 3. Application Controller
+    // 4. Application Controller
     class MiniStepApp {
       constructor() {
         this.student = JSON.parse(localStorage.getItem('miniStep_user')) || null;
+        this.currentWeek = 1;
         this.quizAnswers = {};
         this.millIdx = 0;
       }
 
       init() {
-        this.renderVocab();
-        this.renderQuiz();
-        this.renderReadingMini();
         if (this.student) {
           this.showDash();
         } else {
@@ -959,29 +1056,90 @@
         
         for (let i = 1; i <= 36; i++) {
           const card = document.createElement('div');
-          card.className = 'week-card';
-          const isWeek1 = (i === 1);
-          card.style.opacity = isWeek1 ? '1' : '0.65';
+          const isAvailable = (i === 1 || i === 2);
+          card.className = `week-card ${isAvailable ? 'active-week' : 'locked-week'}`;
+          
+          let title = `Skills Enhancement Week ${i}`;
+          let desc = 'محتوى أسبوعي متدرج';
+          if (i === 1) { title = 'Introducing Myself'; desc = 'التعريف بالنفس، العمر، والسكن'; }
+          if (i === 2) { title = 'Family & Home'; desc = 'أفراد العائلة والمنزل والضمائر'; }
+
           card.innerHTML = `
             <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
               <span style="font-size:11px; font-weight:800; color:var(--primary); background:#e1ede6; padding:3px 8px; border-radius:12px;">WEEK ${i < 10 ? '0' + i : i}</span>
-              ${isWeek1 ? '<span style="font-size:11px; color:var(--gold-dark); font-weight:700;">Active 🟢</span>' : '<span>🔒</span>'}
+              ${isAvailable ? '<span style="font-size:11px; color:var(--gold-dark); font-weight:700;">Active 🟢</span>' : '<span>🔒</span>'}
             </div>
-            <h4 style="font-size:15px; margin-bottom:4px;">${isWeek1 ? 'Introducing Myself' : `Skills Enhancement Week ${i}`}</h4>
-            <p style="font-size:12px; color:var(--text-muted); font-family:var(--font-ar);">${isWeek1 ? 'التعريف بالنفس، العمر، والسكن' : 'محتوى أسبوعي متدرج'}</p>
+            <h4 style="font-size:15px; margin-bottom:4px;">${title}</h4>
+            <p style="font-size:12px; color:var(--text-muted); font-family:var(--font-ar);">${desc}</p>
           `;
-          if (isWeek1) {
-            card.onclick = () => this.openModule();
+
+          if (isAvailable) {
+            card.onclick = () => this.openWeek(i);
           }
           grid.appendChild(card);
         }
       }
 
-      openModule() {
+      openWeek(weekNum) {
+        this.currentWeek = weekNum;
+        const data = WEEKS_DATA[weekNum];
+        if (!data) return;
+
+        document.getElementById('modBadge').textContent = `WEEK ${weekNum < 10 ? '0' + weekNum : weekNum}`;
+        document.getElementById('modTitle').textContent = data.title;
+        document.getElementById('listenTitle').textContent = data.dialogueTitle;
+
+        // Render Dialogue
+        const dBox = document.getElementById('dialogueContainer');
+        dBox.innerHTML = '';
+        data.dialogue.forEach(d => {
+          const row = document.createElement('div');
+          row.className = 'dialogue-row';
+          row.innerHTML = `
+            <div><strong>${d.speaker}:</strong> ${d.text}</div>
+            <button class="audio-btn" onclick="app.speak('${d.text.replace(/'/g, "\\'")}')">🔊</button>
+          `;
+          dBox.appendChild(row);
+        });
+
+        // Render Expressions
+        const vBody = document.getElementById('vocabBody');
+        vBody.innerHTML = '';
+        data.expressions.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td style="font-weight:600;">${item.en}</td>
+            <td><button class="audio-btn" onclick="app.speak('${item.en.replace(/'/g, "\\'")}')">🔊</button></td>
+            <td class="ar">${item.ar}</td>
+          `;
+          vBody.appendChild(row);
+        });
+
+        // Render Speaking & Grammar
+        document.getElementById('speakingContainer').innerHTML = data.speakingHtml;
+        document.getElementById('grammarContainer').innerHTML = data.grammarHtml;
+
+        // Render Reading
+        document.getElementById('readingHeading').textContent = data.readingHeading;
+        document.getElementById('readPassageText').textContent = data.readingText;
+        const rqBox = document.getElementById('readingMiniQuestions');
+        rqBox.innerHTML = data.readingQuestions.map((qItem, idx) => `
+          <div style="background:#fff; border:1px solid var(--border); padding:12px; border-radius:8px; margin-bottom:8px;">
+            <strong>${qItem.q}</strong>
+            <div style="margin-top:6px; display:flex; gap:10px;">
+              <button class="btn btn-outline" style="padding:4px 12px; font-size:13px;" onclick="this.style.background='#dcfce7'">${qItem.c1}</button>
+              <button class="btn btn-outline" style="padding:4px 12px; font-size:13px;" onclick="this.style.background='#fee2e2'">${qItem.c2}</button>
+            </div>
+          </div>
+        `).join('');
+
+        // Render Quiz & Millionaire
+        this.renderQuiz(data.quiz);
+        this.startMillionaire(data.millionaire);
+
         document.getElementById('screenDashboard').style.display = 'none';
         document.getElementById('screenModule').style.display = 'block';
         this.setTab(0);
-        this.startMillionaire();
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
@@ -1003,49 +1161,19 @@
       }
 
       playDialogue() {
-        this.speak("Hello! My name is Ahmed. What's your name? ... Hi! My name is Omar. ... How old are you? ... I am twelve years old. How old are you? ... I am eleven years old. ... Where are you from? ... I am from Saudi Arabia. I live in Riyadh. ... Nice to meet you. ... Nice to meet you, too.");
+        const data = WEEKS_DATA[this.currentWeek];
+        const fullText = data.dialogue.map(d => `${d.text}`).join(' ... ');
+        this.speak(fullText);
       }
 
       playReadingPassage() {
-        const text = document.getElementById('readPassageText').innerText;
-        this.speak(text);
+        const data = WEEKS_DATA[this.currentWeek];
+        this.speak(data.readingText);
       }
 
-      renderVocab() {
-        const body = document.getElementById('vocabBody');
-        body.innerHTML = '';
-        EXPRESSIONS.forEach(item => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td style="font-weight:600;">${item.en}</td>
-            <td><button class="audio-btn" onclick="app.speak('${item.en.replace(/'/g, "\\'")}')">🔊</button></td>
-            <td class="ar">${item.ar}</td>
-          `;
-          body.appendChild(row);
-        });
-      }
-
-      renderReadingMini() {
-        const box = document.getElementById('readingMiniQuestions');
-        box.innerHTML = `
-          <div style="background:#fff; border:1px solid var(--border); padding:12px; border-radius:8px; margin-bottom:8px;">
-            <strong>1. How old is Ahmed?</strong>
-            <div style="margin-top:6px; display:flex; gap:10px;">
-              <button class="btn btn-outline" style="padding:4px 12px; font-size:13px;" onclick="this.style.background='#dcfce7'">12 Years old ✅</button>
-              <button class="btn btn-outline" style="padding:4px 12px; font-size:13px;" onclick="this.style.background='#fee2e2'">10 Years old</button>
-            </div>
-          </div>
-          <div style="background:#fff; border:1px solid var(--border); padding:12px; border-radius:8px;">
-            <strong>2. What does Ahmed like?</strong>
-            <div style="margin-top:6px; display:flex; gap:10px;">
-              <button class="btn btn-outline" style="padding:4px 12px; font-size:13px;" onclick="this.style.background='#dcfce7'">English and football ✅</button>
-              <button class="btn btn-outline" style="padding:4px 12px; font-size:13px;" onclick="this.style.background='#fee2e2'">Math and tennis</button>
-            </div>
-          </div>
-        `;
-      }
-
-      startMillionaire() {
+      /* Millionaire Engine */
+      startMillionaire(questions) {
+        this.millList = questions || WEEKS_DATA[this.currentWeek].millionaire;
         this.millIdx = 0;
         document.getElementById('life50').disabled = false;
         document.getElementById('lifeFriend').disabled = false;
@@ -1055,7 +1183,7 @@
       }
 
       loadMillQ() {
-        const cur = MILLIONAIRE_QUESTIONS[this.millIdx];
+        const cur = this.millList[this.millIdx];
         document.getElementById('millPrize').textContent = `Target: ${cur.prize}`;
         document.getElementById('millQuestion').textContent = cur.q;
         const optGrid = document.getElementById('millOptions');
@@ -1073,7 +1201,6 @@
       }
 
       checkMillAns(selected, correct) {
-        const cur = MILLIONAIRE_QUESTIONS[this.millIdx];
         const buttons = document.querySelectorAll('.millionaire-opt');
         buttons.forEach((b, i) => {
           b.disabled = true;
@@ -1084,7 +1211,7 @@
         if (selected === correct) {
           setTimeout(() => {
             this.millIdx++;
-            if (this.millIdx < MILLIONAIRE_QUESTIONS.length) {
+            if (this.millIdx < this.millList.length) {
               this.loadMillQ();
             } else {
               alert("🎉 CONGRATULATIONS! You won the $1,000,000 English Challenge!");
@@ -1093,14 +1220,14 @@
           }, 1200);
         } else {
           setTimeout(() => {
-            alert("Hard luck! Let's try again from the beginning.");
+            alert("Hard luck! Let's try again from question one.");
             this.startMillionaire();
           }, 1200);
         }
       }
 
       use5050() {
-        const cur = MILLIONAIRE_QUESTIONS[this.millIdx];
+        const cur = this.millList[this.millIdx];
         let removed = 0;
         for (let i = 0; i < 4; i++) {
           if (i !== cur.ans && removed < 2) {
@@ -1112,23 +1239,25 @@
       }
 
       useFriend() {
-        const cur = MILLIONAIRE_QUESTIONS[this.millIdx];
+        const cur = this.millList[this.millIdx];
         const friendLetter = String.fromCharCode(65 + cur.ans);
         document.getElementById('millHelpBox').textContent = `📞 صديقك المتصل يقول: أنا متأكد بنسبة 95% أن الإجابة الصحيحة هي (${friendLetter})`;
         document.getElementById('lifeFriend').disabled = true;
       }
 
       useAudience() {
-        const cur = MILLIONAIRE_QUESTIONS[this.millIdx];
+        const cur = this.millList[this.millIdx];
         const audLetter = String.fromCharCode(65 + cur.ans);
-        document.getElementById('millHelpBox').textContent = `👥 تصويت الجمهور في القاعة: 78% صوتوا لصالح الخيار (${audLetter})`;
+        document.getElementById('millHelpBox').textContent = `👥 تصويت الجمهور في القاعة: 82% صوتوا لصالح الخيار (${audLetter})`;
         document.getElementById('lifeAudience').disabled = true;
       }
 
-      renderQuiz() {
+      /* Quiz Engine */
+      renderQuiz(quizList) {
+        this.quizAnswers = {};
         const box = document.getElementById('quizFormContainer');
         box.innerHTML = '';
-        QUIZ_12.forEach((item, qIdx) => {
+        quizList.forEach((item, qIdx) => {
           const div = document.createElement('div');
           div.style.marginBottom = '18px';
           div.style.paddingBottom = '14px';
@@ -1158,8 +1287,9 @@
       }
 
       async gradeFullQuiz() {
+        const quizList = WEEKS_DATA[this.currentWeek].quiz;
         let score = 0;
-        QUIZ_12.forEach((item, idx) => {
+        quizList.forEach((item, idx) => {
           const userChoice = this.quizAnswers[idx];
           const grid = document.getElementById(`q_grid_${idx}`);
           const btns = grid.querySelectorAll('button');
@@ -1179,18 +1309,20 @@
 
         const pct = Math.round((score / 12) * 100);
         let feedback = "";
-        if (score >= 10) feedback = "Excellent! 🌟 عمل متقن ورائع، أكملت معايير الأسبوع بنجاح.";
-        else if (score >= 7) feedback = "Great Job! 👏 مستوى جيد جداً، استمر في التدرب.";
-        else if (score >= 5) feedback = "Good Start! 💪 بداية جيدة، راجع العبارات وجرب مرة أخرى.";
-        else feedback = "Keep Practicing! 📚 راجع تدريبات الأسبوع وأعد المحاولة لتحصل على شارة التفوق.";
+        if (score >= 10) feedback = "Excellent! 🌟 إتقان كامل للمهارات بنجاح.";
+        else if (score >= 7) feedback = "Great Job! 👏 مستوى رائع جداً، استمر.";
+        else if (score >= 5) feedback = "Good Start! 💪 بداية جيدة، راجع الدرس وجرب مجدداً.";
+        else feedback = "Keep Practicing! 📚 تدرب أكثر لتحقيق معايير الإتقان.";
 
+        // Cloud sync to Firestore
         if (this.student) {
           const submissionData = {
             studentName: this.student.name,
             stage: this.student.stage,
             teacher: this.student.teacher,
             grade: this.student.grade,
-            week: 1,
+            week: this.currentWeek,
+            weekTitle: WEEKS_DATA[this.currentWeek].title,
             score: score,
             total: 12,
             percentage: pct,
@@ -1199,13 +1331,13 @@
 
           try {
             await db.collection("submissions").add(submissionData);
-            console.log("Score successfully synced to Firestore!");
+            console.log(`Week ${this.currentWeek} score synced to Firestore!`);
           } catch (err) {
-            console.warn("Could not sync score to cloud:", err.message);
+            console.warn("Firestore sync:", err.message);
           }
         }
 
-        alert(`النتيجة: ${score} من 12 (${pct}%)\n\n${feedback}\n\nتم حفظ النتيجة واعتمادها سحابياً بنجاح! ☁️`);
+        alert(`النتيجة: ${score} من 12 (${pct}%)\n\n${feedback}\n\nتم حفظ النتيجة واعتمادها في السحابة بنجاح! ☁️`);
         
         if (score >= 8) {
           this.openCert();
@@ -1216,6 +1348,9 @@
         if (!this.student) return;
         document.getElementById('certName').textContent = this.student.name;
         document.getElementById('certTeacher').textContent = this.student.teacher;
+        document.getElementById('certBody').innerHTML = `
+          For successfully completing <strong>Mini STEP Week ${this.currentWeek < 10 ? '0' + this.currentWeek : this.currentWeek}</strong> benchmarks with distinction and demonstrating outstanding commitment to learning English.
+        `;
         document.getElementById('certModal').style.display = 'flex';
       }
 
