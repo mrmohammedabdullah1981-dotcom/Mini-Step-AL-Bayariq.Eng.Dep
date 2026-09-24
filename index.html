@@ -216,6 +216,10 @@
       box-shadow: 0 4px 12px rgba(181, 137, 26, 0.3);
     }
 
+    .btn-gold:hover {
+      filter: brightness(1.05);
+    }
+
     .btn-primary {
       background: var(--primary);
       color: #fff;
@@ -660,18 +664,18 @@
         </p>
         
         <div class="progress-bar-wrap">
-          <div id="progressBar" class="progress-bar-fill" style="width: 6%;"></div>
+          <div id="progressBar" class="progress-bar-fill" style="width: 11%;"></div>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--primary);">
-          <span id="progressLabel">Completed Weeks: 0 of 36</span>
-          <span id="rankBadge">Rank: STEP Explorer 🌟</span>
+          <span id="progressLabel">Active Weeks: Week 01, 02, 03 & 04 Available</span>
+          <span id="rankBadge">Rank: STEP Achiever 🌟</span>
         </div>
 
         <!-- Student Historical Records -->
         <div style="margin-top: 14px;">
           <div style="font-size: 12px; font-weight: 700; color: var(--primary); margin-bottom: 6px;">Your Verified Weekly Scores:</div>
           <div id="scoresContainer" class="records-box">
-            <span style="font-size: 12px; color: var(--text-muted);">No quiz submissions yet. Complete Week 01 or 02!</span>
+            <span style="font-size: 12px; color: var(--text-muted);">No quiz submissions yet. Complete your weekly quiz!</span>
           </div>
         </div>
       </div>
@@ -854,7 +858,7 @@
       Secondary: ["Mr. Amir Yacoub", "Mr. Hamada Fathy", "Mr. Atef Ashry"]
     };
 
-    // 3. Curriculum Data: Week 01 & Week 02
+    // 3. Curriculum Data: Weeks 01, 02, 03 & 04
     const WEEKS_DATA = {
       1: {
         number: 1,
@@ -1050,6 +1054,196 @@
           { q: "11. Put the words in correct order: [ is / mother / She / my ]", opts: ["My mother she is.", "She is my mother.", "Mother is she my.", "She my is mother."], ans: 1 },
           { q: "12. Complete: 'My parents ___ kind. I love ___ very much.'", opts: ["is / they", "are / them", "are / he", "is / them"], ans: 1 }
         ]
+      },
+      3: {
+        number: 3,
+        title: "Daily Routines & School (روتيني اليومي والمدرسة)",
+        dialogueTitle: "Dialogue: Khalid & Rashed",
+        dialogue: [
+          { speaker: "Khalid", text: "Good morning Rashed! What time do you wake up every day?" },
+          { speaker: "Rashed", text: "Good morning! I always wake up at 6:00 AM." },
+          { speaker: "Khalid", text: "What do you do next?" },
+          { speaker: "Rashed", text: "I wash my face, pray Fajr, and eat a healthy breakfast." },
+          { speaker: "Khalid", text: "How do you go to Al Bayariq School?" },
+          { speaker: "Rashed", text: "I usually go by bus with my classmates." },
+          { speaker: "Khalid", text: "When do your school lessons finish?" },
+          { speaker: "Rashed", text: "They finish at 1:30 PM. Then I do my homework." }
+        ],
+        expressions: [
+          { en: "I wake up early.", ar: "أستيقظ مبكرًا" },
+          { en: "I eat breakfast.", ar: "أتناول وجبة الإفطار" },
+          { en: "I brush my teeth.", ar: "أنظف أسناني بالفرشاة" },
+          { en: "I go to school by bus.", ar: "أذهب إلى المدرسة بالحافلة" },
+          { en: "School starts at seven.", ar: "تبدأ المدرسة عند السابعة" },
+          { en: "I listen to my teacher.", ar: "أستمع لمعلمي باهتمام" },
+          { en: "I do my homework.", ar: "أحل واجباتي المدرسية" },
+          { en: "I pray on time.", ar: "أصلي في الوقت المحدد" },
+          { en: "I read an English story.", ar: "أقرأ قصة بالإنجليزية" },
+          { en: "I sleep at nine PM.", ar: "أنام عند التاسعة مساءً" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">تحدي التحدث عن روتينك اليومي (Daily Routine Challenge):</p>
+            <p style="font-family: var(--font-ar); font-size: 14px; line-height: 1.6;">
+              تحدث عن روتينك الصباحي باللغة الإنجليزية في 4 جمل بسيطة:
+            </p>
+            <div style="margin-top: 14px; font-size: 16px; line-height: 2; font-weight: 600;">
+              <div>• Every morning, I wake up at 6:00 AM.</div>
+              <div>• I eat breakfast and get dressed for school.</div>
+              <div>• I go to Al Bayariq School by car.</div>
+              <div>• I always do my best in my classes!</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Every morning, I wake up at six AM. I eat breakfast and get dressed for school. I go to Al Bayariq School by car. I always do my best in my classes!')">
+              🔊 استمع للنموذج الصوتي الكامل
+            </button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar Capsule: Present Simple (I / You / We / They)</h4>
+          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
+            نستخدم المضارع البسيط للحديث عن العادات والروتين اليومي المتكرر:
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ الفعل في المصدر بدون إضافات:</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>I <strong>wake</strong> up early.</li>
+                <li>We <strong>go</strong> to school.</li>
+                <li>They <strong>study</strong> English.</li>
+                <li>You <strong>eat</strong> healthy food.</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ ظروف التكرار (Adverbs of Frequency):</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>تأتي قبل الفعل الأساسي:</div>
+                <div>• I <strong>always</strong> wake up at 6:00. (دائماً)</div>
+                <div>• We <strong>usually</strong> walk to school. (عادةً)</div>
+                <div>• They <strong>never</strong> arrive late. (أبداً)</div>
+              </div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: Ziyad's School Day",
+        readingText: "Ziyad is an active student at Al Bayariq Private Schools. He wakes up at 6:15 every morning. He brushes his teeth, washes his hands, and eats a nutritious breakfast with his brother. At 6:50, he rides the school bus with a smile. At school, Ziyad loves his English and Science classes. During break time, he drinks milk and talks with his best friends. He returns home at 1:40 PM to relax and finish his homework.",
+        readingQuestions: [
+          { q: "1. What time does Ziyad wake up?", c1: "6:15 AM ✅", c2: "7:30 AM" },
+          { q: "2. Which subjects does Ziyad love?", c1: "English and Science ✅", c2: "History and Art" }
+        ],
+        millionaire: [
+          { q: "Complete: 'I ___ up at 6:00 AM every morning.'", opts: ["wakes", "wake", "waking", "waked"], ans: 1, prize: "$100" },
+          { q: "What does 'always' mean in Arabic?", opts: ["أحياناً", "نادراً", "دائماً", "أبداً"], ans: 2, prize: "$1,000" },
+          { q: "Choose the correct sentence:", opts: ["We usually go to school by bus.", "We go usually to school by bus.", "Usually we goes to school by bus.", "We to school usually go."], ans: 0, prize: "$10,000" },
+          { q: "Which verb matches with 'breakfast'?", opts: ["listen", "eat", "wash", "play"], ans: 1, prize: "$100,000" },
+          { q: "STEP Question: 'They ___ their homework in the afternoon.'", opts: ["does", "doing", "do", "is do"], ans: 2, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. What time does Rashed wake up in the dialogue?", opts: ["5:30 AM", "6:00 AM", "7:00 AM", "8:00 AM"], ans: 1 },
+          { q: "2. How does Rashed go to school?", opts: ["By car", "On foot", "By bus", "By bike"], ans: 2 },
+          { q: "3. Choose the correct form: 'I ___ English every day.'", opts: ["study", "studies", "studying", "is study"], ans: 0 },
+          { q: "4. Choose the correct form: 'We ___ our teeth in the morning.'", opts: ["brushes", "brush", "brushing", "are brush"], ans: 1 },
+          { q: "5. Where does the adverb go? 'I (always) sleep early.'", opts: ["Before the verb (I always sleep)", "After the verb (I sleep always)", "At the very end", "At the very start only"], ans: 0 },
+          { q: "6. Complete: 'They ___ Fajr prayer on time.'", opts: ["prays", "pray", "praying", "is pray"], ans: 1 },
+          { q: "7. What time does school finish for Rashed?", opts: ["12:00 PM", "1:30 PM", "3:00 PM", "11:30 AM"], ans: 1 },
+          { q: "8. In the reading story, what school does Ziyad attend?", opts: ["Al Bayariq Private Schools", "Riyadh Academy", "Future Schools", "Noor School"], ans: 0 },
+          { q: "9. What does Ziyad drink during break time?", opts: ["Soda", "Juice", "Milk", "Tea"], ans: 2 },
+          { q: "10. Choose the correct word order: [ school / go / to / We ]", opts: ["School to go we.", "To school we go.", "We go to school.", "Go we to school."], ans: 2 },
+          { q: "11. Complete: 'You ___ a healthy breakfast every day.'", opts: ["eats", "eat", "eating", "is eat"], ans: 1 },
+          { q: "12. Which sentence is 100% correct in English?", opts: ["I always wash my hands before eating.", "I washes always my hands.", "Always I wash hands my.", "I wash always hands."], ans: 0 }
+        ]
+      },
+      4: {
+        number: 4,
+        title: "Hobbies & Free Time (الهوايات وأوقات الفراغ)",
+        dialogueTitle: "Dialogue: Yasser & Tariq",
+        dialogue: [
+          { speaker: "Yasser", text: "What do you like doing in your free time, Tariq?" },
+          { speaker: "Tariq", text: "I love playing football with my neighborhood friends. What about you?" },
+          { speaker: "Yasser", text: "I like reading adventure stories and drawing planes." },
+          { speaker: "Tariq", text: "Do you enjoy playing video games on weekends?" },
+          { speaker: "Yasser", text: "Yes, I play video games for one hour on Saturdays." },
+          { speaker: "Tariq", text: "Sports and hobbies keep us active and sharp!" }
+        ],
+        expressions: [
+          { en: "What is your hobby?", ar: "ما هي هوايتك؟" },
+          { en: "My favorite hobby is reading.", ar: "هوايتي المفضلة هي القراءة" },
+          { en: "I like playing football.", ar: "أنا أحب لعب كرة القدم" },
+          { en: "I enjoy swimming in summer.", ar: "أستمتع بالسباحة في الصيف" },
+          { en: "I love drawing pictures.", ar: "أحب رسم اللوحات" },
+          { en: "In my free time, I ride my bike.", ar: "في وقت فراغي، أركب دراجتي" },
+          { en: "Sports are good for health.", ar: "الرياضة مفيدة للصحة" },
+          { en: "I play video games on Friday.", ar: "ألعب ألعاب الفيديو يوم الجمعة" },
+          { en: "We have fun together.", ar: "نحن نقضي وقتاً ممتعاً معاً" },
+          { en: "Keep active every day!", ar: "ابقَ نشيطاً كل يوم!" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">تحدي التحدث عن هواياتك (Hobbies Speaking Drill):</p>
+            <p style="font-family: var(--font-ar); font-size: 14px; line-height: 1.6;">
+              تحدّث عن هوايتك المفضلة وما تفعله في عطلة نهاية الأسبوع:
+            </p>
+            <div style="margin-top: 14px; font-size: 16px; line-height: 2; font-weight: 600;">
+              <div>• My favorite hobby is <span style="color: var(--primary);">[football / reading / swimming]</span>.</div>
+              <div>• I like playing with my friends on weekends.</div>
+              <div>• It makes me happy, healthy, and energized.</div>
+              <div>• What is your favorite hobby?</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('My favorite hobby is playing football. I like playing with my friends on weekends. It makes me happy, healthy, and energized. What is your favorite hobby?')">
+              🔊 استمع للنموذج الصوتي الكامل
+            </button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar Capsule: Expressing Likes & Plurals</h4>
+          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
+            قاعدة هامة جداً لاختبار STEP عند التعبير عن الإعجاب والهوايات:
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ قاعدة (like / love / enjoy + ing):</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>I like <strong>reading</strong> stories.</li>
+                <li>We love <strong>playing</strong> sports.</li>
+                <li>They enjoy <strong>swimming</strong>.</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ الجمع المنتظم وغير المنتظم (Plurals):</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>• hobby ➔ <strong>hobbies</strong> (استبدال y بـ ies)</div>
+                <div>• friend ➔ <strong>friends</strong> (+ s)</div>
+                <div>• child ➔ <strong>children</strong> (جمع شاذ)</div>
+              </div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: Active Weekends",
+        readingText: "Majed loves the weekend because he has plenty of free time. On Thursday evening, he plays basketball with his cousins. On Friday afternoon, after visiting his grandparents, he enjoys reading historical books about Saudi Arabia. On Saturday morning, Majed rides his bicycle in the park for thirty minutes. Majed believes that healthy hobbies make the body strong and the mind sharp.",
+        readingQuestions: [
+          { q: "1. What sport does Majed play on Thursday?", c1: "Basketball ✅", c2: "Tennis" },
+          { q: "2. How long does Majed ride his bicycle on Saturday?", c1: "Thirty minutes ✅", c2: "Two hours" }
+        ],
+        millionaire: [
+          { q: "Choose the correct grammar: 'I like ___ football.'", opts: ["play", "plays", "playing", "played"], ans: 2, prize: "$100" },
+          { q: "What is the plural of 'hobby'?", opts: ["hobbys", "hobbies", "hobbyes", "hobbiez"], ans: 1, prize: "$1,000" },
+          { q: "Complete: 'We enjoy ___ in the swimming pool.'", opts: ["swim", "swimming", "swims", "swam"], ans: 1, prize: "$10,000" },
+          { q: "Which activity is an outdoor hobby?", opts: ["Riding a bicycle", "Sleeping", "Watching TV inside", "Sitting alone"], ans: 0, prize: "$100,000" },
+          { q: "STEP Question: 'The ___ are playing happily in the garden.'", opts: ["childs", "child", "children", "childrens"], ans: 2, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. What is Tariq's favorite hobby in the dialogue?", opts: ["Swimming", "Playing football", "Cooking", "Writing"], ans: 1 },
+          { q: "2. What does Yasser enjoy doing in his free time?", opts: ["Reading and drawing", "Fixing cars", "Playing tennis", "Watching movies"], ans: 0 },
+          { q: "3. Choose the correct form: 'I like ___ books.'", opts: ["read", "reading", "reads", "is read"], ans: 1 },
+          { q: "4. Complete: 'They love ___ in the sea during summer.'", opts: ["swim", "swimming", "swims", "swam"], ans: 1 },
+          { q: "5. What is the plural of 'story'?", opts: ["storys", "stories", "storyes", "storiess"], ans: 1 },
+          { q: "6. What is the plural of 'child'?", opts: ["childs", "children", "childes", "childrens"], ans: 1 },
+          { q: "7. Complete: 'We ___ video games on the weekend.'", opts: ["play", "plays", "playing", "is play"], ans: 0 },
+          { q: "8. In the reading text, who does Majed play basketball with?", opts: ["His cousins", "His teacher", "His neighbors", "Alone"], ans: 0 },
+          { q: "9. When does Majed ride his bicycle in the park?", opts: ["On Thursday night", "On Saturday morning", "On Monday", "On Wednesday"], ans: 1 },
+          { q: "10. What kind of books does Majed enjoy reading?", opts: ["Science fiction", "Historical books about Saudi Arabia", "Math formulas", "Cooking books"], ans: 1 },
+          { q: "11. Put words in order: [ hobby / My / reading / is / favorite ]", opts: ["My reading is hobby favorite.", "My favorite hobby is reading.", "Reading is favorite my hobby.", "Hobby is reading my favorite."], ans: 1 },
+          { q: "12. Choose the correct sentence for STEP:", opts: ["He like play football.", "We likes reading books.", "I enjoy drawing pictures.", "They loves swim."], ans: 2 }
+        ]
       }
     };
 
@@ -1108,7 +1302,6 @@
         const pin = document.getElementById('regPin').value.trim();
 
         try {
-          // Check if name already registered
           const snap = await db.collection("students").where("name", "==", name).get();
           if (!snap.empty) {
             alert("This name is already registered. Please go to Login tab and enter your PIN.");
@@ -1204,7 +1397,7 @@
             .get();
 
           if (snap.empty) {
-            box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">No quiz submissions yet. Complete Week 01 or 02!</span>';
+            box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">No quiz submissions yet. Complete Week 01, 02, 03 or 04!</span>';
             return;
           }
 
@@ -1231,13 +1424,15 @@
         
         for (let i = 1; i <= 36; i++) {
           const card = document.createElement('div');
-          const isAvailable = (i === 1 || i === 2);
+          const isAvailable = Boolean(WEEKS_DATA[i]);
           card.className = `week-card ${isAvailable ? 'active-week' : 'locked-week'}`;
           
           let title = `Skills Enhancement Week ${i}`;
           let desc = 'محتوى أسبوعي متدرج';
-          if (i === 1) { title = 'Introducing Myself'; desc = 'التعريف بالنفس، العمر، والسكن'; }
-          if (i === 2) { title = 'Family & Home'; desc = 'أفراد العائلة والمنزل والضمائر'; }
+          if (WEEKS_DATA[i]) {
+            title = WEEKS_DATA[i].title.split('(')[0].trim();
+            desc = WEEKS_DATA[i].title.includes('(') ? WEEKS_DATA[i].title.match(/\((.*?)\)/)[1] : 'متاح للتعلم الآن';
+          }
 
           card.innerHTML = `
             <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
