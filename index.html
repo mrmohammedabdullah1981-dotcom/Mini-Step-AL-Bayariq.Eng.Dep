@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>Mini STEP — Al Bayariq Private Schools</title>
   
-  <!-- Fonts -->
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase App & Firestore -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
@@ -52,6 +52,7 @@
       flex-direction: column;
     }
 
+    /* Top Bar */
     header {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
       color: #fff;
@@ -129,13 +130,40 @@
     .card {
       background: var(--surface);
       border-radius: var(--radius-lg);
-      padding: 30px;
+      padding: 28px;
       border: 1px solid var(--border);
       box-shadow: 0 8px 24px rgba(11, 59, 36, 0.06);
     }
 
+    .auth-toggle {
+      display: flex;
+      background: #eef3f0;
+      padding: 4px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .auth-toggle button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+
+    .auth-toggle button.active {
+      background: #fff;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
     .form-group {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       text-align: left;
     }
 
@@ -186,10 +214,6 @@
       background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
       color: #fff;
       box-shadow: 0 4px 12px rgba(181, 137, 26, 0.3);
-    }
-
-    .btn-gold:hover {
-      filter: brightness(1.05);
     }
 
     .btn-primary {
@@ -244,6 +268,30 @@
       background: linear-gradient(90deg, var(--primary) 0%, var(--gold) 100%);
       border-radius: 20px;
       transition: width 0.4s ease;
+    }
+
+    .records-box {
+      margin-top: 14px;
+      background: #ffffff;
+      padding: 12px 16px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .score-badge {
+      background: #eef5f1;
+      border: 1px solid #bbf7d0;
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
     .weeks-grid {
@@ -519,37 +567,42 @@
       </div>
     </div>
     <div id="userBadge" style="display: none;">
-      <div class="user-pill" onclick="app.resetProfile()">
-        <span>👤</span>
-        <span id="navStudentName">Student</span>
+      <div class="user-pill" onclick="app.logout()">
+        <span>🔒 Logout: </span>
+        <strong id="navStudentName">Student</strong>
       </div>
     </div>
   </header>
 
   <main>
-    <!-- View 1: Registration -->
-    <div id="screenRegister" class="card" style="max-width: 540px; margin: 20px auto;">
-      <div style="text-align: center; margin-bottom: 24px;">
-        <img src="AL-Bayariq Private School.jpeg" alt="Logo" style="height: 56px; margin-bottom: 10px; object-fit: contain;" onerror="this.src='logo.png'; this.onerror=function(){this.style.display='none';}">
+    <!-- View 1: Auth (Registration & Secure Login) -->
+    <div id="screenAuth" class="card" style="max-width: 520px; margin: 20px auto;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <img src="AL-Bayariq Private School.jpeg" alt="Logo" style="height: 54px; margin-bottom: 8px; object-fit: contain;" onerror="this.src='logo.png'; this.onerror=function(){this.style.display='none';}">
         <div>
-          <span style="background: var(--gold-light); color: var(--gold-dark); border: 1px solid var(--gold); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 800; letter-spacing: 0.5px;">AL-BAYARIQ PRIVATE SCHOOLS</span>
+          <span style="background: var(--gold-light); color: var(--gold-dark); border: 1px solid var(--gold); padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 800;">AL-BAYARIQ PRIVATE SCHOOLS</span>
         </div>
-        <h2 style="color: var(--primary); font-size: 24px; margin-top: 10px;">Mini STEP Learning Hub</h2>
-        <p style="color: var(--text-muted); font-size: 12px; font-weight: 600; margin-top: 4px;">
-          Under the Supervision of the English Language Department<br>
-          <span style="color: var(--primary); font-size: 12px; font-weight: 700;">Supervisor: Mohammed Abdullah Othman</span>
+        <h2 style="color: var(--primary); font-size: 22px; margin-top: 8px;">Mini STEP Student Portal</h2>
+        <p style="color: var(--text-muted); font-size: 12px; font-weight: 600; margin-top: 2px;">
+          Under the Supervision of English Language Department
         </p>
       </div>
 
-      <form onsubmit="app.register(event)">
+      <div class="auth-toggle">
+        <button id="tabRegister" class="active" onclick="app.switchAuthTab('register')">New Student (تسجيل جديد)</button>
+        <button id="tabLogin" onclick="app.switchAuthTab('login')">Login (دخول مسجل)</button>
+      </div>
+
+      <!-- Registration Form -->
+      <form id="formRegister" onsubmit="app.register(event)">
         <div class="form-group">
           <label>Student Full Name <small>(اسم الطالب ثلاثي بالإنجليزية)</small></label>
-          <input type="text" id="inName" class="form-control" placeholder="e.g. Faisal Mohammed Al-Otaibi" required />
+          <input type="text" id="regName" class="form-control" placeholder="e.g. Faisal Mohammed Al-Otaibi" required />
         </div>
 
         <div class="form-group">
           <label>Educational Stage <small>(المرحلة الدراسية)</small></label>
-          <select id="inStage" class="form-control" onchange="app.onStageSelect()" required>
+          <select id="regStage" class="form-control" onchange="app.onStageSelect()" required>
             <option value="">Select Stage / اختر المرحلة الدراسية...</option>
             <option value="Primary">Primary Stage (المرحلة الابتدائية)</option>
             <option value="Intermediate">Intermediate Stage (المرحلة المتوسطة)</option>
@@ -559,23 +612,45 @@
 
         <div class="form-group">
           <label>English Teacher <small>(معلم اللغة الإنجليزية)</small></label>
-          <select id="inTeacher" class="form-control" required disabled>
+          <select id="regTeacher" class="form-control" required disabled>
             <option value="">Select stage first...</option>
           </select>
         </div>
 
         <div class="form-group">
           <label>Grade & Class <small>(الصف والفصل)</small></label>
-          <input type="text" id="inGrade" class="form-control" placeholder="e.g. Grade 5 / Class 1" required />
+          <input type="text" id="regGrade" class="form-control" placeholder="e.g. Grade 5 / Class 1" required />
         </div>
 
-        <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 10px; font-size: 15px;">
-          Start Learning • ابدأ التعلم 🚀
+        <div class="form-group">
+          <label>Security PIN <small>(رمز سري مكون من 4 إلى 6 أرقام لحفظ حسابك)</small></label>
+          <input type="password" id="regPin" pattern="[0-9]{4,6}" inputmode="numeric" class="form-control" placeholder="e.g. 1234" required />
+        </div>
+
+        <button type="submit" id="btnRegSubmit" class="btn btn-gold" style="width: 100%; margin-top: 6px; font-size: 15px;">
+          Create Account & Start • حفظ الحساب وبدء التعلم 🚀
+        </button>
+      </form>
+
+      <!-- Login Form -->
+      <form id="formLogin" style="display: none;" onsubmit="app.login(event)">
+        <div class="form-group">
+          <label>Student Full Name <small>(اسم الطالب المسجل)</small></label>
+          <input type="text" id="logName" class="form-control" placeholder="Enter your full registered name" required />
+        </div>
+
+        <div class="form-group">
+          <label>Security PIN <small>(الرمز السري المكون من أرقام)</small></label>
+          <input type="password" id="logPin" inputmode="numeric" class="form-control" placeholder="Enter your 4-6 digit PIN" required />
+        </div>
+
+        <button type="submit" id="btnLoginSubmit" class="btn btn-gold" style="width: 100%; margin-top: 6px; font-size: 15px;">
+          Login to My Portal • تسجيل الدخول 🔑
         </button>
       </form>
     </div>
 
-    <!-- View 2: Dashboard Roadmap -->
+    <!-- View 2: Dashboard Roadmap & Scores -->
     <div id="screenDashboard" style="display: none;">
       <div class="dashboard-hero">
         <h2 id="dashWelcome" style="color: var(--primary); font-size: 22px;">Welcome!</h2>
@@ -588,13 +663,21 @@
           <div id="progressBar" class="progress-bar-fill" style="width: 6%;"></div>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--primary);">
-          <span id="progressLabel">Active Weeks: Week 01 & Week 02 Available</span>
+          <span id="progressLabel">Completed Weeks: 0 of 36</span>
           <span id="rankBadge">Rank: STEP Explorer 🌟</span>
+        </div>
+
+        <!-- Student Historical Records -->
+        <div style="margin-top: 14px;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--primary); margin-bottom: 6px;">Your Verified Weekly Scores:</div>
+          <div id="scoresContainer" class="records-box">
+            <span style="font-size: 12px; color: var(--text-muted);">No quiz submissions yet. Complete Week 01 or 02!</span>
+          </div>
         </div>
       </div>
 
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-        <h3 style="color: var(--primary);">36-Week Learning Roadmap</h3>
+        <h3 style="color: var(--primary);">Curriculum Roadmap (36 Weeks)</h3>
         <button class="btn btn-outline" style="font-size: 12px; padding: 6px 14px;" onclick="app.openCert()">
           🏆 View Certificate
         </button>
@@ -608,7 +691,7 @@
       <div style="background: var(--primary); color: #fff; padding: 18px 24px; border-radius: var(--radius-md) var(--radius-md) 0 0; display: flex; justify-content: space-between; align-items: center;">
         <div>
           <span id="modBadge" style="font-size: 11px; font-weight: 800; background: var(--gold); color: #000; padding: 3px 8px; border-radius: 4px;">WEEK 01</span>
-          <h2 id="modTitle" style="font-size: 20px; margin-top: 4px;">Introducing Myself (التعريف بالنفس)</h2>
+          <h2 id="modTitle" style="font-size: 20px; margin-top: 4px;">Module Title</h2>
         </div>
         <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;" onclick="app.showDash()">
           ← Roadmap
@@ -700,7 +783,7 @@
             <span style="font-size: 12px; color: var(--gold-dark); font-weight: 700;">Target: 10/12 to Master ⭐</span>
           </div>
           <div id="quizFormContainer"></div>
-          <button class="btn btn-gold" style="width: 100%; margin-top: 20px; font-size: 16px;" onclick="app.gradeFullQuiz()">
+          <button id="btnSubmitQuiz" class="btn btn-gold" style="width: 100%; margin-top: 20px; font-size: 16px;" onclick="app.gradeFullQuiz()">
             Submit & Save Score to Cloud • إرسال النتيجة واعتمادها ✅
           </button>
         </div>
@@ -771,7 +854,7 @@
       Secondary: ["Mr. Amir Yacoub", "Mr. Hamada Fathy", "Mr. Atef Ashry"]
     };
 
-    // 3. Complete Pedagogical Data for Week 01 & Week 02
+    // 3. Curriculum Data: Week 01 & Week 02
     const WEEKS_DATA = {
       1: {
         number: 1,
@@ -841,13 +924,6 @@
                 <div>• <strong>I'm</strong> a student.</div>
                 <div>• <strong>I'm</strong> happy.</div>
               </div>
-            </div>
-          </div>
-          <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 14px; border-radius: var(--radius-sm);">
-            <strong style="color: #991b1b; font-family: var(--font-ar);">❌ أخطاء شائعة تجنبها:</strong>
-            <div style="font-size: 14px; margin-top: 6px; color: #7f1d1d;">
-              <div>• لا تقل: <del>I is Ahmed</del> ➔ الصح: <strong>I am Ahmed</strong></div>
-              <div>• لا تقل: <del>I are a student</del> ➔ الصح: <strong>I am a student</strong></div>
             </div>
           </div>
         `,
@@ -946,13 +1022,6 @@
               </ul>
             </div>
           </div>
-          <div style="background: #fef2f2; border: 1px solid #fecaca; padding: 14px; border-radius: var(--radius-sm);">
-            <strong style="color: #991b1b; font-family: var(--font-ar);">❌ احذر هذه الأخطاء في اختبار STEP:</strong>
-            <div style="font-size: 14px; margin-top: 6px; color: #7f1d1d;">
-              <div>• لا تقل: <del>He are a doctor</del> ➔ الصح: <strong>He is a doctor</strong></div>
-              <div>• لا تقل: <del>They is my brothers</del> ➔ الصح: <strong>They are my brothers</strong></div>
-            </div>
-          </div>
         `,
         readingHeading: "Reading Passage: My Lovely Family",
         readingText: "My name is Salman. I have a wonderful family. My father is an engineer and my mother is a teacher. I have one brother, his name is Fahad. We live in a quiet neighborhood in Riyadh. On Fridays, we all gather at our grandparents' home. I love my family very much.",
@@ -984,7 +1053,7 @@
       }
     };
 
-    // 4. Application Controller
+    // 4. App Engine with PIN Auth
     class MiniStepApp {
       constructor() {
         this.student = JSON.parse(localStorage.getItem('miniStep_user')) || null;
@@ -997,13 +1066,21 @@
         if (this.student) {
           this.showDash();
         } else {
-          document.getElementById('screenRegister').style.display = 'block';
+          document.getElementById('screenAuth').style.display = 'block';
         }
       }
 
+      switchAuthTab(type) {
+        const isReg = (type === 'register');
+        document.getElementById('tabRegister').classList.toggle('active', isReg);
+        document.getElementById('tabLogin').classList.toggle('active', !isReg);
+        document.getElementById('formRegister').style.display = isReg ? 'block' : 'none';
+        document.getElementById('formLogin').style.display = isReg ? 'none' : 'block';
+      }
+
       onStageSelect() {
-        const stage = document.getElementById('inStage').value;
-        const sel = document.getElementById('inTeacher');
+        const stage = document.getElementById('regStage').value;
+        const sel = document.getElementById('regTeacher');
         sel.innerHTML = '<option value="">Select your teacher...</option>';
         if (stage && TEACHERS[stage]) {
           TEACHERS[stage].forEach(t => {
@@ -1018,36 +1095,134 @@
         }
       }
 
-      register(e) {
+      async register(e) {
         e.preventDefault();
-        this.student = {
-          name: document.getElementById('inName').value.trim(),
-          stage: document.getElementById('inStage').value,
-          teacher: document.getElementById('inTeacher').value,
-          grade: document.getElementById('inGrade').value.trim(),
-          registeredAt: new Date().toISOString()
-        };
+        const btn = document.getElementById('btnRegSubmit');
+        btn.disabled = true;
+        btn.textContent = 'Verifying and saving...';
 
-        localStorage.setItem('miniStep_user', JSON.stringify(this.student));
-        
-        db.collection("students").add(this.student).catch(err => {
-          console.log("Firebase sync note:", err.message);
-        });
+        const name = document.getElementById('regName').value.trim();
+        const stage = document.getElementById('regStage').value;
+        const teacher = document.getElementById('regTeacher').value;
+        const grade = document.getElementById('regGrade').value.trim();
+        const pin = document.getElementById('regPin').value.trim();
 
-        this.showDash();
+        try {
+          // Check if name already registered
+          const snap = await db.collection("students").where("name", "==", name).get();
+          if (!snap.empty) {
+            alert("This name is already registered. Please go to Login tab and enter your PIN.");
+            this.switchAuthTab('login');
+            document.getElementById('logName').value = name;
+            btn.disabled = false;
+            btn.textContent = 'Create Account & Start • حفظ الحساب وبدء التعلم 🚀';
+            return;
+          }
+
+          const studentData = {
+            name, stage, teacher, grade, pin,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+
+          await db.collection("students").add(studentData);
+          this.student = { name, stage, teacher, grade, pin };
+          localStorage.setItem('miniStep_user', JSON.stringify(this.student));
+          this.showDash();
+        } catch (err) {
+          alert("Error saving account: " + err.message);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Create Account & Start • حفظ الحساب وبدء التعلم 🚀';
+        }
       }
 
-      showDash() {
-        document.getElementById('screenRegister').style.display = 'none';
+      async login(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnLoginSubmit');
+        btn.disabled = true;
+        btn.textContent = 'Authenticating...';
+
+        const name = document.getElementById('logName').value.trim();
+        const pin = document.getElementById('logPin').value.trim();
+
+        try {
+          const snap = await db.collection("students")
+            .where("name", "==", name)
+            .where("pin", "==", pin)
+            .get();
+
+          if (snap.empty) {
+            alert("Invalid student name or PIN. Please check and try again.");
+          } else {
+            const data = snap.docs[0].data();
+            this.student = {
+              name: data.name,
+              stage: data.stage,
+              teacher: data.teacher,
+              grade: data.grade,
+              pin: data.pin
+            };
+            localStorage.setItem('miniStep_user', JSON.stringify(this.student));
+            this.showDash();
+          }
+        } catch (err) {
+          alert("Login error: " + err.message);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Login to My Portal • تسجيل الدخول 🔑';
+        }
+      }
+
+      logout() {
+        if (confirm("Are you sure you want to log out? / هل تريد تسجيل الخروج؟")) {
+          localStorage.removeItem('miniStep_user');
+          location.reload();
+        }
+      }
+
+      async showDash() {
+        document.getElementById('screenAuth').style.display = 'none';
         document.getElementById('screenModule').style.display = 'none';
         document.getElementById('screenDashboard').style.display = 'block';
         document.getElementById('userBadge').style.display = 'block';
 
         document.getElementById('navStudentName').textContent = this.student.name.split(' ')[0];
-        document.getElementById('dashWelcome').textContent = `Welcome, ${this.student.name}! 👋`;
+        document.getElementById('dashWelcome').textContent = `Welcome back, ${this.student.name}! 👋`;
         document.getElementById('dashMeta').textContent = `${this.student.stage} Stage • ${this.student.grade} • Teacher: ${this.student.teacher}`;
         
         this.renderRoadmap();
+        this.fetchStudentScores();
+      }
+
+      async fetchStudentScores() {
+        const box = document.getElementById('scoresContainer');
+        box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">Fetching your scores from cloud...</span>';
+
+        try {
+          const snap = await db.collection("submissions")
+            .where("studentName", "==", this.student.name)
+            .get();
+
+          if (snap.empty) {
+            box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">No quiz submissions yet. Complete Week 01 or 02!</span>';
+            return;
+          }
+
+          box.innerHTML = '';
+          snap.forEach(doc => {
+            const s = doc.data();
+            const badge = document.createElement('div');
+            badge.className = 'score-badge';
+            badge.innerHTML = `
+              <span>Week 0${s.week}:</span>
+              <strong>${s.score}/${s.total} (${s.percentage}%)</strong>
+              ${s.score >= 10 ? '⭐' : '✅'}
+            `;
+            box.appendChild(badge);
+          });
+        } catch (e) {
+          box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">Scores will appear here after taking a quiz.</span>';
+        }
       }
 
       renderRoadmap() {
@@ -1123,7 +1298,7 @@
         document.getElementById('readingHeading').textContent = data.readingHeading;
         document.getElementById('readPassageText').textContent = data.readingText;
         const rqBox = document.getElementById('readingMiniQuestions');
-        rqBox.innerHTML = data.readingQuestions.map((qItem, idx) => `
+        rqBox.innerHTML = data.readingQuestions.map(qItem => `
           <div style="background:#fff; border:1px solid var(--border); padding:12px; border-radius:8px; margin-bottom:8px;">
             <strong>${qItem.q}</strong>
             <div style="margin-top:6px; display:flex; gap:10px;">
@@ -1133,7 +1308,6 @@
           </div>
         `).join('');
 
-        // Render Quiz & Millionaire
         this.renderQuiz(data.quiz);
         this.startMillionaire(data.millionaire);
 
@@ -1171,7 +1345,6 @@
         this.speak(data.readingText);
       }
 
-      /* Millionaire Engine */
       startMillionaire(questions) {
         this.millList = questions || WEEKS_DATA[this.currentWeek].millionaire;
         this.millIdx = 0;
@@ -1217,12 +1390,12 @@
               alert("🎉 CONGRATULATIONS! You won the $1,000,000 English Challenge!");
               this.startMillionaire();
             }
-          }, 1200);
+          }, 1100);
         } else {
           setTimeout(() => {
             alert("Hard luck! Let's try again from question one.");
             this.startMillionaire();
-          }, 1200);
+          }, 1100);
         }
       }
 
@@ -1252,7 +1425,6 @@
         document.getElementById('lifeAudience').disabled = true;
       }
 
-      /* Quiz Engine */
       renderQuiz(quizList) {
         this.quizAnswers = {};
         const box = document.getElementById('quizFormContainer');
@@ -1287,6 +1459,10 @@
       }
 
       async gradeFullQuiz() {
+        const btn = document.getElementById('btnSubmitQuiz');
+        btn.disabled = true;
+        btn.textContent = 'Grading & syncing...';
+
         const quizList = WEEKS_DATA[this.currentWeek].quiz;
         let score = 0;
         quizList.forEach((item, idx) => {
@@ -1331,14 +1507,15 @@
 
           try {
             await db.collection("submissions").add(submissionData);
-            console.log(`Week ${this.currentWeek} score synced to Firestore!`);
           } catch (err) {
             console.warn("Firestore sync:", err.message);
           }
         }
 
-        alert(`النتيجة: ${score} من 12 (${pct}%)\n\n${feedback}\n\nتم حفظ النتيجة واعتمادها في السحابة بنجاح! ☁️`);
-        
+        alert(`النتيجة: ${score} من 12 (${pct}%)\n\n${feedback}\n\nتم توثيق درجتك في حسابك السحابي بنجاح! ☁️`);
+        btn.disabled = false;
+        btn.textContent = 'Submit & Save Score to Cloud • إرسال النتيجة واعتمادها ✅';
+
         if (score >= 8) {
           this.openCert();
         }
@@ -1356,13 +1533,6 @@
 
       closeCert() {
         document.getElementById('certModal').style.display = 'none';
-      }
-
-      resetProfile() {
-        if (confirm("Do you want to change student or teacher details? / هل ترغب في تعديل بيانات الطالب؟")) {
-          localStorage.removeItem('miniStep_user');
-          location.reload();
-        }
       }
     }
 
