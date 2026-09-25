@@ -86,22 +86,9 @@
       line-height: 1.1;
     }
 
-    .brand-text h1 span {
-      color: var(--gold);
-    }
-
-    .brand-text p.sub-desc {
-      font-size: 11px;
-      color: #d1ded7;
-      margin-top: 2px;
-    }
-
-    .brand-text p.sub-sup {
-      font-size: 10px;
-      color: var(--gold);
-      font-weight: 700;
-      letter-spacing: 0.3px;
-    }
+    .brand-text h1 span { color: var(--gold); }
+    .brand-text p.sub-desc { font-size: 11px; color: #d1ded7; margin-top: 2px; }
+    .brand-text p.sub-sup { font-size: 10px; color: var(--gold); font-weight: 700; letter-spacing: 0.3px; }
 
     .nav-actions {
       display: flex;
@@ -233,7 +220,6 @@
     }
 
     .btn-gold:hover { filter: brightness(1.05); }
-
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-outline { background: #fff; border: 1.5px solid var(--border); color: var(--text); }
     .btn-danger { background: #dc2626; color: #fff; }
@@ -381,11 +367,7 @@
       min-height: 400px;
     }
 
-    .skill-block {
-      display: none;
-      animation: fadeIn 0.25s ease;
-    }
-
+    .skill-block { display: none; animation: fadeIn 0.25s ease; }
     .skill-block.active { display: block; }
 
     @keyframes fadeIn {
@@ -671,7 +653,7 @@
   </div>
 
   <main id="mainContainer">
-    <!-- View 1: Auth (Registration & Secure Login) -->
+    <!-- View 1: Auth -->
     <div id="screenAuth" class="card" style="max-width: 520px; margin: 20px auto;">
       <div style="text-align: center; margin-bottom: 20px;">
         <img src="AL-Bayariq Private School.jpeg" alt="Logo" style="height: 54px; margin-bottom: 8px; object-fit: contain;" onerror="this.src='logo.png'; this.onerror=function(){this.style.display='none';}">
@@ -689,7 +671,6 @@
         <button id="tabLogin" onclick="app.switchAuthTab('login')">Login (دخول مسجل)</button>
       </div>
 
-      <!-- Registration Form -->
       <form id="formRegister" onsubmit="app.register(event)">
         <div class="form-group">
           <label>Student Full Name <small>(اسم الطالب ثلاثي بالإنجليزية)</small></label>
@@ -728,7 +709,6 @@
         </button>
       </form>
 
-      <!-- Login Form -->
       <form id="formLogin" style="display: none;" onsubmit="app.login(event)">
         <div class="form-group">
           <label>Student Full Name <small>(اسم الطالب المسجل)</small></label>
@@ -746,7 +726,7 @@
       </form>
     </div>
 
-    <!-- View 2: Dashboard Roadmap & Scores -->
+    <!-- View 2: Dashboard Roadmap -->
     <div id="screenDashboard" style="display: none;">
       <div class="dashboard-hero">
         <h2 id="dashWelcome" style="color: var(--primary); font-size: 22px;">Welcome!</h2>
@@ -759,11 +739,10 @@
           <div id="progressBar" class="progress-bar-fill" style="width: 0%;"></div>
         </div>
         <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--primary);">
-          <span id="progressLabel">Completed: 0 of 8 Active Weeks</span>
-          <span id="rankBadge">Level 1 & 2: A1 Elementary Candidate 🌟</span>
+          <span id="progressLabel">Completed: 0 of 12 Active Weeks</span>
+          <span id="rankBadge">Levels 1, 2 & 3: A2 Pre-Intermediate Candidate 🌟</span>
         </div>
 
-        <!-- Student Historical Records -->
         <div style="margin-top: 14px;">
           <div style="font-size: 12px; font-weight: 700; color: var(--primary); margin-bottom: 6px;">Your Verified Weekly & Milestone Scores:</div>
           <div id="scoresContainer" class="records-box">
@@ -914,14 +893,13 @@
           <div class="cert-student-name" id="certStudentName">STUDENT NAME</div>
 
           <p style="font-size: 15px; max-width: 780px; margin: 12px auto; line-height: 1.8; color: var(--text);" id="certBodyText">
-            In recognition of outstanding dedication and successful completion of the weekly benchmark assessment with exemplary performance.
+            In recognition of outstanding dedication and successful completion of the benchmark assessment with exemplary performance.
           </p>
 
           <div style="margin: 14px auto 0; font-size: 13px; font-weight: 700; color: var(--gold-dark); background: var(--gold-light); display: inline-block; padding: 6px 20px; border-radius: 20px; border: 1px solid var(--gold);">
             Stage: <span id="certStageBadge">Secondary Stage</span> • Academic Year 2026 / 1447 AH
           </div>
 
-          <!-- Official Signatures -->
           <div class="cert-signatures-grid">
             <div>
               <div class="sig-role">Classroom Teacher</div>
@@ -949,7 +927,6 @@
   <!-- Admin Control Modal -->
   <div id="adminModal" class="modal-overlay">
     <div class="admin-panel">
-      <!-- Admin Login -->
       <div id="adminLoginForm">
         <h3 style="color: var(--primary); margin-bottom: 12px;">🔒 Supervisor Admin Login</h3>
         <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Enter supervisor credentials to manage students and system access.</p>
@@ -967,7 +944,6 @@
         </div>
       </div>
 
-      <!-- Admin Control Center -->
       <div id="adminControls" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid var(--border); padding-bottom: 14px; margin-bottom: 18px;">
           <div>
@@ -977,7 +953,6 @@
           <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;" onclick="app.closeAdminModal()">Close</button>
         </div>
 
-        <!-- Toggle App Lock -->
         <div style="background: #fdfaf3; border: 1.5px solid var(--gold); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
           <div>
             <strong>Portal Availability Status:</strong>
@@ -986,7 +961,6 @@
           <button id="btnToggleLock" class="btn btn-primary" onclick="app.togglePortalLock()">Lock Portal (إغلاق المنصة)</button>
         </div>
 
-        <!-- Student Management Table -->
         <h4 style="color: var(--primary); margin-bottom: 8px;">Registered Students Database & Progress Control</h4>
         <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Delete students or purge their records instantly from Firebase.</p>
         
@@ -1092,7 +1066,7 @@
 
     const sfx = new SoundEffects();
 
-    // 4. Curriculum Data: Weeks 01 to 08 (Level 1 & Level 2)
+    // 4. Curriculum Data: Weeks 01 to 12
     const WEEKS_DATA = {
       1: {
         number: 1,
@@ -1136,20 +1110,17 @@
         `,
         grammarHtml: `
           <h4 style="color: var(--primary);">Grammar Capsule: Verb to Be (I am)</h4>
-          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">نركز هذا الأسبوع على الضمير I مع الفعل المساعد am.</p>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
             <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
               <strong style="color: #166534;">✅ Full Form:</strong>
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
                 <li>I <strong>am</strong> Ahmed.</li>
                 <li>I <strong>am</strong> a student.</li>
-                <li>I <strong>am</strong> twelve years old.</li>
               </ul>
             </div>
             <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
               <strong style="color: #854d0e;">⚡ Short Form:</strong>
               <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
-                <div>I am ➔ <strong>I'm</strong></div>
                 <div>• <strong>I'm</strong> Ahmed.</div>
                 <div>• <strong>I'm</strong> a student.</div>
               </div>
@@ -1194,9 +1165,7 @@
           { speaker: "Salman", text: "And who is that next to him?" },
           { speaker: "Ahmed", text: "She is my mother. She is a kind teacher." },
           { speaker: "Salman", text: "Do you have any brothers or sisters?" },
-          { speaker: "Ahmed", text: "Yes, I have one brother and two sisters. We are a happy family." },
-          { speaker: "Salman", text: "Where do you all live?" },
-          { speaker: "Ahmed", text: "We live in a beautiful house in Riyadh." }
+          { speaker: "Ahmed", text: "Yes, I have one brother and two sisters. We are a happy family." }
         ],
         expressions: [
           { en: "This is my father.", ar: "هذا والدي" },
@@ -1230,7 +1199,6 @@
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
                 <li>He <strong>is</strong> my father. (He's)</li>
                 <li>She <strong>is</strong> my mother. (She's)</li>
-                <li>It <strong>is</strong> a house. (It's)</li>
               </ul>
             </div>
             <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
@@ -1238,13 +1206,12 @@
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
                 <li>We <strong>are</strong> students. (We're)</li>
                 <li>They <strong>are</strong> parents. (They're)</li>
-                <li>You <strong>are</strong> kind. (You're)</li>
               </ul>
             </div>
           </div>
         `,
         readingHeading: "Reading Passage: My Lovely Family",
-        readingText: "My name is Salman. I have a wonderful family. My father is an engineer and my mother is a teacher. I have one brother, his name is Fahad. We live in a quiet neighborhood in Riyadh. On Fridays, we all gather at our grandparents' home. I love my family very much.",
+        readingText: "My name is Salman. I have a wonderful family. My father is an engineer and my mother is a teacher. I have one brother, his name is Fahad. We live in Riyadh.",
         readingQuestions: [
           { q: "1. What is Salman's father's job?", c1: "An engineer ✅", c2: "A doctor" },
           { q: "2. What is the name of Salman's brother?", c1: "Fahad ✅", c2: "Ahmed" }
@@ -1266,9 +1233,9 @@
           { q: "7. Complete: 'We ___ in Riyadh.'", opts: ["lives", "living", "live", "is live"], ans: 2 },
           { q: "8. In the reading text, what is Salman's father's profession?", opts: ["Doctor", "Teacher", "Engineer", "Officer"], ans: 2 },
           { q: "9. Salman's brother is named:", opts: ["Ahmed", "Fahad", "Omar", "Ali"], ans: 1 },
-          { q: "10. When does Salman's family gather at grandparents' home?", opts: ["On Mondays", "On Fridays", "On Saturdays", "Every day"], ans: 1 },
-          { q: "11. Put words in order: [ is / mother / She / my ]", opts: ["My mother she is.", "She is my mother.", "Mother is she my.", "She my is mother."], ans: 1 },
-          { q: "12. Complete: 'My parents ___ kind. I love ___ very much.'", opts: ["is / they", "are / them", "are / he", "is / them"], ans: 1 }
+          { q: "10. Complete: 'They ___ doctors.'", opts: ["am", "is", "are", "be"], ans: 2 },
+          { q: "11. Put words in order: [ is / mother / She / my ]", opts: ["My mother she is.", "She is my mother.", "Mother is she my."], ans: 1 },
+          { q: "12. Complete: 'My parents ___ kind.'", opts: ["is", "are", "am", "be"], ans: 1 }
         ]
       },
       3: {
@@ -1278,12 +1245,8 @@
         dialogue: [
           { speaker: "Khalid", text: "Good morning Rashed! What time do you wake up every day?" },
           { speaker: "Rashed", text: "Good morning! I always wake up at 6:00 AM." },
-          { speaker: "Khalid", text: "What do you do next?" },
-          { speaker: "Rashed", text: "I wash my face, pray Fajr, and eat a healthy breakfast." },
           { speaker: "Khalid", text: "How do you go to Al Bayariq School?" },
-          { speaker: "Rashed", text: "I usually go by bus with my classmates." },
-          { speaker: "Khalid", text: "When do your school lessons finish?" },
-          { speaker: "Rashed", text: "They finish at 1:30 PM. Then I do my homework." }
+          { speaker: "Rashed", text: "I usually go by bus with my classmates." }
         ],
         expressions: [
           { en: "I wake up early.", ar: "أستيقظ مبكرًا" },
@@ -1291,11 +1254,11 @@
           { en: "I brush my teeth.", ar: "أنظف أسناني بالفرشاة" },
           { en: "I go to school by bus.", ar: "أذهب إلى المدرسة بالحافلة" },
           { en: "School starts at seven.", ar: "تبدأ المدرسة عند السابعة" },
-          { en: "I listen to my teacher.", ar: "أستمع لمعلمي باهتمام" },
           { en: "I do my homework.", ar: "أحل واجباتي المدرسية" },
           { en: "I pray on time.", ar: "أصلي في الوقت المحدد" },
           { en: "I read an English story.", ar: "أقرأ قصة بالإنجليزية" },
-          { en: "I sleep at nine PM.", ar: "أنام عند التاسعة مساءً" }
+          { en: "I sleep at nine PM.", ar: "أنام عند التاسعة مساءً" },
+          { en: "Keep learning!", ar: "استمر في التعلم!" }
         ],
         speakingHtml: `
           <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
@@ -1304,9 +1267,8 @@
               <div>• Every morning, I wake up at 6:00 AM.</div>
               <div>• I eat breakfast and get dressed for school.</div>
               <div>• I go to Al Bayariq School by car.</div>
-              <div>• I always do my best in my classes!</div>
             </div>
-            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Every morning, I wake up at six AM. I eat breakfast and get dressed for school. I go to Al Bayariq School by car. I always do my best!')">🔊 Listen to Model</button>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Every morning, I wake up at six AM. I eat breakfast and get dressed for school. I go to Al Bayariq School by car!')">🔊 Listen to Model</button>
           </div>
         `,
         grammarHtml: `
@@ -1317,24 +1279,22 @@
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
                 <li>I <strong>wake</strong> up early.</li>
                 <li>We <strong>go</strong> to school.</li>
-                <li>They <strong>study</strong> English.</li>
               </ul>
             </div>
             <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #854d0e;">⚡ Adverbs of Frequency:</strong>
+              <strong style="color: #854d0e;">⚡ Adverbs:</strong>
               <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
                 <div>• I <strong>always</strong> wake up at 6:00.</div>
                 <div>• We <strong>usually</strong> walk to school.</div>
-                <div>• They <strong>never</strong> arrive late.</div>
               </div>
             </div>
           </div>
         `,
         readingHeading: "Reading Passage: Ziyad's School Day",
-        readingText: "Ziyad is an active student at Al Bayariq Private Schools. He wakes up at 6:15 every morning. He brushes his teeth, washes his hands, and eats a nutritious breakfast with his brother. At 6:50, he rides the school bus with a smile. At school, Ziyad loves his English and Science classes. During break time, he drinks milk and talks with his best friends. He returns home at 1:40 PM to relax and finish his homework.",
+        readingText: "Ziyad is an active student at Al Bayariq Private Schools. He wakes up at 6:15 every morning. He rides the school bus with a smile. At school, Ziyad loves his English classes.",
         readingQuestions: [
           { q: "1. What time does Ziyad wake up?", c1: "6:15 AM ✅", c2: "7:30 AM" },
-          { q: "2. Which subjects does Ziyad love?", c1: "English and Science ✅", c2: "History and Art" }
+          { q: "2. Which school does Ziyad attend?", c1: "Al Bayariq Private Schools ✅", c2: "Riyadh Academy" }
         ],
         millionaire: [
           { q: "Complete: 'I ___ up at 6:00 AM every morning.'", opts: ["wakes", "wake", "waking", "waked"], ans: 1, prize: "$100" },
@@ -1348,14 +1308,14 @@
           { q: "2. How does Rashed go to school?", opts: ["By car", "On foot", "By bus", "By bike"], ans: 2 },
           { q: "3. Choose the correct form: 'I ___ English every day.'", opts: ["study", "studies", "studying", "is study"], ans: 0 },
           { q: "4. Choose the correct form: 'We ___ our teeth in the morning.'", opts: ["brushes", "brush", "brushing", "are brush"], ans: 1 },
-          { q: "5. Where does the adverb go? 'I (always) sleep early.'", opts: ["Before verb (I always sleep)", "After verb (I sleep always)", "At end"], ans: 0 },
+          { q: "5. Where does the adverb go? 'I (always) sleep early.'", opts: ["Before verb (I always sleep)", "After verb", "At end"], ans: 0 },
           { q: "6. Complete: 'They ___ Fajr prayer on time.'", opts: ["prays", "pray", "praying", "is pray"], ans: 1 },
-          { q: "7. What time does school finish for Rashed?", opts: ["12:00 PM", "1:30 PM", "3:00 PM", "11:30 AM"], ans: 1 },
-          { q: "8. In the reading story, what school does Ziyad attend?", opts: ["Al Bayariq Private Schools", "Riyadh Academy", "Future Schools"], ans: 0 },
-          { q: "9. What does Ziyad drink during break time?", opts: ["Soda", "Juice", "Milk", "Tea"], ans: 2 },
-          { q: "10. Choose correct word order: [ school / go / to / We ]", opts: ["School to go we.", "To school we go.", "We go to school."], ans: 2 },
-          { q: "11. Complete: 'You ___ a healthy breakfast every day.'", opts: ["eats", "eat", "eating", "is eat"], ans: 1 },
-          { q: "12. Which sentence is 100% correct in English?", opts: ["I always wash my hands before eating.", "I washes always my hands.", "Always I wash hands my."], ans: 0 }
+          { q: "7. In reading, what school does Ziyad attend?", opts: ["Al Bayariq Private Schools", "Future Schools", "Noor School"], ans: 0 },
+          { q: "8. Put words in order: [ school / go / to / We ]", opts: ["School to go we.", "To school we go.", "We go to school."], ans: 2 },
+          { q: "9. Complete: 'You ___ breakfast every day.'", opts: ["eats", "eat", "eating", "is eat"], ans: 1 },
+          { q: "10. Which sentence is 100% correct?", opts: ["I always wash my hands.", "I washes always hands.", "Always I wash."], ans: 0 },
+          { q: "11. 'Usually' means:", opts: ["عادةً", "دائماً", "أبداً"], ans: 0 },
+          { q: "12. Complete: 'We ___ our lessons diligently.'", opts: ["study", "studies", "studying"], ans: 0 }
         ]
       },
       4: {
@@ -1365,10 +1325,7 @@
         dialogue: [
           { speaker: "Yasser", text: "What do you like doing in your free time, Tariq?" },
           { speaker: "Tariq", text: "I love playing football with my neighborhood friends. What about you?" },
-          { speaker: "Yasser", text: "I like reading adventure stories and drawing planes." },
-          { speaker: "Tariq", text: "Do you enjoy playing video games on weekends?" },
-          { speaker: "Yasser", text: "Yes, I play video games for one hour on Saturdays." },
-          { speaker: "Tariq", text: "Sports and hobbies keep us active and sharp!" }
+          { speaker: "Yasser", text: "I like reading adventure stories and drawing planes." }
         ],
         expressions: [
           { en: "What is your hobby?", ar: "ما هي هوايتك؟" },
@@ -1388,10 +1345,9 @@
             <div style="font-size: 15px; line-height: 2; font-weight: 600;">
               <div>• My favorite hobby is playing football.</div>
               <div>• I like playing with my friends on weekends.</div>
-              <div>• It makes me happy, healthy, and energized.</div>
               <div>• What is your favorite hobby?</div>
             </div>
-            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('My favorite hobby is playing football. I like playing with my friends on weekends. It makes me healthy and energized!')">🔊 Listen to Model</button>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('My favorite hobby is playing football. I like playing with my friends on weekends!')">🔊 Listen to Model</button>
           </div>
         `,
         grammarHtml: `
@@ -1402,24 +1358,22 @@
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
                 <li>I like <strong>reading</strong> stories.</li>
                 <li>We love <strong>playing</strong> sports.</li>
-                <li>They enjoy <strong>swimming</strong>.</li>
               </ul>
             </div>
             <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
               <strong style="color: #854d0e;">⚡ Plurals:</strong>
               <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
                 <div>• hobby ➔ <strong>hobbies</strong></div>
-                <div>• friend ➔ <strong>friends</strong></div>
-                <div>• child ➔ <strong>children</strong> (irregular)</div>
+                <div>• child ➔ <strong>children</strong></div>
               </div>
             </div>
           </div>
         `,
         readingHeading: "Reading Passage: Active Weekends",
-        readingText: "Majed loves the weekend because he has plenty of free time. On Thursday evening, he plays basketball with his cousins. On Friday afternoon, after visiting his grandparents, he enjoys reading historical books about Saudi Arabia. On Saturday morning, Majed rides his bicycle in the park for thirty minutes. Majed believes that healthy hobbies make the body strong and the mind sharp.",
+        readingText: "Majed loves the weekend because he has plenty of free time. On Thursday evening, he plays basketball with his cousins. On Saturday morning, Majed rides his bicycle in the park for thirty minutes.",
         readingQuestions: [
           { q: "1. What sport does Majed play on Thursday?", c1: "Basketball ✅", c2: "Tennis" },
-          { q: "2. How long does Majed ride his bicycle on Saturday?", c1: "Thirty minutes ✅", c2: "Two hours" }
+          { q: "2. How long does Majed ride his bicycle?", c1: "Thirty minutes ✅", c2: "Two hours" }
         ],
         millionaire: [
           { q: "Choose correct grammar: 'I like ___ football.'", opts: ["play", "plays", "playing", "played"], ans: 2, prize: "$100" },
@@ -1429,18 +1383,18 @@
           { q: "STEP Question: 'The ___ are playing happily in the garden.'", opts: ["childs", "child", "children", "childrens"], ans: 2, prize: "$1,000,000" }
         ],
         quiz: [
-          { q: "1. What is Tariq's favorite hobby in the dialogue?", opts: ["Swimming", "Playing football", "Cooking", "Writing"], ans: 1 },
-          { q: "2. What does Yasser enjoy doing in his free time?", opts: ["Reading and drawing", "Fixing cars", "Playing tennis", "Watching movies"], ans: 0 },
+          { q: "1. What is Tariq's favorite hobby?", opts: ["Swimming", "Playing football", "Cooking", "Writing"], ans: 1 },
+          { q: "2. What does Yasser enjoy doing?", opts: ["Reading and drawing", "Fixing cars", "Playing tennis"], ans: 0 },
           { q: "3. Choose the correct form: 'I like ___ books.'", opts: ["read", "reading", "reads", "is read"], ans: 1 },
-          { q: "4. Complete: 'They love ___ in the sea during summer.'", opts: ["swim", "swimming", "swims", "swam"], ans: 1 },
-          { q: "5. What is the plural of 'story'?", opts: ["storys", "stories", "storyes", "storiess"], ans: 1 },
-          { q: "6. What is the plural of 'child'?", opts: ["childs", "children", "childes", "childrens"], ans: 1 },
-          { q: "7. Complete: 'We ___ video games on the weekend.'", opts: ["play", "plays", "playing", "is play"], ans: 0 },
-          { q: "8. In the reading text, who does Majed play basketball with?", opts: ["His cousins", "His teacher", "His neighbors"], ans: 0 },
-          { q: "9. When does Majed ride his bicycle in the park?", opts: ["On Thursday night", "On Saturday morning", "On Monday"], ans: 1 },
-          { q: "10. What kind of books does Majed enjoy reading?", opts: ["Science fiction", "Historical books about Saudi Arabia", "Cooking"], ans: 1 },
-          { q: "11. Put words in order: [ hobby / My / reading / is / favorite ]", opts: ["My reading is hobby favorite.", "My favorite hobby is reading.", "Reading is favorite my hobby."], ans: 1 },
-          { q: "12. Choose the correct sentence for STEP:", opts: ["He like play football.", "We likes reading books.", "I enjoy drawing pictures."], ans: 2 }
+          { q: "4. Complete: 'They love ___ in the sea.'", opts: ["swim", "swimming", "swims", "swam"], ans: 1 },
+          { q: "5. What is the plural of 'story'?", opts: ["storys", "stories", "storyes"], ans: 1 },
+          { q: "6. What is the plural of 'child'?", opts: ["childs", "children", "childes"], ans: 1 },
+          { q: "7. Complete: 'We ___ video games on the weekend.'", opts: ["play", "plays", "playing"], ans: 0 },
+          { q: "8. In reading, who does Majed play basketball with?", opts: ["His cousins", "His teacher", "His neighbors"], ans: 0 },
+          { q: "9. Put words in order: [ hobby / My / reading / is / favorite ]", opts: ["My reading is hobby favorite.", "My favorite hobby is reading.", "Reading is favorite my hobby."], ans: 1 },
+          { q: "10. Choose the correct sentence:", opts: ["He like play.", "We likes reading.", "I enjoy drawing."], ans: 2 },
+          { q: "11. 'Enjoy' is followed by:", opts: ["verb + ing", "verb + ed", "base verb only"], ans: 0 },
+          { q: "12. Complete: 'We love ___ English.'", opts: ["learning", "learns", "learned"], ans: 0 }
         ]
       },
       5: {
@@ -1448,24 +1402,22 @@
         title: "Food, Drinks & Ordering (الطعام والشراب والطلب)",
         dialogueTitle: "Dialogue: At the Restaurant (Fahad & Waiter)",
         dialogue: [
-          { speaker: "Waiter", text: "Good afternoon! Welcome to the Oasis Restaurant. What would you like to order?" },
+          { speaker: "Waiter", text: "Good afternoon! What would you like to order?" },
           { speaker: "Fahad", text: "Hello! Could I have grilled chicken with rice and fresh salad, please?" },
-          { speaker: "Waiter", text: "Certainly! Would you like some water or freshly squeezed orange juice?" },
-          { speaker: "Fahad", text: "I would like some orange juice with no extra sugar, please." },
-          { speaker: "Waiter", text: "Do you have any questions about dessert?" },
-          { speaker: "Fahad", text: "No, thank you. That is all for now!" }
+          { speaker: "Waiter", text: "Would you like some water or fresh orange juice?" },
+          { speaker: "Fahad", text: "I would like some orange juice with no sugar, please." }
         ],
         expressions: [
           { en: "Can I have the menu, please?", ar: "هل يمكنني الحصول على قائمة الطعام؟" },
           { en: "I would like grilled chicken.", ar: "أود الحصول على دجاج مشوي" },
           { en: "Would you like some water?", ar: "هل ترغب في بعض الماء؟" },
           { en: "I don't have any sugar.", ar: "ليس لدي أي سكر" },
-          { en: "How much is this meal?", ar: "كم سعر هذه الوجبة؟" },
           { en: "Vegetables are healthy.", ar: "الخضروات صحية ومفيدة" },
-          { en: "Delicious meal, thank you!", ar: "وجبة لذيذة، شكراً لك!" },
           { en: "Here is your bill.", ar: "تفضل فاتورة الحساب" },
           { en: "I drink plenty of water.", ar: "أشرب الكثير من الماء" },
-          { en: "Enjoy your food!", ar: "استمتع بوجبتك الشهية!" }
+          { en: "Enjoy your food!", ar: "استمتع بوجبتك الشهية!" },
+          { en: "Delicious meal, thank you!", ar: "وجبة لذيذة، شكراً لك!" },
+          { en: "How much is this meal?", ar: "كم سعر هذه الوجبة؟" }
         ],
         speakingHtml: `
           <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
@@ -1474,36 +1426,31 @@
               <div>• Hello! Can I have the menu, please?</div>
               <div>• I would like chicken and rice with salad.</div>
               <div>• I would like some water, please.</div>
-              <div>• Thank you very much!</div>
             </div>
-            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Hello! Can I have the menu, please? I would like chicken and rice with salad. I would like some water, please. Thank you!')">🔊 Listen to Model</button>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Hello! Can I have the menu, please? I would like chicken and rice with salad. Thank you!')">🔊 Listen to Model</button>
           </div>
         `,
         grammarHtml: `
-          <h4 style="color: var(--primary);">Grammar: Countable vs. Uncountable & Some / Any</h4>
-          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
-            قاعدة أساسية تتكرر في اختبار STEP للتفرقة بين الأسماء المعدودة وغير المعدودة:
-          </p>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+          <h4 style="color: var(--primary);">Grammar: Countable/Uncountable & Some/Any</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
             <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #166534;">✅ Some (في الإثبات والطلب المؤدب):</strong>
+              <strong style="color: #166534;">✅ Some (Positive & Requests):</strong>
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
-                <li>I have <strong>some</strong> apples. (معدود جمع)</li>
-                <li>I drink <strong>some</strong> water. (غير معدود)</li>
-                <li>Would you like <strong>some</strong> juice? (عرض/طلب)</li>
+                <li>I have <strong>some</strong> apples.</li>
+                <li>I drink <strong>some</strong> water.</li>
               </ul>
             </div>
             <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #854d0e;">⚡ Any (في النفي والاستفهام):</strong>
+              <strong style="color: #854d0e;">⚡ Any (Negative & Questions):</strong>
               <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
-                <div>• I don't have <strong>any</strong> milk. (نفي)</div>
-                <div>• Do you have <strong>any</strong> pens? (سؤال)</div>
+                <div>• I don't have <strong>any</strong> milk.</div>
+                <div>• Do you have <strong>any</strong> pens?</div>
               </div>
             </div>
           </div>
         `,
         readingHeading: "Reading Passage: Healthy Saudi Food",
-        readingText: "Traditional Saudi cuisine includes many wholesome ingredients. Kabsa is a famous dish made of rice, aromatic spices, and tender chicken or lamb. Many families also enjoy fresh dates and Arabic coffee every morning. Nutrition experts recommend eating balanced meals that include plenty of fresh vegetables, whole grains, and clean water every single day.",
+        readingText: "Traditional Saudi cuisine includes many wholesome ingredients. Kabsa is a famous dish made of rice, aromatic spices, and tender chicken or lamb. Many families also enjoy fresh dates and Arabic coffee every morning.",
         readingQuestions: [
           { q: "1. What is Kabsa made of?", c1: "Rice, spices, and chicken or lamb ✅", c2: "Bread and fish" },
           { q: "2. What do many families enjoy every morning?", c1: "Dates and Arabic coffee ✅", c2: "Soda and chips" }
@@ -1516,31 +1463,29 @@
           { q: "STEP Question: 'He hasn't got ___ brothers.'", opts: ["any", "some", "much", "little"], ans: 0, prize: "$1,000,000" }
         ],
         quiz: [
-          { q: "1. What does Fahad order in the restaurant dialogue?", opts: ["Grilled chicken, rice, and salad", "Pizza and burger", "Fish and chips", "Pasta"], ans: 0 },
-          { q: "2. What drink does Fahad choose?", opts: ["Fresh orange juice", "Soda", "Tea", "Milkshake"], ans: 0 },
+          { q: "1. What does Fahad order in the restaurant dialogue?", opts: ["Grilled chicken, rice, and salad", "Pizza and burger", "Fish and chips"], ans: 0 },
+          { q: "2. What drink does Fahad choose?", opts: ["Fresh orange juice", "Soda", "Tea"], ans: 0 },
           { q: "3. Choose the correct word: 'I would like ___ water, please.'", opts: ["some", "any", "many", "a"], ans: 0 },
           { q: "4. Choose the correct word: 'There isn't ___ sugar in the cup.'", opts: ["any", "some", "many", "a"], ans: 0 },
           { q: "5. Which word is countable?", opts: ["Banana", "Water", "Rice", "Milk"], ans: 0 },
           { q: "6. Which word is uncountable?", opts: ["Juice", "Orange", "Egg", "Sandwich"], ans: 0 },
           { q: "7. Complete: 'Do you have ___ questions?'", opts: ["any", "some", "much", "little"], ans: 0 },
-          { q: "8. In the reading text, Kabsa is described as:", opts: ["A traditional Saudi dish", "An Italian soup", "A cold beverage", "A fast snack"], ans: 0 },
-          { q: "9. What do nutrition experts recommend drinking every day?", opts: ["Clean water", "Soda", "Sweet syrup", "Energy drinks"], ans: 0 },
-          { q: "10. Put words in order: [ some / like / I / would / juice ]", opts: ["I would like some juice.", "Some juice would I like.", "Like I would some juice.", "I juice would like some."], ans: 0 },
-          { q: "11. Complete: 'There aren't ___ bananas on the table.'", opts: ["any", "some", "a", "much"], ans: 0 },
-          { q: "12. STEP Question: 'Could you give me ___ bread, please?'", opts: ["some", "any", "many", "few"], ans: 0 }
+          { q: "8. In reading text, Kabsa is described as:", opts: ["A traditional Saudi dish", "An Italian soup", "A cold beverage"], ans: 0 },
+          { q: "9. Put words in order: [ some / like / I / would / juice ]", opts: ["I would like some juice.", "Some juice would I like.", "Like I would some juice."], ans: 0 },
+          { q: "10. Complete: 'There aren't ___ bananas on the table.'", opts: ["any", "some", "a"], ans: 0 },
+          { q: "11. 'Uncountable' means words that:", opts: ["Cannot be counted in numbers", "Always have -s", "Are adjectives"], ans: 0 },
+          { q: "12. STEP Question: 'Could you give me ___ bread, please?'", opts: ["some", "any", "many"], ans: 0 }
         ]
       },
       6: {
         number: 6,
         title: "Places in Town & Directions (الأماكن في المدينة والاتجاهات)",
-        dialogueTitle: "Dialogue: Asking for Directions in Riyadh",
+        dialogueTitle: "Dialogue: Directions in Riyadh",
         dialogue: [
           { speaker: "Tourist", text: "Excuse me! How can I get to the National Museum?" },
           { speaker: "Saud", text: "Go straight down this street, then turn left at the traffic light." },
           { speaker: "Tourist", text: "Is it far from here?" },
-          { speaker: "Saud", text: "No, it is just next to the public park, opposite the library." },
-          { speaker: "Tourist", text: "Thank you very much for your helpful guidance!" },
-          { speaker: "Saud", text: "You are most welcome. Enjoy your visit to Riyadh!" }
+          { speaker: "Saud", text: "No, it is just next to the public park, opposite the library." }
         ],
         expressions: [
           { en: "Excuse me, where is the bank?", ar: "معذرةً، أين يقع البنك؟" },
@@ -1561,59 +1506,56 @@
               <div>• Excuse me, where is the library?</div>
               <div>• Go straight ahead and turn right.</div>
               <div>• It is next to the park, opposite the school.</div>
-              <div>• It will be on your left side!</div>
             </div>
             <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Excuse me, where is the library? Go straight ahead and turn right. It is next to the park, opposite the school!')">🔊 Listen to Model</button>
           </div>
         `,
         grammarHtml: `
-          <h4 style="color: var(--primary);">Grammar: Prepositions of Place & Imperatives for Directions</h4>
+          <h4 style="color: var(--primary);">Grammar: Prepositions of Place & Imperatives</h4>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
             <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #166534;">✅ Prepositions of Place:</strong>
+              <strong style="color: #166534;">✅ Prepositions:</strong>
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
-                <li><strong>next to:</strong> The bank is next to the cafe.</li>
-                <li><strong>between:</strong> It is between the two buildings.</li>
-                <li><strong>opposite:</strong> The hotel is opposite the museum.</li>
+                <li><strong>next to:</strong> بجوار</li>
+                <li><strong>between:</strong> بين اثنين</li>
+                <li><strong>opposite:</strong> في الجهة المقابلة</li>
               </ul>
             </div>
             <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #854d0e;">⚡ Imperatives for Directions (فعل الأمر):</strong>
+              <strong style="color: #854d0e;">⚡ Imperatives:</strong>
               <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
-                <div>يبدأ الفعل في المصدر مباشرة:</div>
                 <div>• <strong>Go</strong> straight ahead.</div>
                 <div>• <strong>Turn</strong> left / right.</div>
-                <div>• <strong>Cross</strong> the street.</div>
               </div>
             </div>
           </div>
         `,
         readingHeading: "Reading Passage: Exploring My City",
-        readingText: "Riyadh is a modern, bustling capital city with wonderful public places. In the downtown area, there is a large public library next to an enormous park where families walk in the evening. Opposite the library, you can see historic Masmak Fortress. Modern metro trains connect all major neighborhoods, making it effortless for citizens and visitors to travel across town.",
+        readingText: "Riyadh is a modern, bustling capital city. In the downtown area, there is a large public library next to an enormous park. Opposite the library, you can see historic Masmak Fortress.",
         readingQuestions: [
-          { q: "1. What is located next to the public library?", c1: "An enormous park ✅", c2: "An airport" },
+          { q: "1. What is next to the public library?", c1: "An enormous park ✅", c2: "An airport" },
           { q: "2. What historic fortress is opposite the library?", c1: "Masmak Fortress ✅", c2: "Red Fort" }
         ],
         millionaire: [
           { q: "Which word means 'بجوار مباشرة'?", opts: ["next to", "under", "inside", "behind"], ans: 0, prize: "$100" },
           { q: "Complete: '___ left at the traffic light.'", opts: ["Turn", "Turning", "Turns", "Turned"], ans: 0, prize: "$1,000" },
           { q: "Complete: 'The pharmacy is ___ the supermarket and the bank.'", opts: ["between", "next", "opposite of", "in"], ans: 0, prize: "$10,000" },
-          { q: "What is the polite phrase to stop someone on the street?", opts: ["Excuse me", "Listen to me", "Hey you", "Wait"], ans: 0, prize: "$100,000" },
+          { q: "What is the polite phrase to stop someone?", opts: ["Excuse me", "Listen to me", "Hey you", "Wait"], ans: 0, prize: "$100,000" },
           { q: "STEP Question: 'The post office is situated ___ the road from the school.'", opts: ["across", "through", "in", "between"], ans: 0, prize: "$1,000,000" }
         ],
         quiz: [
-          { q: "1. Where does the tourist want to go in the dialogue?", opts: ["The National Museum", "The Airport", "The Zoo", "The Hotel"], ans: 0 },
-          { q: "2. What direction should the tourist take first?", opts: ["Go straight ahead", "Turn right immediately", "Walk backwards", "Stop"], ans: 0 },
-          { q: "3. Complete: 'The hospital is ___ to the modern clinic.'", opts: ["next", "between", "under", "in"], ans: 0 },
-          { q: "4. Complete: '___ straight and cross the avenue.'", opts: ["Go", "Goes", "Going", "Gone"], ans: 0 },
-          { q: "5. Choose the right preposition: 'The mosque is located ___ the school and the garden.'", opts: ["between", "next", "in", "on"], ans: 0 },
-          { q: "6. Complete: 'The restaurant is ___ the street from the bank.'", opts: ["across", "under", "into", "between"], ans: 0 },
-          { q: "7. Which sentence is an imperative direction?", opts: ["Turn right at the corner.", "He turns right.", "They are turning right.", "You will turn right."], ans: 0 },
-          { q: "8. In the reading text, what connects major neighborhoods in Riyadh?", opts: ["Modern metro trains", "Boats", "Helicopters", "Horses"], ans: 0 },
-          { q: "9. What famous fortress is mentioned in the reading?", opts: ["Masmak Fortress", "London Tower", "Cairo Citadel", "Alhambra"], ans: 0 },
-          { q: "10. Put words in order: [ museum / Excuse / the / where / is / me ]", opts: ["Excuse me, where is the museum?", "Where is museum the excuse me?", "The museum is where excuse me?", "Excuse me museum where is."], ans: 0 },
-          { q: "11. 'Opposite' means:", opts: ["في الجهة المقابلة", "خلف", "تحت", "داخل"], ans: 0 },
-          { q: "12. STEP Question: 'Don't ___ right; take the left exit.'", opts: ["turn", "turns", "turning", "turned"], ans: 0 }
+          { q: "1. Where does the tourist want to go?", opts: ["The National Museum", "The Airport", "The Zoo"], ans: 0 },
+          { q: "2. What direction should the tourist take first?", opts: ["Go straight ahead", "Turn right", "Walk backwards"], ans: 0 },
+          { q: "3. Complete: 'The hospital is ___ to the modern clinic.'", opts: ["next", "between", "under"], ans: 0 },
+          { q: "4. Complete: '___ straight and cross the avenue.'", opts: ["Go", "Goes", "Going"], ans: 0 },
+          { q: "5. The mosque is located ___ the school and the garden.", opts: ["between", "next", "in"], ans: 0 },
+          { q: "6. The restaurant is ___ the street from the bank.", opts: ["across", "under", "into"], ans: 0 },
+          { q: "7. Which sentence is an imperative direction?", opts: ["Turn right at the corner.", "He turns right.", "They are turning."], ans: 0 },
+          { q: "8. What famous fortress is mentioned in the reading?", opts: ["Masmak Fortress", "London Tower", "Cairo Citadel"], ans: 0 },
+          { q: "9. Put words in order: [ museum / Excuse / the / where / is / me ]", opts: ["Excuse me, where is the museum?", "Where is museum the excuse me?"], ans: 0 },
+          { q: "10. 'Opposite' means:", opts: ["في الجهة المقابلة", "خلف", "تحت"], ans: 0 },
+          { q: "11. 'Next to' means:", opts: ["بجانب", "فوق", "خارج"], ans: 0 },
+          { q: "12. STEP Question: 'Don't ___ right; take the left exit.'", opts: ["turn", "turns", "turning"], ans: 0 }
         ]
       },
       7: {
@@ -1623,11 +1565,9 @@
         dialogue: [
           { speaker: "Assistant", text: "Good evening sir! How may I assist you today?" },
           { speaker: "Zaid", text: "Hello! I am looking for a white winter jacket." },
-          { speaker: "Assistant", text: "We have this stylish jacket here, or that one on the high rack." },
+          { speaker: "Assistant", text: "We have this stylish jacket here, or that one on the rack." },
           { speaker: "Zaid", text: "How much is this white jacket?" },
-          { speaker: "Assistant", text: "It is one hundred and fifty Saudi Riyals." },
-          { speaker: "Zaid", text: "Great! I will take this one. Can I pay by card?" },
-          { speaker: "Assistant", text: "Yes, certainly. We accept all major cards." }
+          { speaker: "Assistant", text: "It is one hundred and fifty Saudi Riyals." }
         ],
         expressions: [
           { en: "How can I help you?", ar: "كيف يمكنني مساعدتك؟" },
@@ -1637,9 +1577,9 @@
           { en: "What size do you wear?", ar: "ما المقاس الذي ترتديه؟" },
           { en: "I wear size medium.", ar: "أرتدي المقاس المتوسط (M)" },
           { en: "Can I try this on?", ar: "هل يمكنني قياس هذه القطعة؟" },
-          { en: "The fitting room is over there.", ar: "غرفة القياس هناك" },
           { en: "Can I pay by card?", ar: "هل يمكنني الدفع بالبطاقة؟" },
-          { en: "Here is your receipt.", ar: "تفضل إيصال الدفع" }
+          { en: "Here is your receipt.", ar: "تفضل إيصال الدفع" },
+          { en: "Enjoy your shopping!", ar: "تسوق ممتع!" }
         ],
         speakingHtml: `
           <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
@@ -1648,35 +1588,31 @@
               <div>• Hello! How much is this blue jacket?</div>
               <div>• It is 150 Riyals. What size do you wear?</div>
               <div>• I wear size Large. Can I pay by card?</div>
-              <div>• Yes, of course. Thank you!</div>
             </div>
-            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Hello! How much is this blue jacket? It is 150 Riyals. What size do you wear? I wear size Large. Can I pay by card?')">🔊 Listen to Model</button>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Hello! How much is this blue jacket? It is 150 Riyals. Can I pay by card?')">🔊 Listen to Model</button>
           </div>
         `,
         grammarHtml: `
-          <h4 style="color: var(--primary);">Grammar: Demonstratives (This/That/These/Those) & How Much / How Many</h4>
+          <h4 style="color: var(--primary);">Grammar: This/That/These/Those & How Much/How Many</h4>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
             <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #166534;">✅ Demonstrative Pronouns:</strong>
+              <strong style="color: #166534;">✅ Demonstratives:</strong>
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
-                <li><strong>This:</strong> مفرد قريب (This shirt)</li>
-                <li><strong>That:</strong> مفرد بعيد (That jacket)</li>
-                <li><strong>These:</strong> جمع قريب (These shoes)</li>
-                <li><strong>Those:</strong> جمع بعيد (Those pants)</li>
+                <li><strong>This / These:</strong> للقريب (مفرد / جمع)</li>
+                <li><strong>That / Those:</strong> للبعيد (مفرد / جمع)</li>
               </ul>
             </div>
             <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
               <strong style="color: #854d0e;">⚡ Prices & Quantities:</strong>
               <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
-                <div>• <strong>How much is</strong> this thobe? (سؤال عن السعر)</div>
-                <div>• <strong>How much are</strong> these shoes? (سعر الجمع)</div>
-                <div>• <strong>How many</strong> shirts do you have? (سؤال عن عدد معدود)</div>
+                <div>• <strong>How much is</strong> this thobe?</div>
+                <div>• <strong>How much are</strong> these shoes?</div>
               </div>
             </div>
           </div>
         `,
         readingHeading: "Reading Passage: Weekend Shopping Malls",
-        readingText: "Shopping malls across Saudi Arabia offer diverse stores and entertainment. You can find traditional garments such as finely tailored white thobes alongside international sportswear and elegant shoes. Most stores display clear price tags and offer convenient digital payment methods like Mada and Apple Pay, making shopping comfortable, safe, and modern.",
+        readingText: "Shopping malls across Saudi Arabia offer diverse stores. You can find traditional garments such as finely tailored white thobes alongside sportswear and shoes. Most stores accept Mada and Apple Pay.",
         readingQuestions: [
           { q: "1. What traditional garment is mentioned?", c1: "Finely tailored white thobes ✅", c2: "Kimono" },
           { q: "2. How can shoppers pay comfortably?", c1: "Digital methods like Mada and Apple Pay ✅", c2: "Gold coins only" }
@@ -1689,18 +1625,18 @@
           { q: "STEP Question: '___ thobe over there on the top shelf is very elegant.'", opts: ["That", "This", "These", "Those"], ans: 0, prize: "$1,000,000" }
         ],
         quiz: [
-          { q: "1. What item does Zaid want to buy in the dialogue?", opts: ["A white winter jacket", "A summer shirt", "Sport shoes", "A watch"], ans: 0 },
-          { q: "2. How much does the white jacket cost?", opts: ["150 Saudi Riyals", "50 Riyals", "300 Riyals", "500 Riyals"], ans: 0 },
+          { q: "1. What item does Zaid want to buy in the dialogue?", opts: ["A white winter jacket", "A summer shirt", "Sport shoes"], ans: 0 },
+          { q: "2. How much does the white jacket cost?", opts: ["150 Saudi Riyals", "50 Riyals", "300 Riyals"], ans: 0 },
           { q: "3. Choose the correct form: 'How much ___ these trousers?'", opts: ["are", "is", "am", "be"], ans: 0 },
           { q: "4. Complete: '___ jacket here in my hand is warm.'", opts: ["This", "Those", "These", "That"], ans: 0 },
           { q: "5. Complete: '___ birds high in the distant sky are beautiful.'", opts: ["Those", "This", "These", "That"], ans: 0 },
-          { q: "6. Complete: '___ pens do you need for class?' (Asking for count)", opts: ["How many", "How much", "How long", "How heavy"], ans: 0 },
-          { q: "7. Complete: 'How ___ water should we drink daily?' (Uncountable)", opts: ["much", "many", "few", "number"], ans: 0 },
-          { q: "8. In the reading passage, what digital payments are highlighted?", opts: ["Mada and Apple Pay", "Cheques only", "Paper coupons", "Foreign banknotes"], ans: 0 },
-          { q: "9. What is the traditional clothing piece highlighted?", opts: ["White thobe", "Tuxedo", "Coat", "Tracksuit"], ans: 0 },
-          { q: "10. Put words in order: [ is / much / this / How / jacket ]", opts: ["How much is this jacket?", "This jacket is how much?", "How is much this jacket?", "Much how is this jacket."], ans: 0 },
-          { q: "11. 'Shoes' is treated in English as:", opts: ["Plural (are / these)", "Singular (is / this)", "Uncountable", "Adverb"], ans: 0 },
-          { q: "12. STEP Question: 'Look at ___ shoes on my feet right now!'", opts: ["these", "that", "this", "those"], ans: 0 }
+          { q: "6. Complete: '___ pens do you need for class?'", opts: ["How many", "How much", "How long"], ans: 0 },
+          { q: "7. Complete: 'How ___ water should we drink daily?'", opts: ["much", "many", "few"], ans: 0 },
+          { q: "8. In reading, what digital payments are highlighted?", opts: ["Mada and Apple Pay", "Paper coupons"], ans: 0 },
+          { q: "9. Put words in order: [ is / much / this / How / jacket ]", opts: ["How much is this jacket?", "This jacket is how much?"], ans: 0 },
+          { q: "10. 'Shoes' is treated in English as:", opts: ["Plural (are / these)", "Singular (is / this)"], ans: 0 },
+          { q: "11. 'These' is used for:", opts: ["Plural near", "Singular far", "Singular near"], ans: 0 },
+          { q: "12. STEP Question: 'Look at ___ shoes on my feet right now!'", opts: ["these", "that", "this"], ans: 0 }
         ]
       },
       8: {
@@ -1710,10 +1646,7 @@
         dialogue: [
           { speaker: "Nasser", text: "Hello Bandar! How is the weather in Riyadh right now?" },
           { speaker: "Bandar", text: "It is sunny and quite hot today. The sun is shining brightly." },
-          { speaker: "Nasser", text: "Really? Here in Abha, it is cool and raining gently!" },
-          { speaker: "Bandar", text: "What are you and your cousins doing right now?" },
-          { speaker: "Nasser", text: "We are drinking warm tea and watching the clouds roll over the mountains." },
-          { speaker: "Bandar", text: "That sounds wonderful! Enjoy the pleasant weather." }
+          { speaker: "Nasser", text: "Really? Here in Abha, it is cool and raining gently!" }
         ],
         expressions: [
           { en: "What is the weather like today?", ar: "كيف تبدو حالة الطقس اليوم؟" },
@@ -1732,39 +1665,35 @@
             <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Weather & Actions Speaking Drill:</p>
             <div style="font-size: 15px; line-height: 2; font-weight: 600;">
               <div>• What is the weather like today?</div>
-              <div>• It is sunny, but a cool breeze is blowing.</div>
+              <div>• It is sunny and pleasant.</div>
               <div>• Right now, I am practicing English with Mini STEP.</div>
-              <div>• We are learning new skills every week!</div>
             </div>
-            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('What is the weather like today? It is sunny and pleasant. Right now, I am practicing English with Mini STEP!')">🔊 Listen to Model</button>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('What is the weather like today? It is sunny. Right now, I am practicing English!')">🔊 Listen to Model</button>
           </div>
         `,
         grammarHtml: `
           <h4 style="color: var(--primary);">Grammar: Present Continuous (am/is/are + verb-ing)</h4>
-          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
-            نستخدم المضارع المستمر للأحداث التي تقع في لحظة التحدث الآن (now / at the moment / look / listen):
-          </p>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
             <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #166534;">✅ Formation (التكوين):</strong>
+              <strong style="color: #166534;">✅ Formation:</strong>
               <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
                 <li>I <strong>am studying</strong> right now.</li>
-                <li>He / She / It <strong>is raining</strong>.</li>
-                <li>We / They <strong>are drinking</strong> tea.</li>
+                <li>It <strong>is raining</strong>.</li>
+                <li>They <strong>are drinking</strong> tea.</li>
               </ul>
             </div>
             <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
-              <strong style="color: #854d0e;">⚡ Key Trigger Words (الكلمات الدالة):</strong>
+              <strong style="color: #854d0e;">⚡ Key Words:</strong>
               <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
-                <div>• <strong>now</strong> (الآن)</div>
-                <div>• <strong>at the moment</strong> (في هذه اللحظة)</div>
-                <div>• <strong>Look!</strong> (انظر!) / <strong>Listen!</strong> (استمع!)</div>
+                <div>• now (الآن)</div>
+                <div>• at the moment (في هذه اللحظة)</div>
+                <div>• Look! / Listen!</div>
               </div>
             </div>
           </div>
         `,
-        readingHeading: "Reading Passage: Climate Diversity in Saudi Arabia",
-        readingText: "The Kingdom of Saudi Arabia features diverse climates across its expansive regions. In the central region, Riyadh experiences warm summers and cool, crisp winters. In the southwestern highlands like Asir and Abha, the weather stays pleasantly cool throughout the summer with seasonal rain and misty mountain peaks. Travelers love visiting both regions to enjoy the variety of climates.",
+        readingHeading: "Reading Passage: Climate Diversity",
+        readingText: "The Kingdom of Saudi Arabia features diverse climates. In Riyadh, summers are warm and dry. In Abha, the weather stays pleasantly cool with seasonal rain.",
         readingQuestions: [
           { q: "1. What is the climate like in Abha in summer?", c1: "Pleasantly cool with seasonal rain ✅", c2: "Extremely humid and desert-dry" },
           { q: "2. How are winters in Riyadh described?", c1: "Cool and crisp ✅", c2: "Tropical and rainy" }
@@ -1773,129 +1702,504 @@
           { q: "Complete: 'Look! The rain ___ right now.'", opts: ["is falling", "falls", "fell", "fall"], ans: 0, prize: "$100" },
           { q: "Complete: 'They ___ English at the moment.'", opts: ["are studying", "study", "studied", "studies"], ans: 0, prize: "$1,000" },
           { q: "What is the season after winter?", opts: ["Spring", "Summer", "Autumn", "Night"], ans: 0, prize: "$10,000" },
-          { q: "Which sentence indicates an action happening RIGHT NOW?", opts: ["I am drinking warm tea now.", "I drink tea every morning.", "I drank tea yesterday.", "I will drink tea."], ans: 0, prize: "$100,000" },
+          { q: "Which sentence indicates an action happening RIGHT NOW?", opts: ["I am drinking warm tea now.", "I drink tea every morning."], ans: 0, prize: "$100,000" },
           { q: "STEP Question: 'Listen! Someone ___ at the front gate.'", opts: ["is knocking", "knocks", "knocked", "knock"], ans: 0, prize: "$1,000,000" }
         ],
         quiz: [
-          { q: "1. How is the weather in Abha in the dialogue?", opts: ["Cool and raining", "Extremely hot", "Dusty", "Stormy"], ans: 0 },
-          { q: "2. What is Nasser doing in Abha?", opts: ["Drinking warm tea with cousins", "Swimming in the ocean", "Playing tennis in the street", "Sleeping"], ans: 0 },
-          { q: "3. Complete: 'The sun ___ brightly today.'", opts: ["is shining", "shine", "shining", "are shine"], ans: 0 },
-          { q: "4. Complete: 'Look! The children ___ in the garden.'", opts: ["are playing", "plays", "played", "is play"], ans: 0 },
-          { q: "5. Complete: 'I ___ an English book at the moment.'", opts: ["am reading", "reads", "read", "is reading"], ans: 0 },
-          { q: "6. Which keyword signals Present Continuous?", opts: ["At the moment", "Yesterday", "Last year", "Ago"], ans: 0 },
-          { q: "7. Complete: 'Listen! The birds ___ in the trees.'", opts: ["are singing", "sings", "is sing", "sang"], ans: 0 },
-          { q: "8. In the reading, what region has misty mountains in summer?", opts: ["Asir and Abha", "Rub' al Khali", "Qassim", "Najran"], ans: 0 },
-          { q: "9. Which season is generally the coldest?", opts: ["Winter", "Summer", "Spring", "Autumn"], ans: 0 },
-          { q: "10. Put words in order: [ raining / outside / It / is / now ]", opts: ["It is raining outside now.", "Raining outside it is now.", "Now raining is it outside.", "It raining is now outside."], ans: 0 },
-          { q: "11. Complete: 'What ___ you ___ right now?'", opts: ["are / doing", "is / do", "do / doing", "are / do"], ans: 0 },
-          { q: "12. STEP Question: 'He ___ a winter coat because it is very cold today.'", opts: ["is wearing", "wears", "worn", "wear"], ans: 0 }
+          { q: "1. How is the weather in Abha in dialogue?", opts: ["Cool and raining", "Extremely hot", "Dusty"], ans: 0 },
+          { q: "2. What is Nasser doing in Abha?", opts: ["Drinking warm tea with cousins", "Swimming", "Sleeping"], ans: 0 },
+          { q: "3. Complete: 'The sun ___ brightly today.'", opts: ["is shining", "shine", "shining"], ans: 0 },
+          { q: "4. Complete: 'Look! The children ___ in the garden.'", opts: ["are playing", "plays", "played"], ans: 0 },
+          { q: "5. Complete: 'I ___ an English book at the moment.'", opts: ["am reading", "reads", "read"], ans: 0 },
+          { q: "6. Which keyword signals Present Continuous?", opts: ["At the moment", "Yesterday", "Last year"], ans: 0 },
+          { q: "7. Complete: 'Listen! The birds ___ in the trees.'", opts: ["are singing", "sings", "sang"], ans: 0 },
+          { q: "8. In reading, what region has cool mountains?", opts: ["Asir and Abha", "Qassim", "Najran"], ans: 0 },
+          { q: "9. Put words in order: [ raining / outside / It / is / now ]", opts: ["It is raining outside now.", "Raining outside it is now."], ans: 0 },
+          { q: "10. Complete: 'What ___ you ___ right now?'", opts: ["are / doing", "is / do", "do / doing"], ans: 0 },
+          { q: "11. 'Right now' indicates:", opts: ["Present Continuous", "Past Simple", "Future"], ans: 0 },
+          { q: "12. STEP Question: 'He ___ a winter coat today.'", opts: ["is wearing", "wears", "worn"], ans: 0 }
+        ]
+      },
+      9: {
+        number: 9,
+        title: "Past Events & School Trips (الماضي البسيط والرحلات)",
+        dialogueTitle: "Dialogue: A School Trip to Diriyah (Saad & Rayan)",
+        dialogue: [
+          { speaker: "Saad", text: "Hello Rayan! Where did you go yesterday with your class?" },
+          { speaker: "Rayan", text: "We visited historic Diriyah. It was an amazing experience!" },
+          { speaker: "Saad", text: "What did you do there?" },
+          { speaker: "Rayan", text: "We walked through At-Turaif district, learned about Saudi heritage, and took lovely photos." },
+          { speaker: "Saad", text: "Did you enjoy your time?" },
+          { speaker: "Rayan", text: "Yes, we enjoyed every single minute!" }
+        ],
+        expressions: [
+          { en: "Where did you go yesterday?", ar: "أين ذهبت بالأمس؟" },
+          { en: "We visited Diriyah.", ar: "قمنا بزيارة الدرعية" },
+          { en: "I learned a lot.", ar: "تعلمت الكثير" },
+          { en: "We walked in the park.", ar: "مشينا في الحديقة" },
+          { en: "It was fantastic!", ar: "كان الأمر رائعاً للغاية!" },
+          { en: "Two days ago.", ar: "منذ يومين مضيا" },
+          { en: "Last week we traveled.", ar: "الأسبوع الماضي سافرنا" },
+          { en: "I played with my cousins.", ar: "لعبت مع أبناء عمي" },
+          { en: "We watched a documentary.", ar: "شاهدنا فيلماً وثائقياً" },
+          { en: "Memories last forever.", ar: "الذكريات تدوم للأبد" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Past Events Speaking Drill:</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
+              <div>• Yesterday, I visited historic Diriyah with my school.</div>
+              <div>• We walked through old mud-brick pathways.</div>
+              <div>• We learned about Saudi history and enjoyed our day!</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Yesterday, I visited historic Diriyah with my school. We walked through old pathways and learned about history!')">🔊 Listen to Model</button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar: Past Simple Regular Verbs (-ed)</h4>
+          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
+            للأفعال المنتظمة في الماضي نضيف (-ed):
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ Regular Verbs (+ed):</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>visit ➔ <strong>visited</strong></li>
+                <li>play ➔ <strong>played</strong></li>
+                <li>walk ➔ <strong>walked</strong></li>
+                <li>watch ➔ <strong>watched</strong></li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ Past Time Markers:</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>• <strong>yesterday</strong> (أمس)</div>
+                <div>• <strong>last</strong> week / month (الماضي)</div>
+                <div>• three days <strong>ago</strong> (منذ)</div>
+              </div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: Our Trip to At-Turaif",
+        readingText: "Last Tuesday, the English club at Al Bayariq Private Schools organized an educational trip to At-Turaif district in Diriyah. Students walked through the restored heritage corridors and listened to historical stories about the founding of the first Saudi State. Everyone enjoyed the trip and returned home proud of their country's inspiring heritage.",
+        readingQuestions: [
+          { q: "1. Where did the school club travel last Tuesday?", c1: "At-Turaif in Diriyah ✅", c2: "The beach" },
+          { q: "2. How did the students feel about their heritage?", c1: "Proud and inspired ✅", c2: "Bored" }
+        ],
+        millionaire: [
+          { q: "What is the past form of 'visit'?", opts: ["visited", "visiting", "visits", "visiter"], ans: 0, prize: "$100" },
+          { q: "Complete: 'We ___ football yesterday.'", opts: ["played", "play", "playing", "plays"], ans: 0, prize: "$1,000" },
+          { q: "Which word signals past time?", opts: ["Yesterday", "Now", "Tomorrow", "Always"], ans: 0, prize: "$10,000" },
+          { q: "Past form of 'watch':", opts: ["watched", "watching", "watches", "watch"], ans: 0, prize: "$100,000" },
+          { q: "STEP Question: 'Two hours ___, the plane landed safely.'", opts: ["ago", "since", "last", "past"], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. Where did Rayan go yesterday in the dialogue?", opts: ["Historic Diriyah", "The Airport", "The Hospital"], ans: 0 },
+          { q: "2. What is the past form of 'walk'?", opts: ["walked", "walking", "walks"], ans: 0 },
+          { q: "3. Choose the correct sentence for yesterday:", opts: ["I visited my grandfather yesterday.", "I visit my grandfather yesterday.", "I am visiting yesterday."], ans: 0 },
+          { q: "4. Complete: 'They ___ in the school playground last Monday.'", opts: ["played", "play", "playing"], ans: 0 },
+          { q: "5. 'Ago' comes:", opts: ["At the end of a time phrase (e.g. 2 days ago)", "At the very start only", "Before verb"], ans: 0 },
+          { q: "6. Complete: 'We ___ a nice documentary two days ago.'", opts: ["watched", "watch", "watching"], ans: 0 },
+          { q: "7. Which keyword means 'الأسبوع الماضي'?", opts: ["Last week", "Next week", "Now week"], ans: 0 },
+          { q: "8. What district in Diriyah did the students visit?", opts: ["At-Turaif", "Corniche", "Desert Camp"], ans: 0 },
+          { q: "9. What is the past form of 'listen'?", opts: ["listened", "listening", "listens"], ans: 0 },
+          { q: "10. Put words in order: [ Diriyah / yesterday / visited / We ]", opts: ["We visited Diriyah yesterday.", "Yesterday visited Diriyah we."], ans: 0 },
+          { q: "11. Complete: 'She ___ her room last night.'", opts: ["cleaned", "cleans", "cleaning"], ans: 0 },
+          { q: "12. STEP Question: 'The bus ___ at 7:00 AM yesterday.'", opts: ["arrived", "arrive", "arriving"], ans: 0 }
+        ]
+      },
+      10: {
+        number: 10,
+        title: "Irregular Past Verbs & Stories (الماضي الشاذ وسرد القصص)",
+        dialogueTitle: "Dialogue: Weekend Recap (Faris & Majed)",
+        dialogue: [
+          { speaker: "Faris", text: "Hi Majed! What did you do on your weekend?" },
+          { speaker: "Majed", text: "I went to the Red Sea in Jeddah with my family." },
+          { speaker: "Faris", text: "Did you swim in the sea?" },
+          { speaker: "Majed", text: "Yes, we swam, saw colorful fish, and ate delicious seafood!" },
+          { speaker: "Faris", text: "Did you buy any souvenirs?" },
+          { speaker: "Majed", text: "Yes, I bought a souvenir boat and wrote postcards to my friends." }
+        ],
+        expressions: [
+          { en: "I went to Jeddah.", ar: "ذهبت إلى جدة" },
+          { en: "We ate seafood.", ar: "أكلنا مأكولات بحرية" },
+          { en: "I saw coral reefs.", ar: "شاهدت الشعب المرجانية" },
+          { en: "I bought a gift.", ar: "اشتريت هدية" },
+          { en: "I wrote a letter.", ar: "كتبت رسالة" },
+          { en: "We had a wonderful trip.", ar: "قضينا رحلة رائعة وموفقة" },
+          { en: "I met my best friends.", ar: "التقيت بأعز أصدقائي" },
+          { en: "He came on time.", ar: "جاء في الوقت المحدد تماماً" },
+          { en: "Tell me a story!", ar: "احكِ لي قصة ممتعة!" },
+          { en: "Once upon a time...", ar: "في قديم الزمان..." }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Weekend Story Challenge:</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
+              <div>• Last weekend, I went to Jeddah with my family.</div>
+              <div>• We saw beautiful dolphins and ate fresh seafood.</div>
+              <div>• I bought gifts and had a fantastic time!</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Last weekend, I went to Jeddah with my family. We saw dolphins and ate seafood. We had a great time!')">🔊 Listen to Model</button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar: Common Irregular Past Verbs</h4>
+          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
+            أفعال لا تقبل (-ed) بل يتغير شكلها ويجب حفظها لاختبار STEP:
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ Irregular Past List:</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>go ➔ <strong>went</strong></li>
+                <li>see ➔ <strong>saw</strong></li>
+                <li>eat ➔ <strong>ate</strong></li>
+                <li>buy ➔ <strong>bought</strong></li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ More Common Verbs:</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>• have ➔ <strong>had</strong></div>
+                <div>• write ➔ <strong>wrote</strong></div>
+                <div>• come ➔ <strong>came</strong></div>
+                <div>• meet ➔ <strong>met</strong></div>
+              </div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: An Unforgettable Weekend",
+        readingText: "Majed had an unforgettable weekend in Jeddah. On Friday morning, his father drove to the corniche. They rented a small boat, saw magnificent views of the King Fahd Fountain, and ate dinner at a traditional seaside restaurant. Majed bought souvenirs for his classmates at Al Bayariq School.",
+        readingQuestions: [
+          { q: "1. Where did Majed spend his weekend?", c1: "In Jeddah ✅", c2: "In London" },
+          { q: "2. What famous fountain did they see?", c1: "King Fahd Fountain ✅", c2: "Trevi Fountain" }
+        ],
+        millionaire: [
+          { q: "What is the past form of 'go'?", opts: ["went", "goed", "goes", "gone"], ans: 0, prize: "$100" },
+          { q: "What is the past form of 'eat'?", opts: ["ate", "eated", "eating", "eats"], ans: 0, prize: "$1,000" },
+          { q: "What is the past form of 'see'?", opts: ["saw", "seed", "seen", "sees"], ans: 0, prize: "$10,000" },
+          { q: "Past form of 'buy':", opts: ["bought", "buyed", "buys", "buying"], ans: 0, prize: "$100,000" },
+          { q: "STEP Question: 'Last night, I ___ an email to my English supervisor.'", opts: ["wrote", "write", "written", "writed"], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. Where did Majed travel in the dialogue?", opts: ["Jeddah", "Taif", "Hail"], ans: 0 },
+          { q: "2. Past of 'go':", opts: ["went", "goed", "goes"], ans: 0 },
+          { q: "3. Past of 'see':", opts: ["saw", "seed", "seen"], ans: 0 },
+          { q: "4. Past of 'eat':", opts: ["ate", "eated", "eats"], ans: 0 },
+          { q: "5. Past of 'buy':", opts: ["bought", "buyed", "buying"], ans: 0 },
+          { q: "6. Complete: 'Yesterday, we ___ a great time together.'", opts: ["had", "have", "has"], ans: 0 },
+          { q: "7. Past of 'write':", opts: ["wrote", "writed", "writing"], ans: 0 },
+          { q: "8. What famous landmark in Jeddah is mentioned?", opts: ["King Fahd Fountain", "Eiffel Tower", "Big Ben"], ans: 0 },
+          { q: "9. Past of 'meet':", opts: ["met", "meeted", "meets"], ans: 0 },
+          { q: "10. Put in order: [ went / We / to / yesterday / Jeddah ]", opts: ["We went to Jeddah yesterday.", "Jeddah went we to yesterday."], ans: 0 },
+          { q: "11. Complete: 'He ___ to school late two days ago.'", opts: ["came", "come", "coming"], ans: 0 },
+          { q: "12. STEP Question: 'They ___ fresh orange juice for breakfast yesterday.'", opts: ["drank", "drink", "drinked"], ans: 0 }
+        ]
+      },
+      11: {
+        number: 11,
+        title: "Health, Illness & Advice (الصحة والأعراض والنصيحة)",
+        dialogueTitle: "Dialogue: At the Clinic (Doctor & Tariq)",
+        dialogue: [
+          { speaker: "Doctor", text: "Hello Tariq! How are you feeling today?" },
+          { speaker: "Tariq", text: "Not very well, doctor. I have a sore throat and a bad headache." },
+          { speaker: "Doctor", text: "Let me check your temperature... You have a slight fever." },
+          { speaker: "Tariq", text: "What should I do?" },
+          { speaker: "Doctor", text: "You should rest in bed, drink plenty of warm fluids, and take this medicine." },
+          { speaker: "Tariq", text: "Thank you doctor!" },
+          { speaker: "Doctor", text: "You shouldn't drink cold water. Get well soon!" }
+        ],
+        expressions: [
+          { en: "I have a headache.", ar: "عندي صداع في الرأس" },
+          { en: "I have a sore throat.", ar: "عندي التهاب في الحلق" },
+          { en: "I have a fever.", ar: "عندي حمى وارتفاع حرارة" },
+          { en: "I have a stomachache.", ar: "عندي ألم في المعدة" },
+          { en: "You should drink warm tea.", ar: "يجب عليك شرب الشاي الدافئ" },
+          { en: "You shouldn't drink ice water.", ar: "لا ينبغي أن تشرب ماء مثلجاً" },
+          { en: "Take this medicine.", ar: "تناول هذا الدواء" },
+          { en: "Get plenty of rest.", ar: "خذ قسطاً وافراً من الراحة" },
+          { en: "Get well soon!", ar: "أتمنى لك الشفاء العاجل!" },
+          { en: "Health is true wealth.", ar: "الصحة هي الثروة الحقيقية" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Health Advice Drill:</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
+              <div>• If you feel sick, you should see a doctor.</div>
+              <div>• You should drink warm water and eat healthy food.</div>
+              <div>• You shouldn't stay up late when you have a fever.</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('If you feel sick, you should see a doctor. You should drink warm water and rest!')">🔊 Listen to Model</button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar: Giving Advice with Should & Shouldn't</h4>
+          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
+            يأتي بعد should و shouldn't الفعل في المصدر (infinitive) بدون أي إضافات:
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ Should (ينبغي / نصيحة إيجابية):</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>You <strong>should see</strong> a doctor.</li>
+                <li>You <strong>should drink</strong> warm fluids.</li>
+                <li>You <strong>should sleep</strong> early.</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ Shouldn't (لا ينبغي / تحذير):</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>• You <strong>shouldn't drink</strong> cold water.</div>
+                <div>• You <strong>shouldn't eat</strong> junk food.</div>
+              </div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: Staying Healthy and Strong",
+        readingText: "Good health habits keep your immune system strong. Doctors advise that children should sleep at least eight hours each night and exercise regularly. When you catch a cold, you should stay home, rest in bed, and avoid strenuous activities. Eating citrus fruits like oranges provides vitamin C to fight sickness.",
+        readingQuestions: [
+          { q: "1. How many hours should children sleep?", c1: "At least eight hours ✅", c2: "Two hours" },
+          { q: "2. What fruit provides Vitamin C?", c1: "Citrus fruits like oranges ✅", c2: "Candy" }
+        ],
+        millionaire: [
+          { q: "Complete: 'You have a fever. You ___ see a doctor.'", opts: ["should", "shouldn't", "is", "don't"], ans: 0, prize: "$100" },
+          { q: "What follows 'should'?", opts: ["Base verb (infinitive)", "Verb + ing", "Verb + ed", "Verb + s"], ans: 0, prize: "$1,000" },
+          { q: "Which word means 'صداع في الرأس'?", opts: ["Headache", "Toothache", "Stomachache", "Backache"], ans: 0, prize: "$10,000" },
+          { q: "Complete: 'You have a cough. You ___ drink ice water.'", opts: ["shouldn't", "should", "must", "can"], ans: 0, prize: "$100,000" },
+          { q: "STEP Question: 'To stay healthy, students ___ eat fresh vegetables.'", opts: ["should", "shouldn't", "mustn't", "aren't"], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. What symptoms does Tariq have in the dialogue?", opts: ["A sore throat and a headache", "A broken leg", "Toothache"], ans: 0 },
+          { q: "2. What does the doctor advise Tariq to do?", opts: ["Rest and drink warm fluids", "Play football in the rain", "Eat ice cream"], ans: 0 },
+          { q: "3. Complete: 'You have a toothache. You should ___ the dentist.'", opts: ["visit", "visiting", "visited"], ans: 0 },
+          { q: "4. Complete: 'You ___ play in the hot sun when you feel sick.'", opts: ["shouldn't", "should", "are"], ans: 0 },
+          { q: "5. What is the meaning of 'fever'?", opts: ["حمى / ارتفاع حرارة", "زكام خفيف", "كسر"], ans: 0 },
+          { q: "6. Complete: 'Students should ___ eight hours every night.'", opts: ["sleep", "sleeping", "slept"], ans: 0 },
+          { q: "7. 'Stomachache' means pain in the:", opts: ["Stomach / Belly", "Ear", "Eye"], ans: 0 },
+          { q: "8. In reading, what provides Vitamin C?", opts: ["Oranges and citrus fruits", "Soda", "Chips"], ans: 0 },
+          { q: "9. Put words in order: [ see / should / a / You / doctor ]", opts: ["You should see a doctor.", "A doctor you see should."], ans: 0 },
+          { q: "10. Which sentence is grammatically correct?", opts: ["You should take this medicine.", "You should to take medicine.", "You should taking."], ans: 0 },
+          { q: "11. 'Should' is used to express:", opts: ["Advice (نصيحة)", "Past action", "Physical ability"], ans: 0 },
+          { q: "12. STEP Question: 'He has an exam tomorrow. He ___ sleep early tonight.'", opts: ["should", "shouldn't", "wouldn't"], ans: 0 }
+        ]
+      },
+      12: {
+        number: 12,
+        title: "Future Plans & Vision 2030 (المستقبل والخطط والطموحات)",
+        dialogueTitle: "Dialogue: Future Careers (Saud & Omar)",
+        dialogue: [
+          { speaker: "Saud", text: "What are you going to do after graduation, Omar?" },
+          { speaker: "Omar", text: "I am going to study software engineering at King Saud University." },
+          { speaker: "Saud", text: "That is wonderful! Why software engineering?" },
+          { speaker: "Omar", text: "I want to build artificial intelligence applications to support Saudi Vision 2030." },
+          { speaker: "Saud", text: "Excellent! I am going to become an architect and design modern green cities." },
+          { speaker: "Omar", text: "Together, our generation is going to build a bright future!" }
+        ],
+        expressions: [
+          { en: "What are you going to be?", ar: "ماذا ستكون في المستقبل؟" },
+          { en: "I am going to study engineering.", ar: "سأدرس الهندسة بإذن الله" },
+          { en: "I am going to be a doctor.", ar: "سأصبح طبيباً" },
+          { en: "We are going to travel soon.", ar: "سنسافر قريباً" },
+          { en: "Saudi Vision 2030 is inspiring.", ar: "رؤية السعودية 2030 ملهمة" },
+          { en: "I have big ambitions.", ar: "لدي طموحات كبيرة" },
+          { en: "Next year, I will work hard.", ar: "العام القادم سأجتهد بجد" },
+          { en: "We are planning a project.", ar: "نحن نخطط لمشروع" },
+          { en: "Dream big and work hard!", ar: "احلم عالياً واعمل بجد!" },
+          { en: "Success requires dedication.", ar: "النجاح يتطلب الالتزام والإخلاص" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Future Ambitions Drill:</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
+              <div>• In the future, I am going to be an engineer.</div>
+              <div>• I am going to study hard and support Saudi Vision 2030.</div>
+              <div>• What are you going to do in the future?</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('In the future, I am going to be an engineer. I am going to support Saudi Vision 2030!')">🔊 Listen to Model</button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar: Future with 'be going to + verb'</h4>
+          <p style="font-family: var(--font-ar); font-size: 14px; margin: 8px 0 16px; color: var(--text-muted);">
+            نستخدم (am / is / are + going to + verb) للخطط والنوايا المستقبلية المؤكدة:
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ Structure:</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>I <strong>am going to study</strong>.</li>
+                <li>He / She <strong>is going to travel</strong>.</li>
+                <li>We / They <strong>are going to build</strong>.</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ Key Future Markers:</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>• <strong>tomorrow</strong> (غداً)</div>
+                <div>• <strong>next</strong> week / year (القادم)</div>
+                <div>• <strong>in the future</strong> (في المستقبل)</div>
+              </div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: Youth and Vision 2030",
+        readingText: "Saudi Arabia's Vision 2030 empowers the youth through advanced education, technological innovation, and sustainable development. Students across the Kingdom are preparing for careers in green energy, artificial intelligence, and tourism. With determination and excellent English skills, ambitious students are ready to shape a prosperous future.",
+        readingQuestions: [
+          { q: "1. What does Vision 2030 empower?", c1: "The youth through education and innovation ✅", c2: "Old factories only" },
+          { q: "2. What skills are students preparing with?", c1: "AI, green energy, and English ✅", c2: "No skills" }
+        ],
+        millionaire: [
+          { q: "Complete: 'I am going to ___ English at university.'", opts: ["study", "studies", "studied", "studying"], ans: 0, prize: "$100" },
+          { q: "Complete: 'They ___ going to travel next week.'", opts: ["are", "is", "am", "be"], ans: 0, prize: "$1,000" },
+          { q: "What does 'be going to' express?", opts: ["Future plans and intentions", "Past events", "Things happening right now", "Habits"], ans: 0, prize: "$10,000" },
+          { q: "Complete: 'He ___ going to build a new house.'", opts: ["is", "are", "am", "were"], ans: 0, prize: "$100,000" },
+          { q: "STEP Question: 'What ___ you going to do tomorrow morning?'", opts: ["are", "is", "do", "did"], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. What is Omar going to study in the dialogue?", opts: ["Software engineering", "History", "Literature"], ans: 0 },
+          { q: "2. What is Saud's future career goal?", opts: ["Architect", "Pilot", "Chef"], ans: 0 },
+          { q: "3. Complete: 'I ___ going to be a doctor.'", opts: ["am", "is", "are"], ans: 0 },
+          { q: "4. Complete: 'She is going to ___ hard for the test.'", opts: ["study", "studies", "studying"], ans: 0 },
+          { q: "5. Complete: 'We ___ going to visit NEOM next summer.'", opts: ["are", "is", "am"], ans: 0 },
+          { q: "6. Which keyword indicates future?", opts: ["Next month", "Yesterday", "Ago"], ans: 0 },
+          { q: "7. After 'going to', the verb must be in:", opts: ["Base form (infinitive)", "-ing form", "-ed form"], ans: 0 },
+          { q: "8. In reading, what inspires the youth in Saudi Arabia?", opts: ["Vision 2030", "Winter vacation", "Cartoons"], ans: 0 },
+          { q: "9. Put words in order: [ going / I / to / travel / am ]", opts: ["I am going to travel.", "Travel going I am to."], ans: 0 },
+          { q: "10. Complete: 'Look at those dark clouds! It ___ to rain.'", opts: ["is going", "are going", "was going"], ans: 0 },
+          { q: "11. 'Tomorrow' refers to:", opts: ["Future", "Past", "Present continuous"], ans: 0 },
+          { q: "12. STEP Question: 'They are going to ___ a modern school next year.'", opts: ["build", "builds", "building"], ans: 0 }
         ]
       }
     };
 
-    // 5. Level 1 Milestone Assessment (Weeks 1-4 Mastery - 16 Questions)
+    // 5. Level Milestone Assessments (1, 2 & 3)
     const LEVEL_1_EXAM = {
       id: "level_1",
       title: "Level 1 Milestone Assessment: A1 Breakthrough (اجتياز المستوى الأول)",
       target: 13,
       total: 16,
       questions: [
-        { q: "1. Choose the contraction: 'I am a student at Al-Bayariq.'", opts: ["I'm", "I's", "I'are", "I'be"], ans: 0 },
-        { q: "2. Complete: 'He ___ a professional doctor.'", opts: ["is", "am", "are", "be"], ans: 0 },
-        { q: "3. Complete: 'They ___ my kind teachers.'", opts: ["are", "am", "is", "be"], ans: 0 },
-        { q: "4. What is the plural form of 'child'?", opts: ["children", "childs", "childrens", "childes"], ans: 0 },
-        { q: "5. Choose the correct grammar: 'I like ___ adventure stories.'", opts: ["reading", "read", "reads", "is read"], ans: 0 },
-        { q: "6. Complete: 'We ___ to school by bus every day.'", opts: ["go", "goes", "going", "are go"], ans: 0 },
-        { q: "7. What is the plural of 'hobby'?", opts: ["hobbies", "hobbys", "hobbyes", "hobbiez"], ans: 0 },
-        { q: "8. Choose the correct adverb position:", opts: ["I always wake up early.", "I wake always up early.", "Always I wake up early.", "I wake up always early."], ans: 0 },
-        { q: "9. Complete: 'She ___ her homework after school.'", opts: ["does", "do", "doing", "is do"], ans: 0 },
-        { q: "10. How do you respond to 'Nice to meet you'?", opts: ["Nice to meet you, too.", "Good morning.", "I am twelve.", "Thank you no."], ans: 0 },
-        { q: "11. Complete: 'We live ___ a quiet neighborhood in Riyadh.'", opts: ["in", "on", "at", "to"], ans: 0 },
-        { q: "12. Which sentence is 100% correct in English?", opts: ["She is a teacher.", "He are an engineer.", "They is doctors.", "I are happy."], ans: 0 },
-        { q: "13. Complete: 'They enjoy ___ in the swimming pool.'", opts: ["swimming", "swim", "swims", "swam"], ans: 0 },
-        { q: "14. Complete: 'My parents ___ proud of me.'", opts: ["are", "is", "am", "be"], ans: 0 },
-        { q: "15. Choose the correct spelling of the number 12:", opts: ["Twelve", "Twelv", "Twelf", "Twleve"], ans: 0 },
-        { q: "16. Put words in order: [ enjoy / We / English / studying ]", opts: ["We enjoy studying English.", "English studying we enjoy.", "Studying we enjoy English.", "We studying enjoy English."], ans: 0 }
+        { q: "1. Choose contraction: 'I am a student.'", opts: ["I'm", "I's", "I'are"], ans: 0 },
+        { q: "2. Complete: 'He ___ a doctor.'", opts: ["is", "am", "are"], ans: 0 },
+        { q: "3. Complete: 'They ___ my kind teachers.'", opts: ["are", "am", "is"], ans: 0 },
+        { q: "4. Plural of 'child':", opts: ["children", "childs", "childrens"], ans: 0 },
+        { q: "5. Grammar: 'I like ___ adventure stories.'", opts: ["reading", "read", "reads"], ans: 0 },
+        { q: "6. Complete: 'We ___ to school by bus every day.'", opts: ["go", "goes", "going"], ans: 0 },
+        { q: "7. Plural of 'hobby':", opts: ["hobbies", "hobbys", "hobbyes"], ans: 0 },
+        { q: "8. Adverb position:", opts: ["I always wake up early.", "I wake always early."], ans: 0 },
+        { q: "9. Complete: 'She ___ her homework after school.'", opts: ["does", "do", "doing"], ans: 0 },
+        { q: "10. Response to 'Nice to meet you':", opts: ["Nice to meet you, too.", "Good morning."], ans: 0 },
+        { q: "11. Complete: 'We live ___ Riyadh.'", opts: ["in", "on", "at"], ans: 0 },
+        { q: "12. Correct sentence:", opts: ["She is a teacher.", "He are an engineer."], ans: 0 },
+        { q: "13. Complete: 'They enjoy ___.'", opts: ["swimming", "swim", "swims"], ans: 0 },
+        { q: "14. Complete: 'My parents ___ proud.'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "15. Correct spelling of 12:", opts: ["Twelve", "Twelv", "Twelf"], ans: 0 },
+        { q: "16. Put in order: [ enjoy / We / English / studying ]", opts: ["We enjoy studying English.", "English studying we enjoy."], ans: 0 }
       ]
     };
 
-    // 6. Level 2 Milestone Assessment (Weeks 5-8 Mastery - 16 Questions)
     const LEVEL_2_EXAM = {
       id: "level_2",
       title: "Level 2 Milestone Assessment: A1.2 Elementary (اجتياز المستوى الثاني)",
       target: 13,
       total: 16,
       questions: [
-        { q: "1. Complete: 'I would like ___ water, please.' (Positive)", opts: ["some", "any", "many", "an"], ans: 0 },
-        { q: "2. Complete: 'We don't have ___ fresh milk in the kitchen.'", opts: ["any", "some", "much", "no"], ans: 0 },
-        { q: "3. Which word is UNCOUNTABLE in English?", opts: ["Rice", "Banana", "Orange", "Egg"], ans: 0 },
-        { q: "4. Complete: 'The pharmacy is ___ to the supermarket.'", opts: ["next", "between", "under", "in"], ans: 0 },
-        { q: "5. Direction command: '___ left at the main intersection.'", opts: ["Turn", "Turns", "Turning", "Turned"], ans: 0 },
-        { q: "6. Complete: 'The mosque is located ___ the park and the school.'", opts: ["between", "next", "in", "opposite of"], ans: 0 },
-        { q: "7. Complete: 'How much ___ this blue thobe?'", opts: ["is", "are", "am", "be"], ans: 0 },
-        { q: "8. Complete: 'How much ___ these running shoes?'", opts: ["are", "is", "am", "was"], ans: 0 },
-        { q: "9. Pointing to distant plural shoes: 'Look at ___ shoes on the high shelf!'", opts: ["those", "these", "this", "that"], ans: 0 },
-        { q: "10. Asking for count: '___ pencils do you need?'", opts: ["How many", "How much", "How far", "How long"], ans: 0 },
-        { q: "11. Present continuous: 'Look! The clouds ___ over the mountain.'", opts: ["are rolling", "roll", "rolls", "is roll"], ans: 0 },
-        { q: "12. Complete: 'Listen! The teacher ___ right now.'", opts: ["is speaking", "speaks", "speak", "spoke"], ans: 0 },
-        { q: "13. What is the weather like in summer in Riyadh?", opts: ["Hot and sunny", "Snowing", "Misty and cold", "Freezing"], ans: 0 },
-        { q: "14. Complete: 'Could I have ___ orange juice, please?' (Polite request)", opts: ["some", "any", "no", "few"], ans: 0 },
-        { q: "15. Complete: 'The bookshop is ___ the street from the bank.'", opts: ["across", "through", "in", "between"], ans: 0 },
-        { q: "16. Correct sentence: 'Right now, we ___ for our STEP examination.'", opts: ["are preparing", "prepares", "prepared", "prepare"], ans: 0 }
+        { q: "1. Complete: 'I would like ___ water, please.'", opts: ["some", "any", "many"], ans: 0 },
+        { q: "2. Complete: 'We don't have ___ milk.'", opts: ["any", "some", "much"], ans: 0 },
+        { q: "3. Uncountable noun:", opts: ["Rice", "Banana", "Orange"], ans: 0 },
+        { q: "4. Complete: 'The pharmacy is ___ to the supermarket.'", opts: ["next", "between", "under"], ans: 0 },
+        { q: "5. Direction command: '___ left at intersection.'", opts: ["Turn", "Turns", "Turning"], ans: 0 },
+        { q: "6. 'The mosque is located ___ the park and the school.'", opts: ["between", "next", "in"], ans: 0 },
+        { q: "7. Complete: 'How much ___ this blue thobe?'", opts: ["is", "are", "am"], ans: 0 },
+        { q: "8. Complete: 'How much ___ these shoes?'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "9. Distant plural shoes: 'Look at ___ shoes on the high shelf!'", opts: ["those", "these", "this"], ans: 0 },
+        { q: "10. Asking count: '___ pencils do you need?'", opts: ["How many", "How much", "How far"], ans: 0 },
+        { q: "11. Present continuous: 'Look! The clouds ___ over the mountain.'", opts: ["are rolling", "roll", "rolls"], ans: 0 },
+        { q: "12. Complete: 'Listen! The teacher ___ right now.'", opts: ["is speaking", "speaks", "speak"], ans: 0 },
+        { q: "13. Weather in summer in Riyadh:", opts: ["Hot and sunny", "Snowing", "Freezing"], ans: 0 },
+        { q: "14. Request: 'Could I have ___ orange juice, please?'", opts: ["some", "any", "no"], ans: 0 },
+        { q: "15. 'The bookshop is ___ the street from bank.'", opts: ["across", "through", "in"], ans: 0 },
+        { q: "16. Correct sentence:", opts: ["We are preparing for our test now.", "We prepare now test."], ans: 0 }
       ]
     };
 
-    // 7. Comprehensive Course Graduation Final Exam (40 Questions)
+    const LEVEL_3_EXAM = {
+      id: "level_3",
+      title: "Level 3 Milestone Assessment: A2.1 Pre-Intermediate (اجتياز المستوى الثالث)",
+      target: 13,
+      total: 16,
+      questions: [
+        { q: "1. Past form of 'visit':", opts: ["visited", "visiting", "visits"], ans: 0 },
+        { q: "2. Past form of 'go':", opts: ["went", "goed", "goes"], ans: 0 },
+        { q: "3. Past form of 'see':", opts: ["saw", "seed", "seen"], ans: 0 },
+        { q: "4. Past form of 'eat':", opts: ["ate", "eated", "eats"], ans: 0 },
+        { q: "5. Past form of 'buy':", opts: ["bought", "buyed", "buys"], ans: 0 },
+        { q: "6. Complete: 'We ___ to Jeddah last weekend.'", opts: ["went", "go", "going"], ans: 0 },
+        { q: "7. Complete: 'Yesterday, I ___ a new jacket.'", opts: ["bought", "buy", "buyed"], ans: 0 },
+        { q: "8. Advice: 'You have a high fever. You ___ see a doctor.'", opts: ["should", "shouldn't", "don't"], ans: 0 },
+        { q: "9. Warning: 'You have a bad cough. You ___ drink ice water.'", opts: ["shouldn't", "should", "must"], ans: 0 },
+        { q: "10. What follows 'should'?", opts: ["Base verb (infinitive)", "Verb + ing", "Verb + ed"], ans: 0 },
+        { q: "11. Future intention: 'I am going to ___ medicine next year.'", opts: ["study", "studies", "studied"], ans: 0 },
+        { q: "12. Complete: 'They ___ going to travel tomorrow.'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "13. Complete: 'What ___ you going to do after graduation?'", opts: ["are", "is", "do"], ans: 0 },
+        { q: "14. Word meaning 'ألم في الحلق':", opts: ["Sore throat", "Headache", "Fever"], ans: 0 },
+        { q: "15. Signal for past time:", opts: ["Two days ago", "Tomorrow", "Right now"], ans: 0 },
+        { q: "16. Correct sentence for future plan:", opts: ["We are going to build a smart project.", "We going to build.", "We are build."], ans: 0 }
+      ]
+    };
+
+    // 6. Comprehensive Course Graduation Final Exam (40 Questions)
     const FINAL_EXAM_40 = {
       id: "final_40",
       title: "Comprehensive Mini STEP Graduation Exam (الاختبار النهائي للكورس الكامل)",
       target: 32,
       total: 40,
       questions: [
-        { q: "1. Choose the correct contraction: 'I am ready.'", opts: ["I'm", "I's", "I'are", "I'be"], ans: 0 },
-        { q: "2. Complete: 'He ___ an engineer.'", opts: ["is", "am", "are", "be"], ans: 0 },
-        { q: "3. Complete: 'They ___ my brothers.'", opts: ["are", "is", "am", "be"], ans: 0 },
-        { q: "4. Complete: 'We ___ students at Al Bayariq School.'", opts: ["are", "is", "am", "be"], ans: 0 },
-        { q: "5. What is the plural of 'child'?", opts: ["children", "childs", "childrens", "childes"], ans: 0 },
-        { q: "6. What is the plural of 'hobby'?", opts: ["hobbies", "hobbys", "hobbyes", "hobbiez"], ans: 0 },
-        { q: "7. What is the plural of 'story'?", opts: ["stories", "storys", "storyes", "storiess"], ans: 0 },
-        { q: "8. What is the plural of 'city'?", opts: ["cities", "citys", "cityes", "citiez"], ans: 0 },
-        { q: "9. Choose the correct grammar: 'I like ___ books.'", opts: ["reading", "read", "reads", "is read"], ans: 0 },
-        { q: "10. Complete: 'We love ___ football on Fridays.'", opts: ["playing", "play", "plays", "played"], ans: 0 },
-        { q: "11. Complete: 'They enjoy ___ in summer.'", opts: ["swimming", "swim", "swims", "swam"], ans: 0 },
-        { q: "12. Choose correct adverb order:", opts: ["I always wake up at 6:00.", "I wake always up at 6:00.", "Always I wake up.", "I wake up always."], ans: 0 },
-        { q: "13. Complete: 'We usually ___ to school by bus.'", opts: ["go", "goes", "going", "are go"], ans: 0 },
-        { q: "14. Complete: 'She ___ her homework diligently.'", opts: ["does", "do", "doing", "is do"], ans: 0 },
-        { q: "15. Complete: 'Where ___ you from?'", opts: ["are", "is", "am", "be"], ans: 0 },
-        { q: "16. Complete: 'I am from Saudi Arabia. I live ___ Riyadh.'", opts: ["in", "on", "at", "to"], ans: 0 },
-        { q: "17. How do you respond to 'Nice to meet you'?", opts: ["Nice to meet you, too.", "Good evening.", "I am ten.", "No thanks."], ans: 0 },
-        { q: "18. Complete: 'My mother is kind. ___ is a teacher.'", opts: ["She", "He", "They", "We"], ans: 0 },
-        { q: "19. Complete: 'My father is tall. ___ is a doctor.'", opts: ["He", "She", "They", "It"], ans: 0 },
-        { q: "20. Complete: 'This is my house. ___ is big and clean.'", opts: ["It", "He", "She", "They"], ans: 0 },
-        { q: "21. Choose the correct spelling for 11:", opts: ["Eleven", "Elevan", "Eleaven", "Elewen"], ans: 0 },
-        { q: "22. Choose the correct spelling for 12:", opts: ["Twelve", "Twelv", "Twelf", "Twleve"], ans: 0 },
-        { q: "23. Complete: 'There is ___ milk in the bottle.'", opts: ["some", "any", "many", "a"], ans: 0 },
-        { q: "24. Complete: 'We haven't got ___ eggs left.'", opts: ["any", "some", "much", "no"], ans: 0 },
-        { q: "25. Which word is uncountable?", opts: ["Water", "Car", "Apple", "Chair"], ans: 0 },
-        { q: "26. Direction command: '___ straight ahead!'", opts: ["Go", "Goes", "Going", "Gone"], ans: 0 },
-        { q: "27. Complete: 'The clinic is ___ to the hotel.'", opts: ["next", "between", "under", "in"], ans: 0 },
-        { q: "28. Complete: 'How much ___ this thobe?'", opts: ["is", "are", "am", "be"], ans: 0 },
-        { q: "29. Complete: 'How much ___ these shoes?'", opts: ["are", "is", "am", "was"], ans: 0 },
-        { q: "30. Pointing to close items: '___ shoes right here fit me.'", opts: ["These", "Those", "That", "This"], ans: 0 },
-        { q: "31. Asking for quantity: '___ books did you read?'", opts: ["How many", "How much", "How long", "How old"], ans: 0 },
-        { q: "32. Present continuous: 'Look! It ___ outside.'", opts: ["is raining", "rains", "rained", "rain"], ans: 0 },
-        { q: "33. Present continuous: 'We ___ tea right now.'", opts: ["are drinking", "drinks", "drink", "drank"], ans: 0 },
-        { q: "34. Complete: 'They ___ Fajr prayer on time every day.'", opts: ["pray", "prays", "praying", "is pray"], ans: 0 },
-        { q: "35. Which sentence is grammatically correct?", opts: ["She is a wonderful teacher.", "She are a teacher.", "She am a teacher.", "She be a teacher."], ans: 0 },
-        { q: "36. Which sentence is grammatically correct?", opts: ["They are proud students.", "They is proud students.", "They am proud students.", "They be proud students."], ans: 0 },
-        { q: "37. Reading Check: Masmak Fortress is in:", opts: ["Riyadh", "London", "Cairo", "Paris"], ans: 0 },
-        { q: "38. Reading Check: Abha in summer is:", opts: ["Pleasantly cool", "Desert hot", "Dry", "Freezing cold"], ans: 0 },
-        { q: "39. Reading Check: Kabsa contains:", opts: ["Rice, spices, and chicken", "Bread and tea", "Fish and chocolate", "Chips"], ans: 0 },
-        { q: "40. STEP Standard: 'The children ___ playing happily in the garden right now.'", opts: ["are", "is", "am", "be"], ans: 0 }
+        { q: "1. Choose the correct contraction: 'I am ready.'", opts: ["I'm", "I's", "I'are"], ans: 0 },
+        { q: "2. Complete: 'He ___ an engineer.'", opts: ["is", "am", "are"], ans: 0 },
+        { q: "3. Complete: 'They ___ my brothers.'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "4. Complete: 'We ___ students at Al Bayariq School.'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "5. What is the plural of 'child'?", opts: ["children", "childs", "childrens"], ans: 0 },
+        { q: "6. What is the plural of 'hobby'?", opts: ["hobbies", "hobbys", "hobbyes"], ans: 0 },
+        { q: "7. What is the plural of 'story'?", opts: ["stories", "storys", "storyes"], ans: 0 },
+        { q: "8. What is the plural of 'city'?", opts: ["cities", "citys", "cityes"], ans: 0 },
+        { q: "9. Choose the correct grammar: 'I like ___ books.'", opts: ["reading", "read", "reads"], ans: 0 },
+        { q: "10. Complete: 'We love ___ football on Fridays.'", opts: ["playing", "play", "plays"], ans: 0 },
+        { q: "11. Complete: 'They enjoy ___ in summer.'", opts: ["swimming", "swim", "swims"], ans: 0 },
+        { q: "12. Choose correct adverb order:", opts: ["I always wake up at 6:00.", "I wake always up at 6:00."], ans: 0 },
+        { q: "13. Complete: 'We usually ___ to school by bus.'", opts: ["go", "goes", "going"], ans: 0 },
+        { q: "14. Complete: 'She ___ her homework diligently.'", opts: ["does", "do", "doing"], ans: 0 },
+        { q: "15. Complete: 'Where ___ you from?'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "16. Complete: 'I am from Saudi Arabia. I live ___ Riyadh.'", opts: ["in", "on", "at"], ans: 0 },
+        { q: "17. How do you respond to 'Nice to meet you'?", opts: ["Nice to meet you, too.", "Good evening."], ans: 0 },
+        { q: "18. Complete: 'My mother is kind. ___ is a teacher.'", opts: ["She", "He", "They"], ans: 0 },
+        { q: "19. Complete: 'My father is tall. ___ is a doctor.'", opts: ["He", "She", "They"], ans: 0 },
+        { q: "20. Complete: 'This is my house. ___ is big and clean.'", opts: ["It", "He", "She"], ans: 0 },
+        { q: "21. Choose the correct spelling for 11:", opts: ["Eleven", "Elevan", "Eleaven"], ans: 0 },
+        { q: "22. Choose the correct spelling for 12:", opts: ["Twelve", "Twelv", "Twelf"], ans: 0 },
+        { q: "23. Complete: 'There is ___ milk in the bottle.'", opts: ["some", "any", "many"], ans: 0 },
+        { q: "24. Complete: 'We haven't got ___ eggs left.'", opts: ["any", "some", "much"], ans: 0 },
+        { q: "25. Which word is uncountable?", opts: ["Water", "Car", "Apple"], ans: 0 },
+        { q: "26. Direction command: '___ straight ahead!'", opts: ["Go", "Goes", "Going"], ans: 0 },
+        { q: "27. Complete: 'The clinic is ___ to the hotel.'", opts: ["next", "between", "under"], ans: 0 },
+        { q: "28. Complete: 'How much ___ this thobe?'", opts: ["is", "are", "am"], ans: 0 },
+        { q: "29. Complete: 'How much ___ these shoes?'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "30. Pointing to close items: '___ shoes right here fit me.'", opts: ["These", "Those", "That"], ans: 0 },
+        { q: "31. Past of 'go':", opts: ["went", "goed", "goes"], ans: 0 },
+        { q: "32. Past of 'see':", opts: ["saw", "seed", "seen"], ans: 0 },
+        { q: "33. Past of 'buy':", opts: ["bought", "buyed", "buys"], ans: 0 },
+        { q: "34. Advice: 'You have a headache. You ___ rest.'", opts: ["should", "shouldn't", "don't"], ans: 0 },
+        { q: "35. Future plan: 'I am going to ___ engineering.'", opts: ["study", "studies", "studied"], ans: 0 },
+        { q: "36. Future plan: 'They ___ going to build a new hospital.'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "37. Present continuous: 'Look! It ___ right now.'", opts: ["is raining", "rains", "rained"], ans: 0 },
+        { q: "38. Reading Check: Diriyah is famous for:", opts: ["At-Turaif historic district", "Coral reefs"], ans: 0 },
+        { q: "39. Reading Check: King Fahd Fountain is in:", opts: ["Jeddah", "Riyadh", "Dammam"], ans: 0 },
+        { q: "40. STEP Standard: 'The children ___ playing happily in the garden right now.'", opts: ["are", "is", "am"], ans: 0 }
       ]
     };
 
-    // 8. Application Controller
+    // 7. Application Controller
     class MiniStepApp {
       constructor() {
         this.student = JSON.parse(localStorage.getItem('miniStep_user')) || null;
@@ -2100,12 +2404,12 @@
         grid.innerHTML = '';
         
         let completedWeeks = 0;
-        const totalActiveWeeks = 8;
+        const totalActiveWeeks = 12;
 
-        for (let i = 1; i <= 8; i++) {
+        for (let i = 1; i <= 12; i++) {
           const card = document.createElement('div');
           
-          // Progressive Unlocking: Week 1 is always unlocked. Week N opens if Week N-1 is passed (score >= 8)
+          // Progressive Unlocking
           const isUnlocked = (i === 1) || (this.studentScores[`week_${i - 1}`] && this.studentScores[`week_${i - 1}`] >= 8);
           const isPassed = (this.studentScores[`week_${i}`] && this.studentScores[`week_${i}`] >= 8);
           if (isPassed) completedWeeks++;
@@ -2130,7 +2434,7 @@
           }
           grid.appendChild(card);
 
-          // Insert Milestone 1 after Week 4
+          // Milestone 1 after Week 4
           if (i === 4) {
             const weeks1to4Done = (this.studentScores['week_1'] >= 8 && this.studentScores['week_2'] >= 8 && this.studentScores['week_3'] >= 8 && this.studentScores['week_4'] >= 8);
             const level1Passed = (this.studentScores['level_1'] && this.studentScores['level_1'] >= LEVEL_1_EXAM.target);
@@ -2143,7 +2447,7 @@
                 <span>${level1Passed ? 'Mastered ⭐' : (weeks1to4Done ? 'Available Now 🟢' : 'Locked 🔒 (Pass Weeks 1-4)')}</span>
               </div>
               <h3 style="font-size:17px; color:var(--primary); margin-bottom:4px;">Level 1 Milestone Assessment: A1 Breakthrough (16 Questions)</h3>
-              <p style="font-size:13px; color:var(--text-muted);">Comprehensive evaluation across Weeks 01-04 skills. Pass with 13/16 to earn Level 1 recognition!</p>
+              <p style="font-size:13px; color:var(--text-muted);">Comprehensive evaluation across Weeks 01-04 skills. Pass with 13/16!</p>
             `;
             if (weeks1to4Done) {
               m1.onclick = () => this.openMilestoneExam(LEVEL_1_EXAM);
@@ -2152,31 +2456,54 @@
             }
             grid.appendChild(m1);
           }
+
+          // Milestone 2 after Week 8
+          if (i === 8) {
+            const weeks5to8Done = (this.studentScores['week_5'] >= 8 && this.studentScores['week_6'] >= 8 && this.studentScores['week_7'] >= 8 && this.studentScores['week_8'] >= 8);
+            const level2Passed = (this.studentScores['level_2'] && this.studentScores['level_2'] >= LEVEL_2_EXAM.target);
+
+            const m2 = document.createElement('div');
+            m2.className = `milestone-card ${weeks5to8Done ? 'unlocked-week' : 'locked-week'}`;
+            m2.innerHTML = `
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <span style="font-size:11px; font-weight:800; background:var(--gold); color:#000; padding:4px 10px; border-radius:12px;">LEVEL 2 MILESTONE</span>
+                <span>${level2Passed ? 'Mastered ⭐' : (weeks5to8Done ? 'Available Now 🟢' : 'Locked 🔒 (Pass Weeks 5-8)')}</span>
+              </div>
+              <h3 style="font-size:17px; color:var(--primary); margin-bottom:4px;">Level 2 Milestone Assessment: A1.2 Elementary (16 Questions)</h3>
+              <p style="font-size:13px; color:var(--text-muted);">Comprehensive evaluation across Weeks 05-08 skills. Pass with 13/16!</p>
+            `;
+            if (weeks5to8Done) {
+              m2.onclick = () => this.openMilestoneExam(LEVEL_2_EXAM);
+            } else {
+              m2.onclick = () => alert("🔒 Locked! Complete Weeks 5 to 8 first.");
+            }
+            grid.appendChild(m2);
+          }
         }
 
-        // Milestone 2 after Week 8
-        const weeks5to8Done = (this.studentScores['week_5'] >= 8 && this.studentScores['week_6'] >= 8 && this.studentScores['week_7'] >= 8 && this.studentScores['week_8'] >= 8);
-        const level2Passed = (this.studentScores['level_2'] && this.studentScores['level_2'] >= LEVEL_2_EXAM.target);
+        // Milestone 3 after Week 12
+        const weeks9to12Done = (this.studentScores['week_9'] >= 8 && this.studentScores['week_10'] >= 8 && this.studentScores['week_11'] >= 8 && this.studentScores['week_12'] >= 8);
+        const level3Passed = (this.studentScores['level_3'] && this.studentScores['level_3'] >= LEVEL_3_EXAM.target);
 
-        const m2 = document.createElement('div');
-        m2.className = `milestone-card ${weeks5to8Done ? 'unlocked-week' : 'locked-week'}`;
-        m2.innerHTML = `
+        const m3 = document.createElement('div');
+        m3.className = `milestone-card ${weeks9to12Done ? 'unlocked-week' : 'locked-week'}`;
+        m3.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <span style="font-size:11px; font-weight:800; background:var(--gold); color:#000; padding:4px 10px; border-radius:12px;">LEVEL 2 MILESTONE</span>
-            <span>${level2Passed ? 'Mastered ⭐' : (weeks5to8Done ? 'Available Now 🟢' : 'Locked 🔒 (Pass Weeks 5-8)')}</span>
+            <span style="font-size:11px; font-weight:800; background:var(--gold); color:#000; padding:4px 10px; border-radius:12px;">LEVEL 3 MILESTONE</span>
+            <span>${level3Passed ? 'Mastered ⭐' : (weeks9to12Done ? 'Available Now 🟢' : 'Locked 🔒 (Pass Weeks 9-12)')}</span>
           </div>
-          <h3 style="font-size:17px; color:var(--primary); margin-bottom:4px;">Level 2 Milestone Assessment: A1.2 Elementary (16 Questions)</h3>
-          <p style="font-size:13px; color:var(--text-muted);">Comprehensive evaluation across Weeks 05-08 skills (Food, Directions, Shopping, Weather). Pass with 13/16!</p>
+          <h3 style="font-size:17px; color:var(--primary); margin-bottom:4px;">Level 3 Milestone Assessment: A2.1 Pre-Intermediate (16 Questions)</h3>
+          <p style="font-size:13px; color:var(--text-muted);">Comprehensive evaluation across Weeks 09-12 (Past Simple, Health Advice, Future Plans). Pass with 13/16!</p>
         `;
-        if (weeks5to8Done) {
-          m2.onclick = () => this.openMilestoneExam(LEVEL_2_EXAM);
+        if (weeks9to12Done) {
+          m3.onclick = () => this.openMilestoneExam(LEVEL_3_EXAM);
         } else {
-          m2.onclick = () => alert("🔒 Locked! Complete Weeks 5 to 8 first.");
+          m3.onclick = () => alert("🔒 Locked! Complete Weeks 9 to 12 first.");
         }
-        grid.appendChild(m2);
+        grid.appendChild(m3);
 
-        // Future Weeks 9 to 36 placeholders
-        for (let i = 9; i <= 36; i++) {
+        // Future Weeks 13 to 36 placeholders
+        for (let i = 13; i <= 36; i++) {
           const card = document.createElement('div');
           card.className = 'week-card locked-week';
           card.innerHTML = `
@@ -2193,19 +2520,19 @@
         // Final Comprehensive Exam Card (40 Questions)
         const finalCard = document.createElement('div');
         const finalPassed = (this.studentScores['final_40'] && this.studentScores['final_40'] >= FINAL_EXAM_40.target);
-        finalCard.className = `final-exam-card ${level2Passed ? 'unlocked-week' : 'locked-week'}`;
+        finalCard.className = `final-exam-card ${level3Passed ? 'unlocked-week' : 'locked-week'}`;
         finalCard.innerHTML = `
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
             <span style="font-size:11px; font-weight:800; background:var(--gold); color:#000; padding:4px 10px; border-radius:12px;">COURSE GRADUATION</span>
-            <span>${finalPassed ? 'Graduated 🎓' : (level2Passed ? 'Ready 🎯' : 'Locked 🔒')}</span>
+            <span>${finalPassed ? 'Graduated 🎓' : (level3Passed ? 'Ready 🎯' : 'Locked 🔒')}</span>
           </div>
           <h3 style="font-size:19px; margin-bottom:6px;">Comprehensive Mini STEP Course Final Exam (40 Questions)</h3>
           <p style="font-size:13px; color:#d1ded7;">Score 32/40 (80%) or higher to earn the official Al Bayariq Mini STEP Graduation Certificate!</p>
         `;
-        if (level2Passed) {
+        if (level3Passed) {
           finalCard.onclick = () => this.openFinalExam40();
         } else {
-          finalCard.onclick = () => alert("🔒 Final Exam is locked! Pass Level 2 Milestone Assessment first.");
+          finalCard.onclick = () => alert("🔒 Final Exam is locked! Pass Level 3 Milestone Assessment first.");
         }
         grid.appendChild(finalCard);
 
@@ -2374,7 +2701,7 @@
         this.speak(data.readingText);
       }
 
-      /* Millionaire Engine with SFX */
+      /* Millionaire Engine */
       startMillionaire(questions) {
         this.millList = questions || WEEKS_DATA[this.currentWeek].millionaire;
         this.millIdx = 0;
@@ -2482,8 +2809,8 @@
             <div style="font-weight:700; font-size:14px; margin-bottom:8px;">${item.q}</div>
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;" id="q_grid_${qIdx}">
               ${item.opts.map((opt, oIdx) => `
-                <button type="button" class="btn btn-outline" style="text-align:left; justify-content:flex-start; font-size:13px;" onclick="app.pickAns(${qIdx},${oIdx})">
-                  ${String.fromCharCode(65 + oIdx)}.${opt}
+                <button type="button" class="btn btn-outline" style="text-align:left; justify-content:flex-start; font-size:13px;" onclick="app.pickAns(${qIdx}, ${oIdx})">
+                  ${String.fromCharCode(65 + oIdx)}. ${opt}
                 </button>
               `).join('')}
             </div>
