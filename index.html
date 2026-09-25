@@ -1,720 +1,2187 @@
-Mini STEP: Unified Web Platform Architecture
-The Mini STEP platform is a sophisticated educational ecosystem designed to bridge the gap between foundational English literacy and standardized testing proficiency. This document contains the complete, self-contained source code, including the curriculum engine, assessment modules, and the dynamic certificate rendering system.
-1. System Overview
-The platform operates as a Single Page Application (SPA). It utilizes a state-driven architecture where the user's progress is synchronized between local storage for offline resilience and Firebase Firestore for persistent cloud tracking.
-Core Visual Identity
-Primary Palette: Petrol Green (#004d40) representing stability and depth.
-Accent Palette: Gold (#c5a059) representing excellence and achievement.
-Typography: A combination of Cinzel for formal recognition, Outfit for modern interface interactions, and Tajawal for multilingual clarity.
-2. Platform Source Code (HTML/CSS/JS)
-The following code block is a complete, production-ready file. To deploy, save this content as index.html.<!DOCTYPE html>
-
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 <head>
-
-    <meta charset="UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Mini STEP | Advanced Learning Platform</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Outfit:wght@300;400;600&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
-
-    
-
-    <style>
-
-        :root {
-
-            --petrol: #004d40;
-
-            --gold: #c5a059;
-
-            --light-gold: #e3c892;
-
-            --bg: #fdfcfb;
-
-            --text: #2c3e50;
-
-            --white: #ffffff;
-
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-
-        
-
-        /* Layout */
-
-        #app { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 100vh; }
-
-        .hidden { display: none !important; }
-
-        /* Typography */
-
-        h1, h2, h3 { font-family: 'Cinzel', serif; color: var(--petrol); }
-
-        .arabic { font-family: 'Tajawal', sans-serif; direction: rtl; }
-
-        /* Components */
-
-        .card { background: var(--white); border-radius: 12px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 4px solid var(--gold); margin-bottom: 20px; transition: transform 0.3s ease; }
-
-        .card:hover { transform: translateY(-5px); }
-
-        
-
-        .btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s; font-family: 'Outfit'; }
-
-        .btn-primary { background: var(--petrol); color: var(--white); }
-
-        .btn-gold { background: var(--gold); color: var(--white); }
-
-        
-
-        /* Millionaire Quiz Styles */
-
-        .quiz-container { background: #010b1a; color: white; padding: 30px; border-radius: 20px; border: 2px solid var(--gold); }
-
-        .option { background: linear-gradient(90deg, #102a4d 0%, #1a3a6d 100%); border: 1px solid #34495e; padding: 15px; margin: 10px 0; cursor: pointer; border-radius: 50px; text-align: center; font-weight: 600; }
-
-        .option:hover { border-color: var(--gold); background: #1a3a6d; }
-
-        .option.correct { background: #27ae60 !important; }
-
-        .option.wrong { background: #c0392b !important; }
-
-        /* Certificate Print Layout - A4 Landscape */
-
-        @media print {
-
-            body * { visibility: hidden; }
-
-            #certificate-print-area, #certificate-print-area * { visibility: visible; }
-
-            #certificate-print-area { position: absolute; left: 0; top: 0; width: 297mm; height: 210mm; background: white !important; }
-
-            @page { size: A4 landscape; margin: 0; }
-
-        }
-
-        .cert-frame { width: 100%; height: 100%; border: 15px double var(--gold); padding: 40px; text-align: center; position: relative; background: #fffcf5; }
-
-        .cert-title { font-family: 'Cinzel'; font-size: 48px; color: var(--petrol); margin-bottom: 20px; }
-
-        .cert-name { font-size: 36px; border-bottom: 2px solid var(--petrol); display: inline-block; padding: 0 50px; margin: 20px 0; font-family: 'Cinzel'; }
-
-        .signature-grid { display: grid; grid-template-columns: repeat(2, 1fr); margin-top: 50px; }
-
-        .sig-block { border-top: 1px solid #333; width: 200px; margin: 0 auto; padding-top: 5px; font-size: 14px; }
-
-        /* Grid */
-
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-
-    </style>
-
-</head>
-
-<body>
-
-<div id="app">
-
-    <!-- Login / Auth View -->
-
-    <div id="view-login" class="card" style="max-width: 400px; margin: 100px auto; text-align: center;">
-
-        <h1 style="font-size: 24px; margin-bottom: 20px;">Student Access</h1>
-
-        <input type="text" id="student-name" placeholder="Full Student Name" class="btn" style="width: 100%; border: 1px solid #ddd; margin-bottom: 10px; color: #333;">
-
-        <input type="password" id="student-pin" placeholder="Access PIN (4 digits)" class="btn" style="width: 100%; border: 1px solid #ddd; margin-bottom: 20px; color: #333;">
-
-        <button class="btn btn-primary" style="width: 100%;" onclick="app.login()">Enter Platform</button>
-
-    </div>
-
-    <!-- Dashboard View -->
-
-    <div id="view-dashboard" class="hidden">
-
-        <header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-
-            <div>
-
-                <h1 id="user-display">Welcome, Student</h1>
-
-                <p id="level-status">Level 1: Progress 0%</p>
-
-            </div>
-
-            <button class="btn btn-gold" onclick="app.showAdmin()">Admin Control</button>
-
-        </header>
-
-        <div class="grid-3" id="week-grid"></div>
-
-    </div>
-
-    <!-- Content View -->
-
-    <div id="view-content" class="hidden">
-
-        <button class="btn btn-primary" onclick="app.showDashboard()" style="margin-bottom: 20px;">← Back</button>
-
-        <div id="content-payload"></div>
-
-    </div>
-
-    <!-- Quiz View -->
-
-    <div id="view-quiz" class="hidden">
-
-        <div class="quiz-container">
-
-            <h2 id="quiz-question" style="color: white; margin-bottom: 20px; font-family: 'Outfit';">Question Text</h2>
-
-            <div id="quiz-options"></div>
-
-            <div id="quiz-progress" style="margin-top: 20px; color: var(--gold);"></div>
-
-        </div>
-
-    </div>
-
-    <!-- Certificate View -->
-
-    <div id="view-cert" class="hidden">
-
-        <button class="btn btn-primary" onclick="app.showDashboard()">Close</button>
-
-        <button class="btn btn-gold" onclick="window.print()">Print PDF</button>
-
-        <div id="certificate-print-area" style="margin-top: 20px;"></div>
-
-    </div>
-
-    <!-- Admin Panel -->
-
-    <div id="view-admin" class="hidden">
-
-        <div class="card">
-
-            <h2>System Administration</h2>
-
-            <div id="admin-login-fields" style="margin: 20px 0;">
-
-                <input type="text" id="admin-user" placeholder="Username" class="btn" style="border: 1px solid #ddd;">
-
-                <input type="password" id="admin-pass" placeholder="Password" class="btn" style="border: 1px solid #ddd;">
-
-                <button class="btn btn-primary" onclick="app.authAdmin()">Unlock Admin</button>
-
-            </div>
-
-            <div id="admin-controls" class="hidden">
-
-                <button class="btn btn-gold" onclick="app.lockApp()">Lock Platform</button>
-
-                <button class="btn btn-primary" onclick="app.purgeRecords()">Purge All Records</button>
-
-                <div id="student-list" style="margin-top: 20px;"></div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<script>
-
-    // Firebase Placeholder Configuration
-
-    const firebaseConfig = {
-
-        apiKey: "AIzaSy-YourActualKeyGoesHere",
-
-        authDomain: "mini-step-edu.firebaseapp.com",
-
-        projectId: "mini-step-edu",
-
-        storageBucket: "mini-step-edu.appspot.com",
-
-        messagingSenderId: "123456789",
-
-        appId: "1:123456789:web:abcdef"
-
-    };
-
-    // Initialize Firebase (Checks if config is valid, otherwise uses local mode)
-
-    let db;
-
-    try {
-
-        firebase.initializeApp(firebaseConfig);
-
-        db = firebase.firestore();
-
-    } catch(e) {
-
-        console.warn("Firebase not connected. Running in LocalStorage mode.");
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Mini STEP — Al Bayariq Private Schools</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Outfit:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <style>
+    :root {
+      --primary: #0b3b24;
+      --primary-dark: #072617;
+      --primary-light: #165b38;
+      --gold: #d4af37;
+      --gold-dark: #b5891a;
+      --gold-light: #fdf6e2;
+      --bg: #f4f8f5;
+      --surface: #ffffff;
+      --text: #1d2923;
+      --text-muted: #5e6f66;
+      --border: #dbe5df;
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --font-en: 'Outfit', sans-serif;
+      --font-ar: 'Tajawal', sans-serif;
     }
 
-    // Audio Engine
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: var(--font-en), var(--font-ar); -webkit-tap-highlight-color: transparent; }
+    body { background-color: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
 
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center;
+      position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 14px rgba(7, 38, 23, 0.25);
+    }
+    .brand-wrap { display: flex; align-items: center; gap: 12px; }
+    .brand-logo-img { width: 46px; height: 46px; border-radius: 12px; background: #fff; padding: 3px; object-fit: contain; border: 1.5px solid var(--gold); }
+    .brand-text h1 { font-size: 18px; font-weight: 800; line-height: 1.1; }
+    .brand-text h1 span { color: var(--gold); }
+    .brand-text p.sub-desc { font-size: 11px; color: #d1ded7; margin-top: 2px; }
+    .brand-text p.sub-sup { font-size: 10px; color: var(--gold); font-weight: 700; letter-spacing: 0.3px; }
 
-|---|playSound = (freq, type, duration) => {
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .admin-icon-btn {
+      background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(212, 175, 55, 0.4);
+      color: #fff; width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer;
+    }
+    .user-pill {
+      background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 6px 14px; border-radius: 30px; font-size: 12px; font-weight: 600; cursor: pointer;
+    }
 
-        const osc = audioCtx.createOscillator();
+    main { flex: 1; max-width: 960px; width: 100%; margin: 0 auto; padding: 20px 16px 60px; }
+    .card { background: var(--surface); border-radius: var(--radius-lg); padding: 28px; border: 1px solid var(--border); box-shadow: 0 8px 24px rgba(11, 59, 36, 0.06); }
 
-        const gain = audioCtx.createGain();
+    .auth-toggle { display: flex; background: #eef3f0; padding: 4px; border-radius: 12px; margin-bottom: 20px; }
+    .auth-toggle button { flex: 1; padding: 10px; border: none; background: transparent; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; color: var(--text-muted); }
+    .auth-toggle button.active { background: #fff; color: var(--primary); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
 
-        osc.type = type;
+    .form-group { margin-bottom: 16px; text-align: left; }
+    .form-group label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 6px; color: var(--primary); }
+    .form-group label small { font-family: var(--font-ar); color: var(--text-muted); font-weight: 500; }
+    .form-control { width: 100%; padding: 12px 14px; font-size: 15px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: #fafdfb; outline: none; }
+    .form-control:focus { border-color: var(--gold); background: #fff; }
 
-        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; border-radius: var(--radius-sm); padding: 12px 22px; border: none; cursor: pointer; font-size: 14px; transition: all 0.2s; }
+    .btn-gold { background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%); color: #fff; box-shadow: 0 4px 12px rgba(181, 137, 26, 0.3); }
+    .btn-gold:hover { filter: brightness(1.05); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-outline { background: #fff; border: 1.5px solid var(--border); color: var(--text); }
+    .btn-danger { background: #dc2626; color: #fff; }
 
-        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    .audio-btn { background: var(--gold-light); border: 1px solid var(--gold); color: var(--gold-dark); padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 700; cursor: pointer; }
 
-        osc.connect(gain);
+    .dashboard-hero {
+      background: linear-gradient(135deg, #ffffff 0%, var(--gold-light) 100%);
+      border: 1.5px solid var(--gold); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 24px;
+    }
+    .progress-bar-wrap { background: #e1ede6; border-radius: 20px; height: 10px; overflow: hidden; margin: 12px 0 6px; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--primary) 0%, var(--gold) 100%); border-radius: 20px; transition: width 0.4s ease; }
 
-        gain.connect(audioCtx.destination);
+    .records-box { margin-top: 14px; background: #ffffff; padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 10px; }
+    .score-badge { background: #eef5f1; border: 1px solid #bbf7d0; padding: 6px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; color: var(--primary); }
 
-        osc.start();
+    .weeks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+    .week-card { background: #fff; border-radius: var(--radius-md); padding: 20px; border: 1.5px solid var(--border); position: relative; }
+    .week-card.unlocked-week { border-color: var(--primary-light); box-shadow: 0 4px 14px rgba(11, 59, 36, 0.08); cursor: pointer; }
+    .week-card.unlocked-week:hover { border-color: var(--gold); transform: translateY(-2px); }
+    .week-card.locked-week { opacity: 0.65; cursor: not-allowed; background: #fbfbfb; }
 
-        osc.stop(audioCtx.currentTime + duration);
+    .milestone-card { grid-column: 1 / -1; background: linear-gradient(135deg, #fdf6e2 0%, #ffffff 100%); border: 2px dashed var(--gold); border-radius: var(--radius-md); padding: 22px; }
+    .final-exam-card { grid-column: 1 / -1; background: linear-gradient(135deg, #072617 0%, #0b3b24 100%); color: #fff; border: 2px solid var(--gold); border-radius: var(--radius-md); padding: 26px; }
 
+    .week-intro-card {
+      background: #f8fbf9; border: 1.5px solid #c7ded2; border-left: 5px solid var(--primary);
+      border-radius: var(--radius-sm); padding: 16px 20px; margin-bottom: 20px;
+    }
+    .intro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 10px; }
+    @media (max-width: 600px) { .intro-grid { grid-template-columns: 1fr; } }
+
+    .module-nav { display: flex; background: #eef3f0; padding: 6px; gap: 6px; border-radius: var(--radius-md) var(--radius-md) 0 0; overflow-x: auto; }
+    .module-nav button { padding: 9px 15px; border: none; background: transparent; border-radius: var(--radius-sm); font-weight: 700; font-size: 13px; color: var(--text-muted); cursor: pointer; white-space: nowrap; }
+    .module-nav button.active { background: #fff; color: var(--primary); box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); }
+
+    .module-body { background: #fff; border: 1px solid var(--border); border-top: none; border-radius: 0 0 var(--radius-md) var(--radius-md); padding: 24px; min-height: 400px; }
+    .skill-block { display: none; animation: fadeIn 0.25s ease; }
+    .skill-block.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+    .dialogue-row { background: #fbfdfc; border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius-sm); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .vocab-table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+    .vocab-table th, .vocab-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); text-align: left; }
+    .vocab-table th { background: #eef5f1; color: var(--primary); font-weight: 700; }
+    .vocab-table td.ar { font-family: var(--font-ar); direction: rtl; text-align: right; color: var(--primary-light); font-weight: 700; }
+
+    .millionaire-arena {
+      background: radial-gradient(circle, #0e2f44 0%, #05141f 100%); color: #fff;
+      border-radius: var(--radius-lg); padding: 24px 20px; border: 2px solid var(--gold); text-align: center;
+    }
+    .lifelines-bar { display: flex; justify-content: center; gap: 16px; margin-bottom: 20px; }
+    .lifeline-btn { background: #0f3952; border: 2px solid var(--gold); color: #fff; width: 54px; height: 44px; border-radius: 50%; font-size: 13px; font-weight: 800; cursor: pointer; }
+    .lifeline-btn:disabled { opacity: 0.3; border-color: #555; cursor: not-allowed; }
+    .millionaire-money { font-size: 20px; color: var(--gold); font-weight: 800; margin-bottom: 14px; }
+    .millionaire-qbox { background: #09202f; border: 2px solid #336688; border-radius: 30px; padding: 16px 20px; font-size: 17px; font-weight: 700; margin-bottom: 20px; min-height: 60px; display: flex; align-items: center; justify-content: center; }
+    .millionaire-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 600px) { .millionaire-grid { grid-template-columns: 1fr; } }
+    .millionaire-opt { background: #09202f; border: 1.5px solid #2b5570; border-radius: 24px; padding: 12px 18px; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; text-align: left; }
+    .millionaire-opt.correct { background: #15803d !important; border-color: #22c55e !important; }
+    .millionaire-opt.wrong { background: #b91c1c !important; border-color: #ef4444 !important; }
+
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; padding: 16px; z-index: 1000; overflow-y: auto; }
+    .cert-container { background: #fff; width: 100%; max-width: 1060px; border-radius: 8px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); padding: 20px; }
+    .cert-frame-outer { border: 10px solid var(--primary); padding: 8px; background: #fafaf7; }
+    .cert-frame-inner { border: 3px solid var(--gold); padding: 40px 36px; text-align: center; position: relative; background: #ffffff; }
+    .cert-header-tag { font-family: 'Cinzel', serif; font-size: 14px; letter-spacing: 3px; color: var(--gold-dark); font-weight: 800; }
+    .cert-main-title { font-family: 'Cinzel', serif; font-size: 36px; font-weight: 800; color: var(--primary); margin: 10px 0 6px; }
+    .cert-student-name { font-size: 32px; font-weight: 800; color: var(--primary-dark); margin: 14px auto; display: inline-block; border-bottom: 2px solid var(--gold); padding: 0 30px 6px; }
+    .cert-signatures-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 36px; border-top: 1.5px solid var(--border); padding-top: 24px; }
+    .sig-role { font-size: 11px; font-weight: 800; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+    .sig-name { font-size: 15px; font-weight: 800; color: var(--primary); }
+
+    @page { size: A4 landscape; margin: 6mm; }
+    @media print {
+      body { background: #fff !important; }
+      body * { visibility: hidden; }
+      #certModal, #certModal * { visibility: visible; }
+      #certModal { position: absolute; inset: 0; background: transparent; padding: 0; display: block !important; }
+      .cert-container { max-width: 100%; box-shadow: none; padding: 0; }
+      .cert-frame-inner { padding: 26px 30px; }
+      .no-print { display: none !important; }
+    }
+
+    .admin-panel { background: #fff; max-width: 800px; width: 100%; border-radius: var(--radius-md); padding: 24px; max-height: 90vh; overflow-y: auto; }
+    .admin-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 13px; }
+    .admin-table th, .admin-table td { padding: 10px; border-bottom: 1px solid var(--border); text-align: left; }
+    .admin-table th { background: #eef3f0; color: var(--primary); }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-wrap">
+      <img src="AL-Bayariq Private School.jpeg" alt="Logo" class="brand-logo-img" onerror="this.src='logo.png'; this.onerror=function(){this.outerHTML='<div class=\'brand-logo-img\' style=\'display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#d4af37,#aa8420);color:#072617;font-weight:800;font-size:20px;\'>B</div>';}">
+      <div class="brand-text">
+        <h1>MINI <span>STEP</span></h1>
+        <p class="sub-desc">Under the Supervision of the English Language Department</p>
+        <p class="sub-sup">English Language Supervisor: Mohammed Abdullah Othman</p>
+      </div>
+    </div>
+    <div class="nav-actions">
+      <button class="admin-icon-btn" onclick="app.openAdminModal()" title="Admin Control Panel">⚙️</button>
+      <div id="userBadge" style="display: none;">
+        <div class="user-pill" onclick="app.logout()">
+          <span>🔒 Logout: </span>
+          <strong id="navStudentName">Student</strong>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div id="appLockBanner" style="display: none; background: #dc2626; color: #fff; text-align: center; padding: 16px; font-weight: 700;">
+    ⚠️ The learning portal is temporarily offline for maintenance by the administration.
+  </div>
+
+  <main id="mainContainer">
+    <!-- View 1: Auth -->
+    <div id="screenAuth" class="card" style="max-width: 520px; margin: 20px auto;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <img src="AL-Bayariq Private School.jpeg" alt="Logo" style="height: 54px; margin-bottom: 8px; object-fit: contain;" onerror="this.src='logo.png'; this.onerror=function(){this.style.display='none';}">
+        <div>
+          <span style="background: var(--gold-light); color: var(--gold-dark); border: 1px solid var(--gold); padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 800;">AL-BAYARIQ PRIVATE SCHOOLS</span>
+        </div>
+        <h2 style="color: var(--primary); font-size: 22px; margin-top: 8px;">Mini STEP Student Portal</h2>
+        <p style="color: var(--text-muted); font-size: 12px; font-weight: 600; margin-top: 2px;">
+          Supervised by English Language Supervisor: Mohammed Abdullah Othman
+        </p>
+      </div>
+
+      <div class="auth-toggle">
+        <button id="tabRegister" class="active" onclick="app.switchAuthTab('register')">New Student (تسجيل جديد)</button>
+        <button id="tabLogin" onclick="app.switchAuthTab('login')">Login (دخول مسجل)</button>
+      </div>
+
+      <form id="formRegister" onsubmit="app.register(event)">
+        <div class="form-group">
+          <label>Student Full Name <small>(اسم الطالب ثلاثي بالإنجليزية)</small></label>
+          <input type="text" id="regName" class="form-control" placeholder="e.g. Faisal Mohammed Al-Otaibi" required />
+        </div>
+        <div class="form-group">
+          <label>Educational Stage <small>(المرحلة الدراسية)</small></label>
+          <select id="regStage" class="form-control" onchange="app.onStageSelect()" required>
+            <option value="">Select Stage / اختر المرحلة الدراسية...</option>
+            <option value="Primary">Primary Stage (المرحلة الابتدائية)</option>
+            <option value="Intermediate">Intermediate Stage (المرحلة المتوسطة)</option>
+            <option value="Secondary">Secondary Stage (المرحلة الثانوية)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>English Teacher <small>(معلم اللغة الإنجليزية)</small></label>
+          <select id="regTeacher" class="form-control" required disabled>
+            <option value="">Select stage first...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Grade & Class <small>(الصف والفصل)</small></label>
+          <input type="text" id="regGrade" class="form-control" placeholder="e.g. Grade 5 / Class 1" required />
+        </div>
+        <div class="form-group">
+          <label>Security PIN <small>(رمز سري مكون من 4 إلى 6 أرقام لحفظ حسابك)</small></label>
+          <input type="password" id="regPin" pattern="[0-9]{4,6}" inputmode="numeric" class="form-control" placeholder="e.g. 1234" required />
+        </div>
+        <button type="submit" id="btnRegSubmit" class="btn btn-gold" style="width: 100%; margin-top: 6px; font-size: 15px;">
+          Create Account & Start • حفظ الحساب وبدء التعلم 🚀
+        </button>
+      </form>
+
+      <form id="formLogin" style="display: none;" onsubmit="app.login(event)">
+        <div class="form-group">
+          <label>Student Full Name <small>(اسم الطالب المسجل)</small></label>
+          <input type="text" id="logName" class="form-control" placeholder="Enter your full registered name" required />
+        </div>
+        <div class="form-group">
+          <label>Security PIN <small>(الرمز السري المكون من أرقام)</small></label>
+          <input type="password" id="logPin" inputmode="numeric" class="form-control" placeholder="Enter your 4-6 digit PIN" required />
+        </div>
+        <button type="submit" id="btnLoginSubmit" class="btn btn-gold" style="width: 100%; margin-top: 6px; font-size: 15px;">
+          Login to My Portal • تسجيل الدخول 🔑
+        </button>
+      </form>
+    </div>
+
+    <!-- View 2: Dashboard -->
+    <div id="screenDashboard" style="display: none;">
+      <div class="dashboard-hero">
+        <h2 id="dashWelcome" style="color: var(--primary); font-size: 22px;">Welcome!</h2>
+        <p id="dashMeta" style="color: var(--text-muted); font-size: 13px; margin-bottom: 6px;"></p>
+        <p style="font-size: 11px; color: var(--gold-dark); font-weight: 700; margin-bottom: 12px;">
+          Under the Supervision of English Language Supervisor: Mohammed Abdullah Othman
+        </p>
+        
+        <div class="progress-bar-wrap">
+          <div id="progressBar" class="progress-bar-fill" style="width: 0%;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--primary);">
+          <span id="progressLabel">Completed: 0 of 8 Active Weeks</span>
+          <span id="rankBadge">Level 1 & 2: Elementary Candidate 🌟</span>
+        </div>
+
+        <div style="margin-top: 14px;">
+          <div style="font-size: 12px; font-weight: 700; color: var(--primary); margin-bottom: 6px;">Your Verified Weekly & Milestone Scores:</div>
+          <div id="scoresContainer" class="records-box">
+            <span style="font-size: 12px; color: var(--text-muted);">Syncing verified cloud records...</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <h3 style="color: var(--primary);">Curriculum Roadmap & Milestone Exams</h3>
+        <button id="btnMainCert" class="btn btn-outline" style="font-size: 12px; padding: 6px 14px;" onclick="app.openGraduationCert()">
+          🏆 Mini STEP Graduation Certificate
+        </button>
+      </div>
+
+      <div class="weeks-grid" id="weeksList"></div>
+    </div>
+
+    <!-- View 3: Module Hub -->
+    <div id="screenModule" style="display: none;">
+      <div style="background: var(--primary); color: #fff; padding: 18px 24px; border-radius: var(--radius-md) var(--radius-md) 0 0; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <span id="modBadge" style="font-size: 11px; font-weight: 800; background: var(--gold); color: #000; padding: 3px 8px; border-radius: 4px;">WEEK 01</span>
+          <h2 id="modTitle" style="font-size: 20px; margin-top: 4px;">Module Title</h2>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button id="btnWeeklyCert" class="btn btn-gold" style="padding: 6px 12px; font-size: 12px;" onclick="app.openWeeklyCert()">
+            🏅 Weekly Certificate
+          </button>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;" onclick="app.showDash()">
+            ← Roadmap
+          </button>
+        </div>
+      </div>
+
+      <div class="module-body" style="border-top: 1px solid var(--border);">
+        <div class="week-intro-card" id="weekIntroBox">
+          <div style="display: flex; align-items: center; gap: 8px; font-weight: 800; color: var(--primary); font-size: 15px;">
+            <span>📌</span>
+            <span>What we will learn this week / ماذا سنتعلم في هذا الأسبوع؟</span>
+          </div>
+          <div class="intro-grid">
+            <div style="background: #ffffff; padding: 12px 14px; border-radius: 8px; border: 1px solid #dce8e1;">
+              <strong style="color: var(--primary); font-size: 12px; text-transform: uppercase;">English Focus:</strong>
+              <div id="introEnText" style="font-size: 14px; line-height: 1.6; margin-top: 4px; color: var(--text);"></div>
+            </div>
+            <div style="background: #ffffff; padding: 12px 14px; border-radius: 8px; border: 1px solid #dce8e1; direction: rtl; text-align: right;">
+              <strong style="color: var(--primary-light); font-size: 12px; font-family: var(--font-ar);">التركيز والهدف بالعربية:</strong>
+              <div id="introArText" style="font-size: 14px; line-height: 1.6; margin-top: 4px; color: var(--text); font-family: var(--font-ar);"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="module-nav" id="moduleNavTabs">
+          <button class="active" onclick="app.setTab(0)">1. 🎧 Listening</button>
+          <button onclick="app.setTab(1)">2. 💬 Expressions</button>
+          <button onclick="app.setTab(2)">3. 🗣️ Speaking</button>
+          <button onclick="app.setTab(3)">4. 📘 Grammar</button>
+          <button onclick="app.setTab(4)">5. 📖 Reading</button>
+          <button onclick="app.setTab(5)" style="color: #b45309; font-weight: 800;">💰 Millionaire Game</button>
+          <button onclick="app.setTab(6)">💻 Weekly Quiz</button>
+        </div>
+
+        <div style="padding-top: 20px;">
+          <!-- 1. Listening -->
+          <div class="skill-block active">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+              <h4 id="listenTitle" style="color: var(--primary);">Dialogue</h4>
+              <button class="audio-btn" onclick="app.playDialogue()">🔊 Play Full Dialogue (US)</button>
+            </div>
+            <div id="dialogueContainer"></div>
+          </div>
+
+          <!-- 2. Expressions -->
+          <div class="skill-block">
+            <h4 style="color: var(--primary); margin-bottom: 8px;">Key Daily Phrases & Arabic Translation</h4>
+            <table class="vocab-table">
+              <thead>
+                <tr><th>English Expression</th><th>Listen</th><th style="text-align: right;">المعنى بالعربية</th></tr>
+              </thead>
+              <tbody id="vocabBody"></tbody>
+            </table>
+          </div>
+
+          <!-- 3. Speaking -->
+          <div class="skill-block">
+            <h4 style="color: var(--primary); margin-bottom: 14px;">Speaking Drills: Challenge</h4>
+            <div id="speakingContainer"></div>
+          </div>
+
+          <!-- 4. Grammar -->
+          <div class="skill-block">
+            <div id="grammarContainer"></div>
+          </div>
+
+          <!-- 5. Reading -->
+          <div class="skill-block">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <h4 id="readingHeading" style="color: var(--primary);">Reading Passage</h4>
+              <button class="audio-btn" onclick="app.playReadingPassage()">🔊 Read Passage Aloud</button>
+            </div>
+            <div id="readPassageText" style="background: #fafdfb; border: 1.5px solid var(--border); padding: 18px; border-radius: var(--radius-sm); font-size: 16px; line-height: 1.9; color: var(--text); margin-bottom: 20px;"></div>
+            <h5 style="color: var(--primary); margin-bottom: 12px;">Comprehension Check:</h5>
+            <div id="readingMiniQuestions"></div>
+          </div>
+
+          <!-- 6. Millionaire Game -->
+          <div class="skill-block">
+            <div class="millionaire-arena">
+              <h3 style="color: var(--gold); letter-spacing: 1px; margin-bottom: 6px;">WHO WANTS TO BE A MILLIONAIRE?</h3>
+              <p style="font-family: var(--font-ar); font-size: 12px; color: #a5c2d5; margin-bottom: 14px;">مسابقة من سيربح المليون الأسبوعية التفاعلية</p>
+              <div class="lifelines-bar">
+                <button class="lifeline-btn" id="life50" onclick="app.use5050()" title="حذف إجابتين">50:50</button>
+                <button class="lifeline-btn" id="lifeFriend" onclick="app.useFriend()" title="الاتصال بصديق">📞</button>
+                <button class="lifeline-btn" id="lifeAudience" onclick="app.useAudience()" title="رأي الجمهور">👥</button>
+              </div>
+              <div class="millionaire-money" id="millPrize">$100</div>
+              <div class="millionaire-qbox" id="millQuestion">Question text</div>
+              <div class="millionaire-grid" id="millOptions"></div>
+              <div id="millHelpBox" style="margin-top: 14px; font-size: 14px; color: #fde047; font-family: var(--font-ar); min-height: 24px;"></div>
+            </div>
+          </div>
+
+          <!-- 7. Assessment Tab -->
+          <div class="skill-block">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+              <h4 id="quizHeading" style="color: var(--primary);">Assessment Practice</h4>
+              <span id="quizTargetBadge" style="font-size: 12px; color: var(--gold-dark); font-weight: 700;">Passing Score: 8 / 12 ⭐</span>
+            </div>
+            <div id="quizFormContainer"></div>
+            <button id="btnSubmitQuiz" class="btn btn-gold" style="width: 100%; margin-top: 20px; font-size: 16px;" onclick="app.gradeAssessment()">
+              Submit & Record Score to Cloud • إرسال النتيجة واعتمادها ✅
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Complete Official Certificate Modal -->
+  <div id="certModal" class="modal-overlay">
+    <div class="cert-container">
+      <div class="cert-frame-outer">
+        <div class="cert-frame-inner">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <img src="AL-Bayariq Private School.jpeg" alt="Logo" style="height: 60px; object-fit: contain;" onerror="this.src='logo.png'; this.onerror=function(){this.style.display='none';}">
+            <div>
+              <div class="cert-header-tag">AL-BAYARIQ PRIVATE SCHOOLS</div>
+              <div style="font-size: 11px; color: var(--primary); font-weight: 700; letter-spacing: 1px; margin-top: 2px;">ENGLISH LANGUAGE DEPARTMENT</div>
+            </div>
+            <img src="AL-Bayariq Private School.jpeg" alt="Logo" style="height: 60px; object-fit: contain;" onerror="this.src='logo.png'; this.onerror=function(){this.style.display='none';}">
+          </div>
+
+          <div class="cert-main-title" id="certMainTitle">Certificate of Achievement</div>
+          <div style="font-size: 14px; color: var(--text-muted); font-style: italic; margin-bottom: 6px;">
+            This official certificate is proudly awarded to:
+          </div>
+
+          <div class="cert-student-name" id="certStudentName">STUDENT NAME</div>
+
+          <p style="font-size: 15px; max-width: 780px; margin: 12px auto; line-height: 1.8; color: var(--text);" id="certBodyText">
+            In recognition of outstanding dedication and successful completion of the benchmark assessment with exemplary performance.
+          </p>
+
+          <div style="margin: 14px auto 0; font-size: 13px; font-weight: 700; color: var(--gold-dark); background: var(--gold-light); display: inline-block; padding: 6px 20px; border-radius: 20px; border: 1px solid var(--gold);">
+            Stage: <span id="certStageBadge">Secondary Stage</span> • Academic Year 2026 / 1447 AH
+          </div>
+
+          <div class="cert-signatures-grid">
+            <div>
+              <div class="sig-role">Classroom Teacher</div>
+              <div class="sig-name" id="certTeacher">Teacher Name</div>
+            </div>
+            <div>
+              <div class="sig-role">English Language Supervisor</div>
+              <div class="sig-name">Mohammed Abdullah Othman</div>
+            </div>
+            <div>
+              <div class="sig-role">School Principal</div>
+              <div class="sig-name" id="certPrincipal">Principal Name</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="no-print" style="margin-top: 18px; display: flex; justify-content: center; gap: 12px;">
+        <button class="btn btn-gold" onclick="window.print()">🖨️ Print Full Certificate / Save PDF</button>
+        <button class="btn btn-outline" onclick="app.closeCert()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin Control Modal -->
+  <div id="adminModal" class="modal-overlay">
+    <div class="admin-panel">
+      <div id="adminLoginForm">
+        <h3 style="color: var(--primary); margin-bottom: 12px;">🔒 Supervisor Admin Login</h3>
+        <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Enter supervisor credentials to manage students and system access.</p>
+        <div class="form-group">
+          <label>Username</label>
+          <input type="text" id="admUser" class="form-control" placeholder="admin" required />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="admPass" class="form-control" placeholder="••••••••" required />
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+          <button class="btn btn-gold" onclick="app.adminLogin()">Authorize Access</button>
+          <button class="btn btn-outline" onclick="app.closeAdminModal()">Cancel</button>
+        </div>
+      </div>
+
+      <div id="adminControls" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1.5px solid var(--border); padding-bottom: 14px; margin-bottom: 18px;">
+          <div>
+            <h3 style="color: var(--primary);">Supervisor Administration Panel</h3>
+            <span style="font-size: 12px; color: var(--gold-dark); font-weight: 700;">Supervisor: Mohammed Abdullah Othman</span>
+          </div>
+          <button class="btn btn-outline" style="padding: 6px 12px; font-size: 12px;" onclick="app.closeAdminModal()">Close</button>
+        </div>
+
+        <div style="background: #fdfaf3; border: 1.5px solid var(--gold); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <strong>Portal Availability Status:</strong>
+            <div id="appLockStatusText" style="font-size: 13px; color: var(--text-muted); margin-top: 2px;">Application is currently Open for all students.</div>
+          </div>
+          <button id="btnToggleLock" class="btn btn-primary" onclick="app.togglePortalLock()">Lock Portal (إغلاق المنصة)</button>
+        </div>
+
+        <h4 style="color: var(--primary); margin-bottom: 8px;">Registered Students Database & Progress Control</h4>
+        <div style="overflow-x: auto;">
+          <table class="admin-table">
+            <thead>
+              <tr><th>Student Name</th><th>Stage & Grade</th><th>PIN</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="adminStudentsTableBody">
+              <tr><td colspan="4">Loading registered students...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 1. Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCYYa40PX0V-PvFTAO8C2mMCVcPqf3Yz-g",
+      authDomain: "mini-step-bayariq-en-dep.firebaseapp.com",
+      projectId: "mini-step-bayariq-en-dep",
+      storageBucket: "mini-step-bayariq-en-dep.firebasestorage.app",
+      messagingSenderId: "936190762859",
+      appId: "1:936190762859:web:33864e501b55fc89eb362e"
     };
 
-    // Application Controller
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-    const app = {
+    // 2. School Leadership
+    const PRINCIPALS = {
+      Primary: "Wael Mohammed Gafary",
+      Intermediate: "Saleh Shaher Al-Dhaheri",
+      Secondary: "Dr. Ibrahim Al-Oseimi"
+    };
 
-        state: {
+    const TEACHERS = {
+      Primary: ["Mr. Khalil Mohammed", "Mr. Ibrahim Ragab", "Mr. Mohamed Abdullah"],
+      Intermediate: ["Mr. Tamer Salah", "Mr. Omar Shendy"],
+      Secondary: ["Mr. Amir Yacoub", "Mr. Hamada Fathy", "Mr. Atef Ashry"]
+    };
 
-            user: null,
+    // 3. Audio Synth Effects for Millionaire Game
+    class SoundEffects {
+      constructor() { this.ctx = null; }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+      }
+      playTone(freq, type, duration, delay = 0) {
+        this.init();
+        if (!this.ctx) return;
+        setTimeout(() => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        }, delay);
+      }
+      playCorrect() {
+        this.playTone(523.25, 'sine', 0.2, 0);
+        this.playTone(659.25, 'sine', 0.2, 120);
+        this.playTone(783.99, 'sine', 0.35, 240);
+      }
+      playWrong() {
+        this.playTone(150, 'sawtooth', 0.4, 0);
+        this.playTone(110, 'sawtooth', 0.6, 200);
+      }
+      playPhoneRing() {
+        for (let i = 0; i < 4; i++) {
+          this.playTone(440, 'sine', 0.15, i * 250);
+          this.playTone(480, 'sine', 0.15, i * 250);
+        }
+      }
+      playAudienceCheer() {
+        for (let i = 0; i < 12; i++) {
+          this.playTone(200 + Math.random() * 600, 'triangle', 0.25, i * 60);
+        }
+      }
+      playWinFanfare() {
+        [523.25, 659.25, 783.99, 1046.50].forEach((f, idx) => {
+          this.playTone(f, 'square', 0.3, idx * 150);
+        });
+      }
+    }
+    const sfx = new SoundEffects();
 
-            currentWeek: 0,
-
-            currentLevel: 1,
-
-            progress: {},
-
-            isAdmin: false,
-
-            appLocked: false
-
-        },
-
-        curriculum: [
-
-            {
-
-                level: 1,
-
-                weeks: [
-
-                    {
-
-                        id: 1,
-
-                        title: "The First Step: Greetings",
-
-                        dialogue: "A: Hello, my name is Khalid. B: Nice to meet you, Khalid! I am Sarah.",
-
-                        expressions: ["How are you?", "Glad to meet you", "Have a nice day"],
-
-                        grammar: "Subject Pronouns: I, You, He, She, It, We, They.",
-
-                        reading: "Communication is the key to human connection. In English, we use greetings to show respect.",
-
-                        quiz: [
-
-                            { q: "Which is a formal greeting?", a: ["Hi", "Hello", "Yo", "Hey"], c: 1 },
-
-                            { q: "Select the subject pronoun for a group including yourself.", a: ["They", "You", "We", "He"], c: 2 }
-
-                            // Data array expands to 12 questions per week
-
-                        ]
-
-                    }
-
-                    // Weeks 2-36 would be populated here
-
-                ],
-
-                milestone: {
-
-                    id: "m1",
-
-                    title: "Level 1 Assessment",
-
-                    questions: Array(16).fill({ q: "Sample Milestone Question?", a: ["A", "B", "C", "D"], c: 0 })
-
-                }
-
-            }
-
-            // Levels 2-9 would follow this schema
-
+    // 4. Clean, Simple, Foundational Curriculum (Weeks 01 to 08)
+    const WEEKS_DATA = {
+      1: {
+        number: 1,
+        title: "Introducing Myself (التعريف بالنفس)",
+        introEn: "In this unit, we learn how to introduce our name, age, and country politely, and practice using the verb 'to be' with 'I am'.",
+        introAr: "في هذا الأسبوع، يتعلم الطالب كيف يعرف بنفسه، عمره، ومدينته باللغة الإنجليزية بكل ثقة وبساطة، مع ضبط استخدام الضمير (I am).",
+        dialogueTitle: "Dialogue: Ahmed & Omar",
+        dialogue: [
+          { speaker: "Ahmed", text: "Hello! My name is Ahmed. What's your name?" },
+          { speaker: "Omar", text: "Hi! My name is Omar." },
+          { speaker: "Ahmed", text: "How old are you, Omar?" },
+          { speaker: "Omar", text: "I am twelve years old. How old are you?" },
+          { speaker: "Ahmed", text: "I am eleven years old. Where are you from?" },
+          { speaker: "Omar", text: "I am from Saudi Arabia. I live in Riyadh." },
+          { speaker: "Ahmed", text: "Nice to meet you, Omar!" },
+          { speaker: "Omar", text: "Nice to meet you, too!" }
         ],
-
-        init() {
-
-            const localData = localStorage.getItem('miniStepState');
-
-            if (localData) this.state = JSON.parse(localData);
-
-            this.renderDashboard();
-
-        },
-
-        login() {
-
-            const name = document.getElementById('student-name').value;
-
-            const pin = document.getElementById('student-pin').value;
-
-            if (name && pin.length === 4) {
-
-                this.state.user = { name, pin };
-
-                this.saveState();
-
-                this.showDashboard();
-
-            } else {
-
-                alert("Please enter valid name and 4-digit PIN");
-
-            }
-
-        },
-
-        showDashboard() {
-
-            this.toggleView('view-dashboard');
-
-            document.getElementById('user-display').innerText = `Welcome, ${this.state.user.name}`;
-
-            this.renderWeeks();
-
-        },
-
-        renderWeeks() {
-
-            const grid = document.getElementById('week-grid');
-
-            grid.innerHTML = '';
-
-            // Generate 36 week cards
-
-            for (let i = 1; i <= 36; i++) {
-
-                const card = document.createElement('div');
-
-                card.className = 'card';
-
-                const isUnlocked = i === 1 || this.state.progress[`week_${i-1}`];
-
-                card.innerHTML = `
-
-                    <h3>Week ${i}</h3>
-
-                    <p>Foundation Module</p>
-
-                    <button class="btn ${isUnlocked ? 'btn-primary' : 'btn-gold'}" 
-
-                        onclick="${isUnlocked ? `app.loadWeek(${i})` : `alert('Complete previous weeks to unlock')`}">
-
-                        ${isUnlocked ? 'Start Learning' : 'Locked'}
-
-                    </button>
-
-                `;
-
-                grid.appendChild(card);
-
-            }
-
-        },
-
-        loadWeek(weekId) {
-
-            this.state.currentWeek = weekId;
-
-            const weekData = this.curriculum[0].weeks[0]; // Simplified for demo
-
-            this.toggleView('view-content');
-
-            document.getElementById('content-payload').innerHTML = `
-
-                <div class="card">
-
-                    <h2>${weekData.title}</h2>
-
-                    <div style="margin: 20px 0;">
-
-                        <h4>Daily Dialogue</h4>
-
-                        <p>${weekData.dialogue}</p>
-
-                    </div>
-
-                    <div style="margin: 20px 0;">
-
-                        <h4>Grammar Capsule</h4>
-
-                        <p>${weekData.grammar}</p>
-
-                    </div>
-
-                    <button class="btn btn-gold" onclick="app.startQuiz('weekly')">Start Weekly Assessment</button>
-
-                </div>
-
-            `;
-
-        },
-
-        startQuiz(type) {
-
-            this.toggleView('view-quiz');
-
-            let questions = this.curriculum[0].weeks[0].quiz;
-
-            let currentQ = 0;
-
-            let score = 0;
-
-            const renderQ = () => {
-
-                const q = questions[currentQ];
-
-                document.getElementById('quiz-question').innerText = q.q;
-
-                const optionsDiv = document.getElementById('quiz-options');
-
-                optionsDiv.innerHTML = '';
-
-                q.a.forEach((opt, idx) => {
-
-                    const b = document.createElement('div');
-
-                    b.className = 'option';
-
-                    b.innerText = opt;
-
-                    b.onclick = () => {
-
-                        if (idx === q.c) {
-
-                            score++;
-
-                            playSound(440, 'sine', 0.2);
-
-                        } else {
-
-                            playSound(110, 'sawtooth', 0.3);
-
-                        }
-
-                        currentQ++;
-
-                        if (currentQ < questions.length) renderQ();
-
-                        else this.finishQuiz(score, questions.length);
-
-                    };
-
-                    optionsDiv.appendChild(b);
-
-                });
-
-            };
-
-            renderQ();
-
-        },
-
-        finishQuiz(score, total) {
-
-            const passed = (score / total) >= 0.7;
-
-            if (passed) {
-
-                this.state.progress[`week_${this.state.currentWeek}`] = true;
-
-                this.saveState();
-
-                alert(`Excellent! Score: ${score}/${total}. Week unlocked.`);
-
-                this.renderCertificate('weekly');
-
-            } else {
-
-                alert(`Keep practicing! Score: ${score}/${total}. You need 70% to pass.`);
-
-                this.showDashboard();
-
-            }
-
-        },
-
-        renderCertificate(type) {
-
-            this.toggleView('view-cert');
-
-            const area = document.getElementById('certificate-print-area');
-
-            const stage = this.getStageInfo();
-
-            area.innerHTML = `
-
-                <div class="cert-frame">
-
-                    <div class="cert-title">${type === 'weekly' ? 'Weekly Achievement' : 'Graduation Certificate'}</div>
-
-                    <p>This is to certify that</p>
-
-                    <div class="cert-name">${this.state.user.name}</div>
-
-                    <p>has successfully completed the requirements for</p>
-
-                    <h3>${type === 'weekly' ? 'Week ' + this.state.currentWeek : 'Mini STEP Mastery Program'}</h3>
-
-                    <div class="signature-grid">
-
-                        <div class="sig-block">
-
-                            <p><strong>${stage.signatory}</strong></p>
-
-                            <p>${stage.title}</p>
-
-                        </div>
-
-                        <div class="sig-block">
-
-                            <p><strong>Mohammed Abdullah Othman</strong></p>
-
-                            <p>Program Supervisor</p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            `;
-
-        },
-
-        getStageInfo() {
-
-            const level = this.state.currentLevel;
-
-            if (level <= 3) return { signatory: "Wael Mohammed Gafary", title: "Primary Coordinator" };
-
-            if (level <= 6) return { signatory: "Saleh Shaher Al-Dhaheri", title: "Intermediate Director" };
-
-            return { signatory: "Dr. Ibrahim Al-Oseimi", title: "Academic Dean" };
-
-        },
-
-        authAdmin() {
-
-            const user = document.getElementById('admin-user').value;
-
-            const pass = document.getElementById('admin-pass').value;
-
-            if (user === 'admin' && pass === 'admin135790') {
-
-                document.getElementById('admin-login-fields').classList.add('hidden');
-
-                document.getElementById('admin-controls').classList.remove('hidden');
-
-            }
-
-        },
-
-        saveState() {
-
-            localStorage.setItem('miniStepState', JSON.stringify(this.state));
-
-            if (db) {
-
-                db.collection('students').doc(this.state.user.name).set(this.state);
-
-            }
-
-        },
-
-        toggleView(id) {
-
-            ['view-login', 'view-dashboard', 'view-content', 'view-quiz', 'view-cert', 'view-admin'].forEach(v => {
-
-                document.getElementById(v).classList.add('hidden');
-
-            });
-
-            document.getElementById(id).classList.remove('hidden');
-
-        },
-
-        showAdmin() { this.toggleView('view-admin'); }
-
+        expressions: [
+          { en: "Hello!", ar: "مرحبًا" },
+          { en: "My name is Ahmed.", ar: "اسمي أحمد" },
+          { en: "What's your name?", ar: "ما اسمك؟" },
+          { en: "How old are you?", ar: "كم عمرك؟" },
+          { en: "I am twelve years old.", ar: "عمري 12 سنة" },
+          { en: "Where are you from?", ar: "من أين أنت؟" },
+          { en: "I live in Riyadh.", ar: "أعيش في الرياض" },
+          { en: "Nice to meet you.", ar: "سعيد بلقائك" },
+          { en: "Nice to meet you, too.", ar: "سعيد بلقائك أيضًا" },
+          { en: "Welcome to Saudi Arabia!", ar: "أهلاً بك في السعودية!" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Speaking Challenge (تحدي التحدث):</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
+              <div>• Hello! My name is <span style="color: var(--primary);">[Your Name]</span>.</div>
+              <div>• I am <span style="color: var(--primary);">[Your Age]</span> years old.</div>
+              <div>• I am from <span style="color: var(--primary);">Saudi Arabia</span>. I live in <span style="color: var(--primary);">Riyadh</span>.</div>
+              <div>• Nice to meet you!</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Hello! My name is Ahmed. I am eleven years old. I live in Riyadh. Nice to meet you!')">🔊 Listen to Model</button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar Capsule: Verb to Be (I am / I'm)</h4>
+          <p style="margin: 8px 0 16px; color: var(--text-muted); font-size: 14px;">
+            نستخدم am دائماً مع الضمير I للتعبير عن النفس، الاسم، أو السن:
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ الشكل الكامل (Full Form):</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>I <strong>am</strong> Ahmed. (أنا أحمد)</li>
+                <li>I <strong>am</strong> a student. (أنا طالب)</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ الاختصار البسيط (Short Form):</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>• <strong>I'm</strong> Ahmed.</div>
+                <div>• <strong>I'm</strong> eleven years old.</div>
+              </div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: Meet Ahmed",
+        readingText: "Hello! My name is Ahmed. I am twelve years old. I am a student at Al Bayariq School. I am from Saudi Arabia. I live in a quiet home in Riyadh. I like English and football. I am happy to meet you.",
+        readingQuestions: [
+          { q: "1. How old is Ahmed?", c1: "12 years old ✅", c2: "9 years old" },
+          { q: "2. What does Ahmed like?", c1: "English and football ✅", c2: "Tennis only" }
+        ],
+        millionaire: [
+          { q: "Complete: 'Hello! My name ___ Ahmed.'", opts: ["is", "am", "are", "be"], ans: 0, prize: "$100" },
+          { q: "What is the capital city where Ahmed lives?", opts: ["Riyadh", "Jeddah", "Dammam", "Taif"], ans: 0, prize: "$1,000" },
+          { q: "Choose the correct combination:", opts: ["I am", "I is", "I are", "I be"], ans: 0, prize: "$10,000" },
+          { q: "Polite reply to: 'Nice to meet you':", opts: ["Nice to meet you, too.", "Good night.", "No thank you.", "See you."], ans: 0, prize: "$100,000" },
+          { q: "Which sentence is 100% correct in English?", opts: ["I'm from Saudi Arabia.", "I from Saudi Arabia.", "I are from Saudi Arabia.", "I is from Saudi Arabia."], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. What is the boy's name in the dialogue?", opts: ["Ahmed", "Omar", "Ali", "Khalid"], ans: 0 },
+          { q: "2. How old is Omar?", opts: ["12 years old", "10 years old", "15 years old", "8 years old"], ans: 0 },
+          { q: "3. What do you say when you ask someone's name?", opts: ["What's your name?", "How old are you?", "Where do you live?", "How are you?"], ans: 0 },
+          { q: "4. Complete: 'Nice to meet ______.'", opts: ["you", "I", "my", "your"], ans: 0 },
+          { q: "5. Choose the correct form: 'I ___ a student.'", opts: ["am", "is", "are", "be"], ans: 0 },
+          { q: "6. Choose the correct sentence:", opts: ["I am Ahmed.", "I is Ahmed.", "I are Ahmed.", "I be Ahmed."], ans: 0 },
+          { q: "7. Short form of: 'I am Omar':", opts: ["I'm Omar.", "I's Omar.", "I'are Omar.", "I be Omar."], ans: 0 },
+          { q: "8. Where is Ahmed from?", opts: ["Saudi Arabia", "Egypt", "Kuwait", "Bahrain"], ans: 0 },
+          { q: "9. Ahmed lives in:", opts: ["Riyadh", "Jeddah", "Abha", "Tabuk"], ans: 0 },
+          { q: "10. What does Ahmed like in the story?", opts: ["English and football", "Swimming", "Basketball", "Cooking"], ans: 0 },
+          { q: "11. Put words in order: [ am / I / a / student ]", opts: ["I am a student.", "Student a I am.", "A student am I.", "I a student am."], ans: 0 },
+          { q: "12. Complete: 'Hello! My ___ is Abdullah. I ___ 12 years old.'", opts: ["name / am", "names / is", "name / are", "names / am"], ans: 0 }
+        ]
+      },
+      2: {
+        number: 2,
+        title: "Family & Home (عائلتي ومنزلي)",
+        introEn: "This week, we learn vocabulary about family members and home, and practice using 'He is', 'She is', and 'They are'.",
+        introAr: "في هذا الأسبوع، يتعلم الطالب مفردات أفراد الأسرة ووصف المنزل، والتدرب على الضمائر (He is / She is / We are / They are).",
+        dialogueTitle: "Dialogue: Ahmed & Salman",
+        dialogue: [
+          { speaker: "Salman", text: "Hello Ahmed! Who is this in the photo?" },
+          { speaker: "Ahmed", text: "This is my father. He is a doctor." },
+          { speaker: "Salman", text: "And who is that next to him?" },
+          { speaker: "Ahmed", text: "She is my mother. She is a kind teacher." },
+          { speaker: "Salman", text: "Do you have any brothers or sisters?" },
+          { speaker: "Ahmed", text: "Yes, I have one brother and two sisters. We are a happy family." }
+        ],
+        expressions: [
+          { en: "This is my father.", ar: "هذا والدي" },
+          { en: "This is my mother.", ar: "هذه والدتي" },
+          { en: "He is a doctor.", ar: "هو طبيب" },
+          { en: "She is a teacher.", ar: "هي معلمة" },
+          { en: "I have one brother.", ar: "لدي أخ واحد" },
+          { en: "I have two sisters.", ar: "لدي أختان" },
+          { en: "We are a happy family.", ar: "نحن عائلة سعيدة" },
+          { en: "We live in a big house.", ar: "نحن نعيش في بيت كبير" },
+          { en: "They are my parents.", ar: "هما والداي" },
+          { en: "I love my family.", ar: "أنا أحب عائلتي" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Family Speaking Drill (تحدي التحدث عن الأسرة):</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
+              <div>• This is my father. He is great.</div>
+              <div>• This is my mother. She is kind.</div>
+              <div>• I have brothers and sisters. We are a happy family!</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('This is my father. He is great. This is my mother. She is kind. We are a happy family!')">🔊 Listen to Model</button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar: Verb to Be (He / She / We / They)</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ المفرد (is):</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>He <strong>is</strong> my father. (هو)</li>
+                <li>She <strong>is</strong> my mother. (هي)</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">✅ الجمع (are):</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>We <strong>are</strong> students. (نحن)</li>
+                <li>They <strong>are</strong> kind. (هم)</li>
+              </ul>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: My Lovely Family",
+        readingText: "My name is Salman. I have a wonderful family. My father is an engineer and my mother is a teacher. I have one brother, his name is Fahad. We live in a quiet neighborhood in Riyadh. On Fridays, we visit our grandparents. I love my family very much.",
+        readingQuestions: [
+          { q: "1. What is Salman's father's job?", c1: "An engineer ✅", c2: "A pilot" },
+          { q: "2. What is the name of Salman's brother?", c1: "Fahad ✅", c2: "Ahmed" }
+        ],
+        millionaire: [
+          { q: "Complete: '___ is my mother.'", opts: ["She", "He", "They", "We"], ans: 0, prize: "$100" },
+          { q: "Complete: 'My brothers ___ playing football.'", opts: ["are", "is", "am", "be"], ans: 0, prize: "$1,000" },
+          { q: "Short form of: 'They are':", opts: ["They're", "They'is", "They'am", "They's"], ans: 0, prize: "$10,000" },
+          { q: "Which sentence is grammatically correct?", opts: ["He is an engineer.", "He are an engineer.", "He am an engineer."], ans: 0, prize: "$100,000" },
+          { q: "STEP Question: 'We ___ a happy family.'", opts: ["are", "is", "am", "be"], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. What is Ahmed's father's job in the dialogue?", opts: ["A doctor", "A teacher", "An engineer", "A pilot"], ans: 0 },
+          { q: "2. What is Ahmed's mother's job?", opts: ["A teacher", "A doctor", "A nurse", "An architect"], ans: 0 },
+          { q: "3. Choose the correct form: 'He ___ my brother.'", opts: ["is", "am", "are", "be"], ans: 0 },
+          { q: "4. Choose the correct form: 'They ___ my parents.'", opts: ["are", "is", "am", "be"], ans: 0 },
+          { q: "5. 'My sister is smart. ___ loves reading.'", opts: ["She", "He", "It", "They"], ans: 0 },
+          { q: "6. Contraction of: 'She is':", opts: ["She's", "She're", "She'am", "She'll"], ans: 0 },
+          { q: "7. Complete: 'We ___ in Riyadh.'", opts: ["live", "lives", "living", "is live"], ans: 0 },
+          { q: "8. In reading text, Salman's father is an:", opts: ["Engineer", "Officer", "Doctor", "Driver"], ans: 0 },
+          { q: "9. Salman's brother is named:", opts: ["Fahad", "Ahmed", "Omar", "Ali"], ans: 0 },
+          { q: "10. When does Salman's family gather?", opts: ["On Fridays", "On Mondays", "On Saturdays"], ans: 0 },
+          { q: "11. Put words in order: [ is / mother / She / my ]", opts: ["She is my mother.", "My mother she is.", "Mother is she my."], ans: 0 },
+          { q: "12. 'My parents ___ kind. I love ___.'", opts: ["are / them", "is / they", "are / he", "is / them"], ans: 0 }
+        ]
+      },
+      3: {
+        number: 3,
+        title: "Daily Routines & School (روتيني والمدرسة)",
+        introEn: "This week, we practice talking about our morning routines, school subjects, and using the Present Simple with 'always' and 'usually'.",
+        introAr: "في هذا الأسبوع، يتعلم الطالب التحدث عن روتينه اليومي، مواعيد المدرسة، واستخدام زمن المضارع البسيط وظروف التكرار (always / usually).",
+        dialogueTitle: "Dialogue: Khalid & Rashed",
+        dialogue: [
+          { speaker: "Khalid", text: "Good morning Rashed! What time do you wake up every day?" },
+          { speaker: "Rashed", text: "Good morning! I always wake up at 6:00 AM." },
+          { speaker: "Khalid", text: "What do you do next?" },
+          { speaker: "Rashed", text: "I wash my face, pray Fajr, and eat breakfast." },
+          { speaker: "Khalid", text: "How do you go to Al Bayariq School?" },
+          { speaker: "Rashed", text: "I usually go by bus with my classmates." },
+          { speaker: "Khalid", text: "When does school finish?" },
+          { speaker: "Rashed", text: "It finishes at 1:30 PM. Then I do my homework." }
+        ],
+        expressions: [
+          { en: "I wake up early.", ar: "أستيقظ مبكرًا" },
+          { en: "I eat breakfast.", ar: "أتناول وجبة الإفطار" },
+          { en: "I brush my teeth.", ar: "أنظف أسناني بالفرشاة" },
+          { en: "I go to school by bus.", ar: "أذهب إلى المدرسة بالحافلة" },
+          { en: "School starts at seven.", ar: "تبدأ المدرسة عند السابعة" },
+          { en: "I listen to my teacher.", ar: "أستمع لمعلمي باهتمام" },
+          { en: "I do my homework.", ar: "أحل واجباتي المدرسية" },
+          { en: "I pray on time.", ar: "أصلي في الوقت المحدد" },
+          { en: "I read an English story.", ar: "أقرأ قصة بالإنجليزية" },
+          { en: "I sleep at nine PM.", ar: "أنام عند التاسعة مساءً" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Routine Challenge (تحدي التحدث عن الروتين):</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
+              <div>• Every morning, I wake up at 6:00 AM.</div>
+              <div>• I eat breakfast and get dressed for school.</div>
+              <div>• I go to Al Bayariq School by car. I always do my best!</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Every morning, I wake up at six AM. I eat breakfast and go to Al Bayariq School!')">🔊 Listen to Model</button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar: Present Simple (I / We / They + Verb)</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ الفعل المباشر (Base Verb):</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>I <strong>wake</strong> up early. (أنا أستيقظ)</li>
+                <li>We <strong>go</strong> to school. (نحن نذهب)</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ ظروف التكرار (Adverbs):</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>تأتي قبل الفعل:</div>
+                <div>• I <strong>always</strong> wake up at 6:00. (دائماً)</div>
+                <div>• We <strong>usually</strong> walk to school. (عادةً)</div>
+              </div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: Ziyad's School Day",
+        readingText: "Ziyad is an active student at Al Bayariq Private Schools. He wakes up at 6:15 every morning. He brushes his teeth, washes his hands, and eats breakfast. At 6:50, he rides the school bus with a smile. At school, Ziyad loves his English and Science classes. He returns home at 1:40 PM to finish his homework.",
+        readingQuestions: [
+          { q: "1. What time does Ziyad wake up?", c1: "6:15 AM ✅", c2: "7:30 AM" },
+          { q: "2. Which school does Ziyad attend?", c1: "Al Bayariq Private Schools ✅", c2: "Noor School" }
+        ],
+        millionaire: [
+          { q: "Complete: 'I ___ up at 6:00 AM every morning.'", opts: ["wake", "wakes", "waking", "waked"], ans: 0, prize: "$100" },
+          { q: "What does 'always' mean in Arabic?", opts: ["دائماً", "أحياناً", "نادراً", "أبداً"], ans: 0, prize: "$1,000" },
+          { q: "Choose the correct sentence:", opts: ["We usually go to school by bus.", "We go usually to school by bus.", "Usually we goes."], ans: 0, prize: "$10,000" },
+          { q: "Which verb matches with 'breakfast'?", opts: ["eat", "listen", "wash", "play"], ans: 0, prize: "$100,000" },
+          { q: "STEP Question: 'They ___ their homework in the afternoon.'", opts: ["do", "does", "doing", "is do"], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. What time does Rashed wake up in dialogue?", opts: ["6:00 AM", "5:00 AM", "7:00 AM", "8:00 AM"], ans: 0 },
+          { q: "2. How does Rashed go to school?", opts: ["By bus", "By car", "On foot", "By bike"], ans: 0 },
+          { q: "3. 'I ___ English every day.'", opts: ["study", "studies", "studying"], ans: 0 },
+          { q: "4. 'We ___ our teeth in the morning.'", opts: ["brush", "brushes", "brushing"], ans: 0 },
+          { q: "5. Position of adverb: 'I (always) sleep early.'", opts: ["Before verb (I always sleep)", "After verb", "At end"], ans: 0 },
+          { q: "6. 'They ___ Fajr prayer on time.'", opts: ["pray", "prays", "praying"], ans: 0 },
+          { q: "7. When does school finish for Rashed?", opts: ["1:30 PM", "12:00 PM", "3:00 PM"], ans: 0 },
+          { q: "8. School Ziyad attends in reading:", opts: ["Al Bayariq Private Schools", "Future Schools"], ans: 0 },
+          { q: "9. Put in order: [ school / go / to / We ]", opts: ["We go to school.", "School to go we.", "To school we go."], ans: 0 },
+          { q: "10. 'You ___ a healthy breakfast every day.'", opts: ["eat", "eats", "eating"], ans: 0 },
+          { q: "11. 'Usually' means:", opts: ["عادةً", "دائماً", "أبداً"], ans: 0 },
+          { q: "12. Correct English sentence:", opts: ["I always wash my hands before eating.", "I washes always hands."], ans: 0 }
+        ]
+      },
+      4: {
+        number: 4,
+        title: "Hobbies & Free Time (الهوايات وأوقات الفراغ)",
+        introEn: "In this unit, we learn to describe our favorite hobbies, practice using 'like + -ing', and master singular and plural nouns.",
+        introAr: "في هذا الأسبوع، يتعلم الطالب التعبير عن هواياته المفضلة، واستخدام صيغة (like + ing)، والتعرف على قواعد جمع الكلمات البسيطة والشاذة.",
+        dialogueTitle: "Dialogue: Yasser & Tariq",
+        dialogue: [
+          { speaker: "Yasser", text: "What do you like doing in your free time, Tariq?" },
+          { speaker: "Tariq", text: "I love playing football with my neighborhood friends. What about you?" },
+          { speaker: "Yasser", text: "I like reading adventure stories and drawing planes." },
+          { speaker: "Tariq", text: "Do you enjoy playing video games on weekends?" },
+          { speaker: "Yasser", text: "Yes, I play video games for one hour on Saturdays." }
+        ],
+        expressions: [
+          { en: "What is your hobby?", ar: "ما هي هوايتك؟" },
+          { en: "My favorite hobby is reading.", ar: "هوايتي المفضلة هي القراءة" },
+          { en: "I like playing football.", ar: "أنا أحب لعب كرة القدم" },
+          { en: "I enjoy swimming in summer.", ar: "أستمتع بالسباحة في الصيف" },
+          { en: "I love drawing pictures.", ar: "أحب رسم اللوحات" },
+          { en: "In my free time, I ride my bike.", ar: "في وقت فراغي، أركب دراجتي" },
+          { en: "Sports are good for health.", ar: "الرياضة مفيدة للصحة" },
+          { en: "I play video games on Friday.", ar: "ألعب ألعاب الفيديو يوم الجمعة" },
+          { en: "We have fun together.", ar: "نحن نقضي وقتاً ممتعاً معاً" },
+          { en: "Keep active every day!", ar: "ابقَ نشيطاً كل يوم!" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Hobbies Speaking Drill (تحدي التحدث عن الهواية):</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
+              <div>• My favorite hobby is playing football.</div>
+              <div>• I like playing with my friends on weekends.</div>
+              <div>• It makes me healthy and energized! What is your hobby?</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('My favorite hobby is playing football. I like playing with my friends on weekends!')">🔊 Listen to Model</button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar: Expressing Likes & Plurals</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ (like / love / enjoy + ing):</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>I like <strong>reading</strong> stories.</li>
+                <li>We love <strong>playing</strong> sports.</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ الجمع العادي والشاذ (Plurals):</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>• hobby ➔ <strong>hobbies</strong></div>
+                <div>• friend ➔ <strong>friends</strong></div>
+                <div>• child ➔ <strong>children</strong> (شاذ)</div>
+              </div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: Active Weekends",
+        readingText: "Majed loves the weekend because he has plenty of free time. On Thursday evening, he plays basketball with his cousins. On Friday, he enjoys reading historical stories. On Saturday morning, Majed rides his bicycle in the park for thirty minutes. Healthy hobbies make the body strong and the mind sharp.",
+        readingQuestions: [
+          { q: "1. What sport does Majed play on Thursday?", c1: "Basketball ✅", c2: "Tennis" },
+          { q: "2. How long does Majed ride his bicycle?", c1: "Thirty minutes ✅", c2: "Two hours" }
+        ],
+        millionaire: [
+          { q: "Choose correct grammar: 'I like ___ football.'", opts: ["playing", "play", "plays", "played"], ans: 0, prize: "$100" },
+          { q: "What is the plural of 'hobby'?", opts: ["hobbies", "hobbys", "hobbyes", "hobbiez"], ans: 0, prize: "$1,000" },
+          { q: "Complete: 'We enjoy ___ in the swimming pool.'", opts: ["swimming", "swim", "swims", "swam"], ans: 0, prize: "$10,000" },
+          { q: "Which activity is an outdoor hobby?", opts: ["Riding a bicycle", "Sleeping", "Watching TV inside"], ans: 0, prize: "$100,000" },
+          { q: "STEP Question: 'The ___ are playing happily in the garden.'", opts: ["children", "childs", "child", "childrens"], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. Tariq's favorite hobby in dialogue:", opts: ["Playing football", "Swimming", "Cooking", "Writing"], ans: 0 },
+          { q: "2. Yasser enjoys:", opts: ["Reading and drawing", "Fixing cars", "Playing tennis"], ans: 0 },
+          { q: "3. 'I like ___ books.'", opts: ["reading", "read", "reads", "is read"], ans: 0 },
+          { q: "4. 'They love ___ in the sea during summer.'", opts: ["swimming", "swim", "swims", "swam"], ans: 0 },
+          { q: "5. Plural of 'story':", opts: ["stories", "storys", "storyes"], ans: 0 },
+          { q: "6. Plural of 'child':", opts: ["children", "childs", "childes"], ans: 0 },
+          { q: "7. 'We ___ video games on the weekend.'", opts: ["play", "plays", "playing"], ans: 0 },
+          { q: "8. Majed plays basketball with:", opts: ["His cousins", "His teacher", "His neighbors"], ans: 0 },
+          { q: "9. Put in order: [ hobby / My / reading / is / favorite ]", opts: ["My favorite hobby is reading.", "My reading is hobby favorite."], ans: 0 },
+          { q: "10. Correct sentence for STEP:", opts: ["I enjoy drawing pictures.", "He like play football.", "We likes reading."], ans: 0 },
+          { q: "11. 'Enjoy' is followed by:", opts: ["Verb + ing", "Verb + ed", "Base verb only"], ans: 0 },
+          { q: "12. 'We love ___ English.'", opts: ["learning", "learns", "learned"], ans: 0 }
+        ]
+      },
+      5: {
+        number: 5,
+        title: "Food, Drinks & Ordering (الطعام والشراب والطلب)",
+        introEn: "In this unit, we learn how to order food and drinks politely in a restaurant and practice using 'some' and 'any' with countable and uncountable nouns.",
+        introAr: "في هذا الأسبوع، يتعلم الطالب كيف يطلب وجبته ومشروبه في المطعم بأدب بالإنجليزية، مع فهم بسيط للأسماء المعدودة وغير المعدودة واستخدام (some / any).",
+        dialogueTitle: "Dialogue: At the Restaurant (Fahad & Waiter)",
+        dialogue: [
+          { speaker: "Waiter", text: "Good afternoon! Welcome to the restaurant. What would you like to eat?" },
+          { speaker: "Fahad", text: "Hello! Could I have grilled chicken with rice and fresh salad, please?" },
+          { speaker: "Waiter", text: "Certainly! Would you like some water or orange juice?" },
+          { speaker: "Fahad", text: "I would like some orange juice with no sugar, please." },
+          { speaker: "Waiter", text: "Do you have any questions about dessert?" },
+          { speaker: "Fahad", text: "No, thank you. That is all!" }
+        ],
+        expressions: [
+          { en: "Can I have the menu, please?", ar: "هل يمكنني رؤية قائمة الطعام؟" },
+          { en: "I would like grilled chicken.", ar: "أود طلب دجاج مشوي" },
+          { en: "Would you like some water?", ar: "هل ترغب في بعض الماء؟" },
+          { en: "I don't have any sugar.", ar: "ليس لدي أي سكر" },
+          { en: "How much is this meal?", ar: "كم سعر هذه الوجبة؟" },
+          { en: "Vegetables are healthy.", ar: "الخضروات مفيدة وصحية" },
+          { en: "Delicious food, thank you!", ar: "وجبة لذيذة، شكراً لك!" },
+          { en: "Here is your bill.", ar: "تفضل فاتورة الحساب" },
+          { en: "I drink plenty of water.", ar: "أنا أشرب الكثير من الماء" },
+          { en: "Enjoy your meal!", ar: "بالهناء والشفاء!" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Restaurant Speaking Drill (تحدي التحدث في المطعم):</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
+              <div>• Hello! Can I have the menu, please?</div>
+              <div>• I would like chicken and rice with fresh salad.</div>
+              <div>• I would like some water, please. Thank you!</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Hello! Can I have the menu, please? I would like chicken and rice with salad. Thank you!')">🔊 Listen to Model</button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar: Countable, Uncountable & Some / Any</h4>
+          <p style="margin: 8px 0 16px; color: var(--text-muted); font-size: 14px;">
+            الأسماء المعدودة تعد بالواحدة، والأسماء غير المعدودة مثل السوائل:
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ Some (في الإثبات والطلب):</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>I have <strong>some</strong> apples. (تفاح)</li>
+                <li>I drink <strong>some</strong> water. (ماء)</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ Any (في النفي والسؤال):</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>• I don't have <strong>any</strong> milk. (نفي)</div>
+                <div>• Do you have <strong>any</strong> tea? (سؤال)</div>
+              </div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: Healthy Food",
+        readingText: "Traditional Saudi food is very delicious. Kabsa is a famous dish made of rice, spices, and chicken or meat. Many families also enjoy dates and Arabic coffee every morning. Doctors say we should eat fresh vegetables and drink plenty of clean water every day.",
+        readingQuestions: [
+          { q: "1. What is Kabsa made of?", c1: "Rice, spices, and chicken or meat ✅", c2: "Bread and fish" },
+          { q: "2. What do many families enjoy every morning?", c1: "Dates and Arabic coffee ✅", c2: "Soda and chips" }
+        ],
+        millionaire: [
+          { q: "Complete: 'There is ___ milk in the fridge.' (Positive)", opts: ["some", "any", "many", "an"], ans: 0, prize: "$100" },
+          { q: "Complete: 'We don't have ___ apples left.' (Negative)", opts: ["any", "some", "much", "a"], ans: 0, prize: "$1,000" },
+          { q: "Which word is UNCOUNTABLE in English?", opts: ["Water", "Apple", "Car", "Pen"], ans: 0, prize: "$10,000" },
+          { q: "Polite request: 'Would you like ___ orange juice?'", opts: ["some", "any", "no", "few"], ans: 0, prize: "$100,000" },
+          { q: "STEP Question: 'He hasn't got ___ brothers.'", opts: ["any", "some", "much", "little"], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. What does Fahad order in the dialogue?", opts: ["Grilled chicken, rice, and salad", "Pizza and burger", "Fish"], ans: 0 },
+          { q: "2. What drink does Fahad choose?", opts: ["Fresh orange juice", "Soda", "Tea"], ans: 0 },
+          { q: "3. 'I would like ___ water, please.'", opts: ["some", "any", "many"], ans: 0 },
+          { q: "4. 'There isn't ___ sugar in the cup.'", opts: ["any", "some", "many"], ans: 0 },
+          { q: "5. Which word is countable?", opts: ["Banana", "Water", "Rice"], ans: 0 },
+          { q: "6. Which word is uncountable?", opts: ["Juice", "Orange", "Egg"], ans: 0 },
+          { q: "7. 'Do you have ___ questions?'", opts: ["any", "some", "much"], ans: 0 },
+          { q: "8. In reading text, Kabsa is made of:", opts: ["Rice, spices, and chicken or meat", "Bread and tea"], ans: 0 },
+          { q: "9. Put in order: [ some / like / I / would / juice ]", opts: ["I would like some juice.", "Some juice would I like."], ans: 0 },
+          { q: "10. 'There aren't ___ bananas on the table.'", opts: ["any", "some", "a"], ans: 0 },
+          { q: "11. 'Uncountable' means:", opts: ["Words we cannot count in numbers", "Always plural"], ans: 0 },
+          { q: "12. 'Could you give me ___ bread, please?'", opts: ["some", "any", "many"], ans: 0 }
+        ]
+      },
+      6: {
+        number: 6,
+        title: "Places in Town & Directions (الأماكن في المدينة والاتجاهات)",
+        introEn: "In this unit, we learn words for places in town and how to give and ask for simple directions using 'next to', 'between', and 'turn left/right'.",
+        introAr: "في هذا الأسبوع، يتعلم الطالب أسماء الأماكن المهمة في المدينة وكيف يسأل عن الطريق ويصف الاتجاهات بسهولة (next to / between / turn left / turn right).",
+        dialogueTitle: "Dialogue: Directions in Riyadh (Tourist & Saud)",
+        dialogue: [
+          { speaker: "Tourist", text: "Excuse me! How can I get to the National Museum?" },
+          { speaker: "Saud", text: "Go straight down this street, then turn left at the traffic light." },
+          { speaker: "Tourist", text: "Is it far from here?" },
+          { speaker: "Saud", text: "No, it is next to the public park, opposite the library." },
+          { speaker: "Tourist", text: "Thank you very much!" },
+          { speaker: "Saud", text: "You are welcome. Enjoy your time in Riyadh!" }
+        ],
+        expressions: [
+          { en: "Excuse me, where is the bank?", ar: "معذرةً، أين يقع البنك؟" },
+          { en: "Go straight ahead.", ar: "امشِ للأمام مباشرة" },
+          { en: "Turn left at the light.", ar: "انعطف يساراً عند الإشارة" },
+          { en: "Turn right at the corner.", ar: "انعطف يميناً عند المنعطف" },
+          { en: "It is next to the hospital.", ar: "إنه بجوار المستشفى تماماً" },
+          { en: "The mosque is opposite the school.", ar: "المسجد في الجهة المقابلة للمدرسة" },
+          { en: "The bank is between the shops.", ar: "البنك يقع بين المحلين" },
+          { en: "How far is it?", ar: "كم المسافة إلى هناك؟" },
+          { en: "It is on your right side.", ar: "سيكون على يمينك" },
+          { en: "Have a safe trip!", ar: "أتمنى لك رحلة آمنة!" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Giving Directions Drill (تحدي وصف الطريق):</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
+              <div>• Excuse me, where is the library?</div>
+              <div>• Go straight ahead and turn right.</div>
+              <div>• It is next to the park, opposite the school!</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Excuse me, where is the library? Go straight ahead and turn right. It is next to the park!')">🔊 Listen to Model</button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar: Prepositions of Place & Directions</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ حروف جر المكان:</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li><strong>next to:</strong> بجوار مباشرة</li>
+                <li><strong>between:</strong> بين شيئين</li>
+                <li><strong>opposite:</strong> في الجهة المقابلة</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ وصف الاتجاه:</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>• <strong>Go</strong> straight. (سر للأمام)</div>
+                <div>• <strong>Turn</strong> left / right. (انعطف)</div>
+              </div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: Exploring Riyadh",
+        readingText: "Riyadh is a modern and beautiful capital city. In the downtown area, there is a large public library next to a big park. Opposite the library, you can see historic Masmak Fortress. Modern trains connect all neighborhoods, making travel very easy for everyone.",
+        readingQuestions: [
+          { q: "1. What is next to the public library?", c1: "A big park ✅", c2: "An airport" },
+          { q: "2. What historic fortress is opposite the library?", c1: "Masmak Fortress ✅", c2: "Red Fort" }
+        ],
+        millionaire: [
+          { q: "Which word means 'بجوار مباشرة'?", opts: ["next to", "under", "inside", "behind"], ans: 0, prize: "$100" },
+          { q: "Complete: '___ left at the traffic light.'", opts: ["Turn", "Turning", "Turns", "Turned"], ans: 0, prize: "$1,000" },
+          { q: "The pharmacy is ___ the supermarket and the bank.", opts: ["between", "next", "in", "under"], ans: 0, prize: "$10,000" },
+          { q: "Polite phrase to ask someone in street:", opts: ["Excuse me", "Hey you", "Wait", "Stop"], ans: 0, prize: "$100,000" },
+          { q: "STEP Question: 'The hospital is situated ___ the road.'", opts: ["across", "through", "in", "between"], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. Where does the tourist want to go?", opts: ["The National Museum", "The Airport", "The Hotel"], ans: 0 },
+          { q: "2. What direction should the tourist take first?", opts: ["Go straight ahead", "Turn right", "Walk backwards"], ans: 0 },
+          { q: "3. 'The hospital is ___ to the clinic.'", opts: ["next", "between", "under"], ans: 0 },
+          { q: "4. '___ straight and cross the street.'", opts: ["Go", "Goes", "Going"], ans: 0 },
+          { q: "5. 'The mosque is ___ the school and the garden.'", opts: ["between", "next", "in"], ans: 0 },
+          { q: "6. 'The restaurant is ___ the street from the bank.'", opts: ["across", "under", "into"], ans: 0 },
+          { q: "7. Which sentence is an imperative direction?", opts: ["Turn right at the corner.", "He turns right."], ans: 0 },
+          { q: "8. Historic fortress mentioned in reading:", opts: ["Masmak Fortress", "London Tower"], ans: 0 },
+          { q: "9. Put in order: [ museum / Excuse / the / where / is / me ]", opts: ["Excuse me, where is the museum?", "Where is museum the excuse me?"], ans: 0 },
+          { q: "10. 'Opposite' means:", opts: ["في الجهة المقابلة", "خلف", "تحت"], ans: 0 },
+          { q: "11. 'Next to' means:", opts: ["بجانب", "فوق", "خارج"], ans: 0 },
+          { q: "12. 'Don't ___ right; take the left exit.'", opts: ["turn", "turns", "turning"], ans: 0 }
+        ]
+      },
+      7: {
+        number: 7,
+        title: "Clothes, Shopping & Prices (الملابس والتسوق والأسعار)",
+        introEn: "In this unit, we learn words for clothes, asking about prices, and practicing 'This, That, These, Those' and 'How much is/are'.",
+        introAr: "في هذا الأسبوع، يتعلم الطالب أسماء الملابس، والسؤال عن السعر والمقاس، واستخدام أسماء الإشارة (This / That / These / Those) و (How much is/are).",
+        dialogueTitle: "Dialogue: Buying Clothes (Zaid & Shop Assistant)",
+        dialogue: [
+          { speaker: "Assistant", text: "Good evening! How can I help you today?" },
+          { speaker: "Zaid", text: "Hello! I am looking for a white winter jacket." },
+          { speaker: "Assistant", text: "We have this nice jacket here, or that one on the rack." },
+          { speaker: "Zaid", text: "How much is this white jacket?" },
+          { speaker: "Assistant", text: "It is one hundred and fifty Saudi Riyals." },
+          { speaker: "Zaid", text: "Great! Can I pay by card?" },
+          { speaker: "Assistant", text: "Yes, of course. We accept cards." }
+        ],
+        expressions: [
+          { en: "How can I help you?", ar: "كيف يمكنني مساعدتك؟" },
+          { en: "I am looking for a jacket.", ar: "أبحث عن سترة / جاكيت" },
+          { en: "How much is this shirt?", ar: "كم سعر هذا القميص؟" },
+          { en: "How much are these shoes?", ar: "كم سعر هذا الحذاء؟" },
+          { en: "What size do you wear?", ar: "ما المقاس الذي ترتديه؟" },
+          { en: "I wear size Medium.", ar: "أرتدي المقاس المتوسط (M)" },
+          { en: "Can I try this on?", ar: "هل يمكنني قياس هذه القطعة؟" },
+          { en: "Can I pay by card?", ar: "هل يمكنني الدفع بالبطاقة؟" },
+          { en: "Here is your receipt.", ar: "تفضل إيصال الدفع" },
+          { en: "Enjoy your shopping!", ar: "تسوق ممتع!" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Shopping Speaking Drill (تحدي التحدث في المتجر):</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
+              <div>• Hello! How much is this blue jacket?</div>
+              <div>• It is 150 Riyals. I wear size Large.</div>
+              <div>• Can I pay by card? Yes, thank you!</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('Hello! How much is this blue jacket? It is 150 Riyals. Can I pay by card?')">🔊 Listen to Model</button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar: This/That/These/Those & How Much</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ أسماء الإشارة:</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li><strong>This:</strong> مفرد قريب (This shirt)</li>
+                <li><strong>That:</strong> مفرد بعيد (That jacket)</li>
+                <li><strong>These:</strong> جمع قريب (These shoes)</li>
+                <li><strong>Those:</strong> جمع بعيد (Those pants)</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ السؤال عن السعر:</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>• <strong>How much is</strong> this thobe? (مفرد)</div>
+                <div>• <strong>How much are</strong> these shoes? (جمع)</div>
+              </div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: Shopping Malls",
+        readingText: "Shopping malls in Saudi Arabia have many great stores. You can find traditional white thobes, sports clothes, and shoes. Most shops accept digital payments like Mada and Apple Pay, making shopping comfortable and modern.",
+        readingQuestions: [
+          { q: "1. What traditional clothes are mentioned?", c1: "White thobes ✅", c2: "Coats only" },
+          { q: "2. How can shoppers pay?", c1: "Cards like Mada and Apple Pay ✅", c2: "Coins only" }
+        ],
+        millionaire: [
+          { q: "Complete: 'How much ___ this shirt?'", opts: ["is", "are", "am", "be"], ans: 0, prize: "$100" },
+          { q: "Complete: 'How much ___ these shoes?'", opts: ["are", "is", "am", "was"], ans: 0, prize: "$1,000" },
+          { q: "Which word is for plural items CLOSE to you?", opts: ["These", "This", "That", "Those"], ans: 0, prize: "$10,000" },
+          { q: "Which question asks about the number of items?", opts: ["How many", "How much", "How far"], ans: 0, prize: "$100,000" },
+          { q: "STEP Question: '___ thobe over there on the top shelf is elegant.'", opts: ["That", "This", "These"], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. What does Zaid want to buy in the dialogue?", opts: ["A white winter jacket", "Shoes", "A summer hat"], ans: 0 },
+          { q: "2. How much does the white jacket cost?", opts: ["150 Riyals", "50 Riyals", "300 Riyals"], ans: 0 },
+          { q: "3. 'How much ___ these trousers?'", opts: ["are", "is", "am"], ans: 0 },
+          { q: "4. '___ jacket here in my hand is warm.'", opts: ["This", "Those", "These"], ans: 0 },
+          { q: "5. '___ birds far up in the sky are fast.'", opts: ["Those", "This", "These"], ans: 0 },
+          { q: "6. '___ pens do you need for class?' (Countable)", opts: ["How many", "How much"], ans: 0 },
+          { q: "7. 'How ___ water do you drink daily?'", opts: ["much", "many"], ans: 0 },
+          { q: "8. Digital payment mentioned in reading:", opts: ["Mada and Apple Pay", "Paper coupons"], ans: 0 },
+          { q: "9. Put in order: [ is / much / this / How / jacket ]", opts: ["How much is this jacket?", "This jacket is how much?"], ans: 0 },
+          { q: "10. 'Shoes' in English is treated as:", opts: ["Plural (are / these)", "Singular (is)"], ans: 0 },
+          { q: "11. 'These' refers to:", opts: ["Plural near", "Singular far"], ans: 0 },
+          { q: "12. 'Look at ___ shoes on my feet right now!'", opts: ["these", "that", "this"], ans: 0 }
+        ]
+      },
+      8: {
+        number: 8,
+        title: "Weather, Seasons & Present Continuous (الطقس والمضارع المستمر)",
+        introEn: "In this unit, we learn words for weather and seasons, and practice using the Present Continuous (am/is/are + verb-ing) for actions happening right now.",
+        introAr: "في هذا الأسبوع، يتعلم الطالب مفردات الطقس وفصول السنة، والتدرب على زمن المضارع المستمر (am/is/are + ing) للأحداث التي تقع الآن في هذه اللحظة.",
+        dialogueTitle: "Dialogue: Weather in Abha & Riyadh (Nasser & Bandar)",
+        dialogue: [
+          { speaker: "Nasser", text: "Hello Bandar! How is the weather in Riyadh right now?" },
+          { speaker: "Bandar", text: "It is sunny and warm today. What about Abha?" },
+          { speaker: "Nasser", text: "Here in Abha, it is cool and raining gently!" },
+          { speaker: "Bandar", text: "What are you doing now?" },
+          { speaker: "Nasser", text: "We are drinking warm tea and watching the clouds." }
+        ],
+        expressions: [
+          { en: "What is the weather like today?", ar: "كيف تبدو حالة الطقس اليوم؟" },
+          { en: "It is sunny and warm.", ar: "الجو مشمس ودافئ" },
+          { en: "It is raining outside.", ar: "إنها تمطر في الخارج الآن" },
+          { en: "The wind is blowing.", ar: "الرياح تهب حالياً" },
+          { en: "Winter is cold in Riyadh.", ar: "الشتاء بارد في الرياض" },
+          { en: "Summer is hot and dry.", ar: "الصيف حار وجاف" },
+          { en: "I am wearing a coat.", ar: "أرتدي معطفاً دافئاً" },
+          { en: "What are you doing now?", ar: "ماذا تفعل الآن في هذه اللحظة؟" },
+          { en: "We are studying English.", ar: "نحن ندرس اللغة الإنجليزية الآن" },
+          { en: "Have a nice day!", ar: "أتمنى لك يوماً جميلاً!" }
+        ],
+        speakingHtml: `
+          <div style="background: var(--gold-light); padding: 18px; border-radius: var(--radius-sm); border-left: 4px solid var(--gold); margin-bottom: 20px;">
+            <p style="font-weight: 700; margin-bottom: 8px; color: var(--gold-dark);">Weather Speaking Drill (تحدي التحدث عن الجو):</p>
+            <div style="font-size: 15px; line-height: 2; font-weight: 600;">
+              <div>• What is the weather like today?</div>
+              <div>• It is sunny and pleasant outside.</div>
+              <div>• Right now, I am practicing English with Mini STEP!</div>
+            </div>
+            <button class="audio-btn" style="margin-top: 14px; padding: 6px 14px;" onclick="app.speak('What is the weather like today? It is sunny and pleasant. Right now I am practicing English!')">🔊 Listen to Model</button>
+          </div>
+        `,
+        grammarHtml: `
+          <h4 style="color: var(--primary);">Grammar: Present Continuous (am / is / are + verb-ing)</h4>
+          <p style="margin: 8px 0 16px; color: var(--text-muted); font-size: 14px;">
+            للأحداث التي تقع في هذه اللحظة الآن (now / at the moment):
+          </p>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 18px;">
+            <div style="background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #166534;">✅ التكوين البسيط:</strong>
+              <ul style="margin-top: 10px; margin-left: 20px; font-size: 14px; line-height: 1.8;">
+                <li>I <strong>am studying</strong> now.</li>
+                <li>It <strong>is raining</strong> outside.</li>
+                <li>They <strong>are playing</strong> football.</li>
+              </ul>
+            </div>
+            <div style="background: #fefce8; border: 1.5px solid #fef08a; padding: 16px; border-radius: var(--radius-sm);">
+              <strong style="color: #854d0e;">⚡ الكلمات الدالة:</strong>
+              <div style="margin-top: 10px; font-size: 14px; line-height: 1.8;">
+                <div>• <strong>now</strong> (الآن)</div>
+                <div>• <strong>at the moment</strong> (في هذه اللحظة)</div>
+                <div>• <strong>Look! / Listen!</strong> (انظر / استمع)</div>
+              </div>
+            </div>
+          </div>
+        `,
+        readingHeading: "Reading Passage: Weather in Saudi Arabia",
+        readingText: "The Kingdom of Saudi Arabia has a diverse climate. In Riyadh, summers are hot and sunny, while winters are cool. In the mountains of Abha, the weather stays pleasantly cool in summer with gentle rain. Visitors love traveling to Abha to enjoy the green mountains.",
+        readingQuestions: [
+          { q: "1. What is the weather like in Abha in summer?", c1: "Pleasantly cool with gentle rain ✅", c2: "Very hot and dry" },
+          { q: "2. How are winters in Riyadh?", c1: "Cool ✅", c2: "Hot" }
+        ],
+        millionaire: [
+          { q: "Complete: 'Look! The rain ___ right now.'", opts: ["is falling", "falls", "fell", "fall"], ans: 0, prize: "$100" },
+          { q: "Complete: 'They ___ English at the moment.'", opts: ["are studying", "study", "studied"], ans: 0, prize: "$1,000" },
+          { q: "Season that comes after winter:", opts: ["Spring", "Summer", "Autumn"], ans: 0, prize: "$10,000" },
+          { q: "Action happening RIGHT NOW:", opts: ["I am drinking tea now.", "I drink tea every morning."], ans: 0, prize: "$100,000" },
+          { q: "STEP Question: 'Listen! Someone ___ at the door.'", opts: ["is knocking", "knocks", "knocked"], ans: 0, prize: "$1,000,000" }
+        ],
+        quiz: [
+          { q: "1. Weather in Abha in dialogue:", opts: ["Cool and raining", "Very hot", "Dusty"], ans: 0 },
+          { q: "2. What is Nasser doing in Abha?", opts: ["Drinking warm tea and watching clouds", "Swimming"], ans: 0 },
+          { q: "3. 'The sun ___ brightly today.'", opts: ["is shining", "shine", "shining"], ans: 0 },
+          { q: "4. 'Look! The children ___ in the garden.'", opts: ["are playing", "plays", "played"], ans: 0 },
+          { q: "5. 'I ___ an English book at the moment.'", opts: ["am reading", "reads", "read"], ans: 0 },
+          { q: "6. Keyword signaling Present Continuous:", opts: ["At the moment", "Yesterday", "Last week"], ans: 0 },
+          { q: "7. 'Listen! The birds ___ in the trees.'", opts: ["are singing", "sings", "sang"], ans: 0 },
+          { q: "8. City with cool mountains in reading:", opts: ["Abha", "Dammam"], ans: 0 },
+          { q: "9. Put in order: [ raining / outside / It / is / now ]", opts: ["It is raining outside now.", "Raining outside it is now."], ans: 0 },
+          { q: "10. 'What ___ you ___ right now?'", opts: ["are / doing", "is / do"], ans: 0 },
+          { q: "11. 'Right now' indicates:", opts: ["Present Continuous", "Past Simple"], ans: 0 },
+          { q: "12. 'He ___ a warm jacket today.'", opts: ["is wearing", "wears"], ans: 0 }
+        ]
+      }
     };
 
-    window.onload = () => app.init();
+    // 5. Level 1 & Level 2 Milestone Assessments
+    const LEVEL_1_EXAM = {
+      id: "level_1",
+      title: "Level 1 Milestone Assessment: A1 Breakthrough (اجتياز المستوى الأول)",
+      target: 13,
+      total: 16,
+      questions: [
+        { q: "1. Choose the contraction: 'I am a student.'", opts: ["I'm", "I's", "I'are"], ans: 0 },
+        { q: "2. Complete: 'He ___ a doctor.'", opts: ["is", "am", "are"], ans: 0 },
+        { q: "3. Complete: 'They ___ my parents.'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "4. Plural of 'child':", opts: ["children", "childs", "childrens"], ans: 0 },
+        { q: "5. Grammar: 'I like ___ adventure stories.'", opts: ["reading", "read", "reads"], ans: 0 },
+        { q: "6. Complete: 'We ___ to school by bus every day.'", opts: ["go", "goes", "going"], ans: 0 },
+        { q: "7. Plural of 'hobby':", opts: ["hobbies", "hobbys", "hobbyes"], ans: 0 },
+        { q: "8. Adverb position: 'I ___ wake up early.'", opts: ["always", "wakes always", "early always"], ans: 0 },
+        { q: "9. Complete: 'She ___ her homework after school.'", opts: ["does", "do", "doing"], ans: 0 },
+        { q: "10. Response to 'Nice to meet you':", opts: ["Nice to meet you, too.", "Good morning."], ans: 0 },
+        { q: "11. Complete: 'We live ___ Riyadh.'", opts: ["in", "on", "at"], ans: 0 },
+        { q: "12. Correct sentence:", opts: ["She is a teacher.", "He are an engineer."], ans: 0 },
+        { q: "13. Complete: 'They enjoy ___ in summer.'", opts: ["swimming", "swim", "swims"], ans: 0 },
+        { q: "14. Complete: 'My parents ___ proud of me.'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "15. Correct spelling of 12:", opts: ["Twelve", "Twelv", "Twelf"], ans: 0 },
+        { q: "16. Put in order: [ enjoy / We / English / studying ]", opts: ["We enjoy studying English.", "English studying we enjoy."], ans: 0 }
+      ]
+    };
 
-</script>
+    const LEVEL_2_EXAM = {
+      id: "level_2",
+      title: "Level 2 Milestone Assessment: A1.2 Elementary (اجتياز المستوى الثاني)",
+      target: 13,
+      total: 16,
+      questions: [
+        { q: "1. Complete: 'I would like ___ water, please.' (Positive request)", opts: ["some", "any", "many"], ans: 0 },
+        { q: "2. Complete: 'We don't have ___ fresh milk in the kitchen.'", opts: ["any", "some", "much"], ans: 0 },
+        { q: "3. Which word is UNCOUNTABLE in English?", opts: ["Rice", "Banana", "Orange"], ans: 0 },
+        { q: "4. 'The pharmacy is ___ to the supermarket.'", opts: ["next", "between", "under"], ans: 0 },
+        { q: "5. Direction command: '___ left at the traffic light.'", opts: ["Turn", "Turns", "Turning"], ans: 0 },
+        { q: "6. 'The mosque is located ___ the park and the school.'", opts: ["between", "next", "in"], ans: 0 },
+        { q: "7. 'How much ___ this blue thobe?'", opts: ["is", "are", "am"], ans: 0 },
+        { q: "8. 'How much ___ these running shoes?'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "9. Pointing to distant plural items: 'Look at ___ shoes on the high shelf!'", opts: ["those", "these", "this"], ans: 0 },
+        { q: "10. Asking for count: '___ pencils do you need for class?'", opts: ["How many", "How much", "How far"], ans: 0 },
+        { q: "11. Present continuous: 'Look! The clouds ___ over the mountain.'", opts: ["are rolling", "roll", "rolls"], ans: 0 },
+        { q: "12. Complete: 'Listen! The teacher ___ right now.'", opts: ["is speaking", "speaks", "speak"], ans: 0 },
+        { q: "13. What is the weather like in summer in Riyadh?", opts: ["Hot and sunny", "Snowing", "Freezing"], ans: 0 },
+        { q: "14. 'Could I have ___ orange juice, please?' (Polite request)", opts: ["some", "any", "no"], ans: 0 },
+        { q: "15. 'The bookshop is ___ the street from the bank.'", opts: ["across", "through", "in"], ans: 0 },
+        { q: "16. Correct sentence: 'Right now, we ___ our English lesson.'", opts: ["are practicing", "practices", "practiced"], ans: 0 }
+      ]
+    };
 
+    // 6. Comprehensive Final Exam (40 Questions)
+    const FINAL_EXAM_40 = {
+      id: "final_40",
+      title: "Comprehensive Mini STEP Graduation Exam (الاختبار النهائي للكورس الكامل)",
+      target: 32,
+      total: 40,
+      questions: [
+        { q: "1. Choose the correct contraction: 'I am ready.'", opts: ["I'm", "I's", "I'are"], ans: 0 },
+        { q: "2. Complete: 'He ___ an engineer.'", opts: ["is", "am", "are"], ans: 0 },
+        { q: "3. Complete: 'They ___ my brothers.'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "4. Complete: 'We ___ students at Al Bayariq School.'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "5. What is the plural of 'child'?", opts: ["children", "childs", "childrens"], ans: 0 },
+        { q: "6. What is the plural of 'hobby'?", opts: ["hobbies", "hobbys", "hobbyes"], ans: 0 },
+        { q: "7. What is the plural of 'story'?", opts: ["stories", "storys", "storyes"], ans: 0 },
+        { q: "8. What is the plural of 'city'?", opts: ["cities", "citys", "cityes"], ans: 0 },
+        { q: "9. Choose the correct grammar: 'I like ___ books.'", opts: ["reading", "read", "reads"], ans: 0 },
+        { q: "10. Complete: 'We love ___ football on Fridays.'", opts: ["playing", "play", "plays"], ans: 0 },
+        { q: "11. Complete: 'They enjoy ___ in summer.'", opts: ["swimming", "swim", "swims"], ans: 0 },
+        { q: "12. Choose correct adverb order:", opts: ["I always wake up at 6:00.", "I wake always up at 6:00."], ans: 0 },
+        { q: "13. Complete: 'We usually ___ to school by bus.'", opts: ["go", "goes", "going"], ans: 0 },
+        { q: "14. Complete: 'She ___ her homework diligently.'", opts: ["does", "do", "doing"], ans: 0 },
+        { q: "15. Complete: 'Where ___ you from?'", opts: ["are", "is", "am"], ans: 0 },
+        { q: "16. Complete: 'I am from Saudi Arabia. I live ___ Riyadh.'", opts: ["in", "on", "at"], ans: 0 },
+        { q: "17. How do you respond to 'Nice to meet you'?", opts: ["Nice to meet you, too.", "Good evening."], ans: 0 },
+        { q: "18. Complete: 'My mother is kind. ___ is a teacher.'", opts: ["She", "He", "They"], ans: 0 },
+        { q: "19. Complete: 'My father is tall. ___ is a doctor.'", opts: ["He", "She", "They"], ans: 0 },
+        { q: "20. Complete: 'This is my house. ___ is big and clean.'", opts: ["It", "He", "She"], ans: 0 },
+        { q: "21. Choose the correct spelling for 11:", opts: ["Eleven", "Elevan", "Eleaven"], ans: 0 },
+        { q: "22. Choose the correct spelling for 12:", opts: ["Twelve", "Twelv", "Twelf"], ans: 0 },
+        { q: "23. Complete: 'What do you do with breakfast?'", opts: ["Eat", "Drink", "Sleep"], ans: 0 },
+        { q: "24. Complete: 'What do you do with teeth in the morning?'", opts: ["Brush", "Play", "Drive"], ans: 0 },
+        { q: "25. Which one is an outdoor hobby?", opts: ["Riding a bicycle", "Sleeping", "Sitting quietly"], ans: 0 },
+        { q: "26. Complete: 'They ___ Fajr prayer on time every day.'", opts: ["pray", "prays", "praying"], ans: 0 },
+        { q: "27. Complete: 'He ___ English with his teacher.'", opts: ["studies", "study", "studying"], ans: 0 },
+        { q: "28. Complete: 'I ___ up early on weekdays.'", opts: ["wake", "wakes", "waking"], ans: 0 },
+        { q: "29. Put words in order: [ student / a / am / I ]", opts: ["I am a student.", "Student a I am."], ans: 0 },
+        { q: "30. Put words in order: [ happy / We / are / family / a ]", opts: ["We are a happy family.", "A happy family we are."], ans: 0 },
+        { q: "31. Contraction for 'She is':", opts: ["She's", "She're", "She'am"], ans: 0 },
+        { q: "32. Contraction for 'They are':", opts: ["They're", "They'is", "They'am"], ans: 0 },
+        { q: "33. Contraction for 'We are':", opts: ["We're", "We's", "We'am"], ans: 0 },
+        { q: "34. Complete: 'My brother and I ___ football on Saturday.'", opts: ["play", "plays", "playing"], ans: 0 },
+        { q: "35. Which sentence is grammatically correct?", opts: ["She is a wonderful teacher.", "She are a teacher."], ans: 0 },
+        { q: "36. Which sentence is grammatically correct?", opts: ["They are proud students.", "They is proud students."], ans: 0 },
+        { q: "37. Complete: 'I love ___ English with Mini STEP.'", opts: ["learning", "learns", "learned"], ans: 0 },
+        { q: "38. Reading Check: Ziyad rides the bus at 6:50 to:", opts: ["School", "Airport", "Market"], ans: 0 },
+        { q: "39. Reading Check: Majed rides his bicycle on:", opts: ["Saturday morning", "Monday night"], ans: 0 },
+        { q: "40. STEP Standard: 'The children ___ playing happily in the garden right now.'", opts: ["are", "is", "am"], ans: 0 }
+      ]
+    };
+
+    // 7. Application Controller
+    class MiniStepApp {
+      constructor() {
+        this.student = JSON.parse(localStorage.getItem('miniStep_user')) || null;
+        this.studentScores = {};
+        this.currentWeek = 1;
+        this.activeAssessment = null;
+        this.quizAnswers = {};
+        this.millIdx = 0;
+        this.isPortalLocked = false;
+        this.isAdmin = false;
+      }
+
+      async init() {
+        await this.checkPortalLock();
+        if (this.student) {
+          this.showDash();
+        } else {
+          document.getElementById('screenAuth').style.display = 'block';
+        }
+      }
+
+      async checkPortalLock() {
+        try {
+          const doc = await db.collection("system_settings").doc("portal").get();
+          if (doc.exists) {
+            this.isPortalLocked = doc.data().isLocked || false;
+            this.renderLockState();
+          }
+        } catch (e) {
+          console.warn("Settings check:", e.message);
+        }
+      }
+
+      renderLockState() {
+        const banner = document.getElementById('appLockBanner');
+        const main = document.getElementById('mainContainer');
+        if (this.isPortalLocked) {
+          banner.style.display = 'block';
+          if (!this.isAdmin) main.style.opacity = '0.25';
+        } else {
+          banner.style.display = 'none';
+          main.style.opacity = '1';
+        }
+      }
+
+      switchAuthTab(type) {
+        const isReg = (type === 'register');
+        document.getElementById('tabRegister').classList.toggle('active', isReg);
+        document.getElementById('tabLogin').classList.toggle('active', !isReg);
+        document.getElementById('formRegister').style.display = isReg ? 'block' : 'none';
+        document.getElementById('formLogin').style.display = isReg ? 'none' : 'block';
+      }
+
+      onStageSelect() {
+        const stage = document.getElementById('regStage').value;
+        const sel = document.getElementById('regTeacher');
+        sel.innerHTML = '<option value="">Select your teacher...</option>';
+        if (stage && TEACHERS[stage]) {
+          TEACHERS[stage].forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t; opt.textContent = t;
+            sel.appendChild(opt);
+          });
+          sel.disabled = false;
+        } else {
+          sel.disabled = true;
+        }
+      }
+
+      async register(e) {
+        e.preventDefault();
+        if (this.isPortalLocked) {
+          alert("The portal is currently offline for maintenance.");
+          return;
+        }
+        const btn = document.getElementById('btnRegSubmit');
+        btn.disabled = true;
+
+        const name = document.getElementById('regName').value.trim();
+        const stage = document.getElementById('regStage').value;
+        const teacher = document.getElementById('regTeacher').value;
+        const grade = document.getElementById('regGrade').value.trim();
+        const pin = document.getElementById('regPin').value.trim();
+
+        try {
+          const snap = await db.collection("students").where("name", "==", name).get();
+          if (!snap.empty) {
+            alert("This name is already registered. Please go to Login and enter your PIN.");
+            this.switchAuthTab('login');
+            document.getElementById('logName').value = name;
+            btn.disabled = false;
+            return;
+          }
+
+          const studentData = {
+            name, stage, teacher, grade, pin,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          };
+
+          await db.collection("students").add(studentData);
+          this.student = { name, stage, teacher, grade, pin };
+          localStorage.setItem('miniStep_user', JSON.stringify(this.student));
+          this.showDash();
+        } catch (err) {
+          alert("Error: " + err.message);
+        } finally {
+          btn.disabled = false;
+        }
+      }
+
+      async login(e) {
+        e.preventDefault();
+        const btn = document.getElementById('btnLoginSubmit');
+        btn.disabled = true;
+
+        const name = document.getElementById('logName').value.trim();
+        const pin = document.getElementById('logPin').value.trim();
+
+        try {
+          const snap = await db.collection("students")
+            .where("name", "==", name).where("pin", "==", pin).get();
+
+          if (snap.empty) {
+            alert("Invalid student name or PIN. Please verify your credentials.");
+          } else {
+            const data = snap.docs[0].data();
+            this.student = {
+              name: data.name, stage: data.stage, teacher: data.teacher,
+              grade: data.grade, pin: data.pin
+            };
+            localStorage.setItem('miniStep_user', JSON.stringify(this.student));
+            this.showDash();
+          }
+        } catch (err) {
+          alert("Login error: " + err.message);
+        } finally {
+          btn.disabled = false;
+        }
+      }
+
+      logout() {
+        if (confirm("Are you sure you want to log out? / هل تريد تسجيل الخروج؟")) {
+          localStorage.removeItem('miniStep_user');
+          location.reload();
+        }
+      }
+
+      async showDash() {
+        document.getElementById('screenAuth').style.display = 'none';
+        document.getElementById('screenModule').style.display = 'none';
+        document.getElementById('screenDashboard').style.display = 'block';
+        document.getElementById('userBadge').style.display = 'block';
+
+        document.getElementById('navStudentName').textContent = this.student.name.split(' ')[0];
+        document.getElementById('dashWelcome').textContent = `Welcome, ${this.student.name}! 👋`;
+        document.getElementById('dashMeta').textContent = `${this.student.stage} Stage • ${this.student.grade} • Teacher: ${this.student.teacher}`;
+        
+        await this.loadScoresAndRenderRoadmap();
+      }
+
+      async loadScoresAndRenderRoadmap() {
+        const box = document.getElementById('scoresContainer');
+        box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">Syncing verified records...</span>';
+
+        this.studentScores = {};
+        try {
+          const snap = await db.collection("submissions")
+            .where("studentName", "==", this.student.name).get();
+
+          if (snap.empty) {
+            box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">No quiz submissions yet. Complete Week 01 to start your records!</span>';
+          } else {
+            box.innerHTML = '';
+            snap.forEach(doc => {
+              const s = doc.data();
+              this.studentScores[s.assessmentKey] = s.score;
+              const badge = document.createElement('div');
+              badge.className = 'score-badge';
+              badge.innerHTML = `
+                <span>${s.title}:</span>
+                <strong>${s.score}/${s.total} (${s.percentage}%)</strong>
+                ${s.passed ? '⭐ Passed' : '⚠️ Retake'}
+              `;
+              box.appendChild(badge);
+            });
+          }
+        } catch (e) {
+          box.innerHTML = '<span style="font-size:12px; color:var(--text-muted);">Start learning below.</span>';
+        }
+
+        this.renderRoadmap();
+      }
+
+      renderRoadmap() {
+        const grid = document.getElementById('weeksList');
+        grid.innerHTML = '';
+        
+        let completedWeeks = 0;
+
+        for (let i = 1; i <= 8; i++) {
+          const card = document.createElement('div');
+          
+          const isUnlocked = (i === 1) || (this.studentScores[`week_${i - 1}`] && this.studentScores[`week_${i - 1}`] >= 8);
+          const isPassed = (this.studentScores[`week_${i}`] && this.studentScores[`week_${i}`] >= 8);
+          if (isPassed) completedWeeks++;
+
+          card.className = `week-card ${isUnlocked ? 'unlocked-week' : 'locked-week'}`;
+          const title = WEEKS_DATA[i].title;
+
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+              <span style="font-size:11px; font-weight:800; color:var(--primary); background:#e1ede6; padding:3px 8px; border-radius:12px;">WEEK 0${i}</span>
+              ${isPassed ? '<span style="font-size:11px; color:#15803d; font-weight:800;">Passed ⭐</span>' : (isUnlocked ? '<span style="font-size:11px; color:var(--gold-dark); font-weight:700;">Unlocked 🟢</span>' : '<span style="font-size:11px; color:#991b1b; font-weight:700;">Locked 🔒</span>')}
+            </div>
+            <h4 style="font-size:15px; margin-bottom:4px;">${title}</h4>
+            <p style="font-size:12px; color:var(--text-muted);">${WEEKS_DATA[i].introAr}</p>
+          `;
+
+          if (isUnlocked) {
+            card.onclick = () => this.openWeek(i);
+          } else {
+            card.onclick = () => alert(`🔒 Unit Locked! You must pass Week 0${i - 1} quiz with at least 8/12 to unlock this unit.`);
+          }
+          grid.appendChild(card);
+
+          if (i === 4) {
+            const weeks1to4Done = (this.studentScores['week_1'] >= 8 && this.studentScores['week_2'] >= 8 && this.studentScores['week_3'] >= 8 && this.studentScores['week_4'] >= 8);
+            const level1Passed = (this.studentScores['level_1'] && this.studentScores['level_1'] >= LEVEL_1_EXAM.target);
+
+            const m1 = document.createElement('div');
+            m1.className = `milestone-card ${weeks1to4Done ? 'unlocked-week' : 'locked-week'}`;
+            m1.innerHTML = `
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <span style="font-size:11px; font-weight:800; background:var(--gold); color:#000; padding:4px 10px; border-radius:12px;">LEVEL 1 MILESTONE</span>
+                <span>${level1Passed ? 'Mastered ⭐' : (weeks1to4Done ? 'Available Now 🟢' : 'Locked 🔒 (Pass Weeks 1-4)')}</span>
+              </div>
+              <h3 style="font-size:17px; color:var(--primary); margin-bottom:4px;">Level 1 Milestone Assessment: A1 Breakthrough (16 Questions)</h3>
+              <p style="font-size:13px; color:var(--text-muted);">Comprehensive test across Weeks 1 to 4. Pass with 13/16 to certify your level!</p>
+            `;
+            if (weeks1to4Done) {
+              m1.onclick = () => this.openMilestoneExam(LEVEL_1_EXAM);
+            } else {
+              m1.onclick = () => alert("🔒 Locked! Complete Weeks 1 to 4 first.");
+            }
+            grid.appendChild(m1);
+          }
+        }
+
+        const weeks5to8Done = (this.studentScores['week_5'] >= 8 && this.studentScores['week_6'] >= 8 && this.studentScores['week_7'] >= 8 && this.studentScores['week_8'] >= 8);
+        const level2Passed = (this.studentScores['level_2'] && this.studentScores['level_2'] >= LEVEL_2_EXAM.target);
+
+        const m2 = document.createElement('div');
+        m2.className = `milestone-card ${weeks5to8Done ? 'unlocked-week' : 'locked-week'}`;
+        m2.innerHTML = `
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                <span style="font-size:11px; font-weight:800; background:var(--gold); color:#000; padding:4px 10px; border-radius:12px;">LEVEL 2 MILESTONE</span>
+                <span>${level2Passed ? 'Mastered ⭐' : (weeks5to8Done ? 'Available Now 🟢' : 'Locked 🔒 (Pass Weeks 5-8)')}</span>
+              </div>
+              <h3 style="font-size:17px; color:var(--primary); margin-bottom:4px;">Level 2 Milestone Assessment: A1.2 Elementary (16 Questions)</h3>
+              <p style="font-size:13px; color:var(--text-muted);">Comprehensive test across Weeks 5 to 8. Pass with 13/16 to certify your level!</p>
+            `;
+        if (weeks5to8Done) {
+          m2.onclick = () => this.openMilestoneExam(LEVEL_2_EXAM);
+        } else {
+          m2.onclick = () => alert("🔒 Locked! Complete Weeks 5 to 8 first.");
+        }
+        grid.appendChild(m2);
+
+        for (let i = 9; i <= 36; i++) {
+          const card = document.createElement('div');
+          card.className = 'week-card locked-week';
+          card.innerHTML = `
+            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+              <span style="font-size:11px; font-weight:800; color:var(--text-muted); background:#eee; padding:3px 8px; border-radius:12px;">WEEK ${i < 10 ? '0' + i : i}</span>
+              <span>🔒</span>
+            </div>
+            <h4 style="font-size:14px; margin-bottom:4px; color:#777;">Skills Unit Week ${i}</h4>
+            <p style="font-size:12px; color:#999; font-family:var(--font-ar);">وحدة مهارات تالية</p>
+          `;
+          grid.appendChild(card);
+        }
+
+        const finalPassed = (this.studentScores['final_40'] && this.studentScores['final_40'] >= FINAL_EXAM_40.target);
+        const finalCard = document.createElement('div');
+        finalCard.className = `final-exam-card ${level2Passed ? 'unlocked-week' : 'locked-week'}`;
+        finalCard.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <span style="font-size:11px; font-weight:800; background:var(--gold); color:#000; padding:4px 10px; border-radius:12px;">COURSE GRADUATION</span>
+            <span>${finalPassed ? 'Graduated 🎓' : (level2Passed ? 'Ready 🎯' : 'Locked 🔒')}</span>
+          </div>
+          <h3 style="font-size:19px; margin-bottom:6px;">Comprehensive Mini STEP Course Final Exam (40 Questions)</h3>
+          <p style="font-size:13px; color:#d1ded7;">Score 32/40 (80%) or higher to earn the official Al Bayariq Mini STEP Graduation Certificate!</p>
+        `;
+        if (level2Passed) {
+          finalCard.onclick = () => this.openFinalExam40();
+        } else {
+          finalCard.onclick = () => alert("🔒 Final Exam is locked! Pass Level 2 Milestone Assessment first.");
+        }
+        grid.appendChild(finalCard);
+
+        const pct = Math.round((completedWeeks / 8) * 100);
+        document.getElementById('progressBar').style.width = `${pct}%`;
+        document.getElementById('progressLabel').textContent = `Completed: ${completedWeeks} of 8 Weeks (${pct}%)`;
+
+        const gradCertBtn = document.getElementById('btnMainCert');
+        if (finalPassed) {
+          gradCertBtn.style.opacity = '1';
+          gradCertBtn.className = 'btn btn-gold';
+          gradCertBtn.textContent = '🏆 Mini STEP Graduation Certificate (Ready)';
+        } else {
+          gradCertBtn.style.opacity = '0.6';
+          gradCertBtn.className = 'btn btn-outline';
+          gradCertBtn.textContent = '🏆 Mini STEP Graduation Certificate (Locked 🔒)';
+        }
+      }
+
+      openWeek(weekNum) {
+        this.currentWeek = weekNum;
+        const data = WEEKS_DATA[weekNum];
+        if (!data) return;
+
+        this.activeAssessment = {
+          key: `week_${weekNum}`,
+          title: `Week 0${weekNum} Quiz`,
+          certTitle: `Mini STEP Week 0${weekNum} Certificate of Achievement`,
+          certBody: `For successfully mastering all skills and benchmarks for <strong>Week 0${weekNum}: ${data.title}</strong> with excellence.`,
+          questions: data.quiz,
+          total: 12,
+          target: 8
+        };
+
+        document.getElementById('moduleNavTabs').style.display = 'flex';
+        document.getElementById('weekIntroBox').style.display = 'block';
+        document.getElementById('btnWeeklyCert').style.display = 'inline-flex';
+        document.getElementById('modBadge').textContent = `WEEK 0${weekNum}`;
+        document.getElementById('modTitle').textContent = data.title;
+        document.getElementById('listenTitle').textContent = data.dialogueTitle;
+
+        document.getElementById('introEnText').textContent = data.introEn;
+        document.getElementById('introArText').textContent = data.introAr;
+
+        const dBox = document.getElementById('dialogueContainer');
+        dBox.innerHTML = '';
+        data.dialogue.forEach(d => {
+          const row = document.createElement('div');
+          row.className = 'dialogue-row';
+          row.innerHTML = `
+            <div><strong>${d.speaker}:</strong> ${d.text}</div>
+            <button class="audio-btn" onclick="app.speak('${d.text.replace(/'/g, "\\'")}')">🔊</button>
+          `;
+          dBox.appendChild(row);
+        });
+
+        const vBody = document.getElementById('vocabBody');
+        vBody.innerHTML = '';
+        data.expressions.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td style="font-weight:600;">${item.en}</td>
+            <td><button class="audio-btn" onclick="app.speak('${item.en.replace(/'/g, "\\'")}')">🔊</button></td>
+            <td class="ar">${item.ar}</td>
+          `;
+          vBody.appendChild(row);
+        });
+
+        document.getElementById('speakingContainer').innerHTML = data.speakingHtml;
+        document.getElementById('grammarContainer').innerHTML = data.grammarHtml;
+
+        document.getElementById('readingHeading').textContent = data.readingHeading;
+        document.getElementById('readPassageText').textContent = data.readingText;
+        const rqBox = document.getElementById('readingMiniQuestions');
+        rqBox.innerHTML = data.readingQuestions.map(qItem => `
+          <div style="background:#fff; border:1px solid var(--border); padding:12px; border-radius:8px; margin-bottom:8px;">
+            <strong>${qItem.q}</strong>
+            <div style="margin-top:6px; display:flex; gap:10px;">
+              <button class="btn btn-outline" style="padding:4px 12px; font-size:13px;" onclick="this.style.background='#dcfce7'">${qItem.c1}</button>
+              <button class="btn btn-outline" style="padding:4px 12px; font-size:13px;" onclick="this.style.background='#fee2e2'">${qItem.c2}</button>
+            </div>
+          </div>
+        `).join('');
+
+        this.renderAssessmentUI();
+        this.startMillionaire(data.millionaire);
+
+        document.getElementById('screenDashboard').style.display = 'none';
+        document.getElementById('screenModule').style.display = 'block';
+        this.setTab(0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      openMilestoneExam(exam) {
+        this.activeAssessment = {
+          key: exam.id,
+          title: exam.title,
+          certTitle: `${exam.title.split('(')[0].trim()} Certificate`,
+          certBody: `For successfully passing the comprehensive <strong>${exam.title}</strong> with distinction.`,
+          questions: exam.questions,
+          total: exam.total,
+          target: exam.target
+        };
+
+        document.getElementById('moduleNavTabs').style.display = 'none';
+        document.getElementById('weekIntroBox').style.display = 'none';
+        document.getElementById('btnWeeklyCert').style.display = 'none';
+        document.getElementById('modBadge').textContent = 'MILESTONE ASSESSMENT';
+        document.getElementById('modTitle').textContent = exam.title;
+
+        this.renderAssessmentUI();
+        document.getElementById('screenDashboard').style.display = 'none';
+        document.getElementById('screenModule').style.display = 'block';
+        this.setTab(6);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      openFinalExam40() {
+        this.activeAssessment = {
+          key: FINAL_EXAM_40.id,
+          title: FINAL_EXAM_40.title,
+          certTitle: `Official Mini STEP Course Graduation Certificate`,
+          certBody: `For graduating with exemplary distinction and passing the <strong>Comprehensive 40-Question Mini STEP Benchmark Exam</strong>.`,
+          questions: FINAL_EXAM_40.questions,
+          total: FINAL_EXAM_40.total,
+          target: FINAL_EXAM_40.target
+        };
+
+        document.getElementById('moduleNavTabs').style.display = 'none';
+        document.getElementById('weekIntroBox').style.display = 'none';
+        document.getElementById('btnWeeklyCert').style.display = 'none';
+        document.getElementById('modBadge').textContent = 'FINAL 40 BENCHMARK';
+        document.getElementById('modTitle').textContent = FINAL_EXAM_40.title;
+
+        this.renderAssessmentUI();
+        document.getElementById('screenDashboard').style.display = 'none';
+        document.getElementById('screenModule').style.display = 'block';
+        this.setTab(6);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      setTab(index) {
+        const tabs = document.querySelectorAll('.module-nav button');
+        const blocks = document.querySelectorAll('.skill-block');
+        tabs.forEach((t, i) => t.classList.toggle('active', i === index));
+        blocks.forEach((b, i) => b.classList.toggle('active', i === index));
+      }
+
+      speak(text) {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = 'en-US';
+          u.rate = 0.88;
+          window.speechSynthesis.speak(u);
+        }
+      }
+
+      playDialogue() {
+        const data = WEEKS_DATA[this.currentWeek];
+        const fullText = data.dialogue.map(d => `${d.text}`).join(' ... ');
+        this.speak(fullText);
+      }
+
+      playReadingPassage() {
+        const data = WEEKS_DATA[this.currentWeek];
+        this.speak(data.readingText);
+      }
+
+      startMillionaire(questions) {
+        this.millList = questions || WEEKS_DATA[this.currentWeek].millionaire;
+        this.millIdx = 0;
+        document.getElementById('life50').disabled = false;
+        document.getElementById('lifeFriend').disabled = false;
+        document.getElementById('lifeAudience').disabled = false;
+        document.getElementById('millHelpBox').textContent = '';
+        this.loadMillQ();
+      }
+
+      loadMillQ() {
+        const cur = this.millList[this.millIdx];
+        document.getElementById('millPrize').textContent = `Target: ${cur.prize}`;
+        document.getElementById('millQuestion').textContent = cur.q;
+        const optGrid = document.getElementById('millOptions');
+        optGrid.innerHTML = '';
+        document.getElementById('millHelpBox').textContent = '';
+
+        cur.opts.forEach((opt, idx) => {
+          const btn = document.createElement('button');
+          btn.className = 'millionaire-opt';
+          btn.id = `mill_opt_${idx}`;
+          btn.innerHTML = `<strong>${String.fromCharCode(65 + idx)}:</strong> ${opt}`;
+          btn.onclick = () => this.checkMillAns(idx, cur.ans);
+          optGrid.appendChild(btn);
+        });
+      }
+
+      checkMillAns(selected, correct) {
+        const buttons = document.querySelectorAll('.millionaire-opt');
+        buttons.forEach((b, i) => {
+          b.disabled = true;
+          if (i === correct) b.classList.add('correct');
+          if (i === selected && selected !== correct) b.classList.add('wrong');
+        });
+
+        if (selected === correct) {
+          sfx.playCorrect();
+          setTimeout(() => {
+            this.millIdx++;
+            if (this.millIdx < this.millList.length) {
+              this.loadMillQ();
+            } else {
+              sfx.playWinFanfare();
+              alert("🎉 CONGRATULATIONS! You won the $1,000,000 English Challenge!");
+              this.startMillionaire();
+            }
+          }, 1100);
+        } else {
+          sfx.playWrong();
+          setTimeout(() => {
+            alert("Hard luck! Let's try again from question one.");
+            this.startMillionaire();
+          }, 1100);
+        }
+      }
+
+      use5050() {
+        const cur = this.millList[this.millIdx];
+        let removed = 0;
+        for (let i = 0; i < 4; i++) {
+          if (i !== cur.ans && removed < 2) {
+            document.getElementById(`mill_opt_${i}`).style.visibility = 'hidden';
+            removed++;
+          }
+        }
+        document.getElementById('life50').disabled = true;
+      }
+
+      useFriend() {
+        sfx.playPhoneRing();
+        const cur = this.millList[this.millIdx];
+        const friendLetter = String.fromCharCode(65 + cur.ans);
+        setTimeout(() => {
+          document.getElementById('millHelpBox').textContent = `📞 Friend on Phone: "I am 95% confident that the answer is (${friendLetter})"`;
+        }, 1000);
+        document.getElementById('lifeFriend').disabled = true;
+      }
+
+      useAudience() {
+        sfx.playAudienceCheer();
+        const cur = this.millList[this.millIdx];
+        const audLetter = String.fromCharCode(65 + cur.ans);
+        setTimeout(() => {
+          document.getElementById('millHelpBox').textContent = `👥 Audience Poll: 84% voted for option (${audLetter})`;
+        }, 800);
+        document.getElementById('lifeAudience').disabled = true;
+      }
+
+      renderAssessmentUI() {
+        this.quizAnswers = {};
+        const asm = this.activeAssessment;
+        document.getElementById('quizHeading').textContent = asm.title;
+        document.getElementById('quizTargetBadge').textContent = `Target: ${asm.target} / ${asm.total} to Pass ⭐`;
+
+        const box = document.getElementById('quizFormContainer');
+        box.innerHTML = '';
+        asm.questions.forEach((item, qIdx) => {
+          const div = document.createElement('div');
+          div.style.marginBottom = '18px';
+          div.style.paddingBottom = '14px';
+          div.style.borderBottom = '1px solid var(--border)';
+          div.innerHTML = `
+            <div style="font-weight:700; font-size:14px; margin-bottom:8px;">${item.q}</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;" id="q_grid_${qIdx}">
+              ${item.opts.map((opt, oIdx) => `
+                <button type="button" class="btn btn-outline" style="text-align:left; justify-content:flex-start; font-size:13px;" onclick="app.pickAns(${qIdx},${oIdx})">
+                  ${String.fromCharCode(65 + oIdx)}.${opt}
+                </button>
+              `).join('')}
+            </div>
+          `;
+          box.appendChild(div);
+        });
+      }
+
+      pickAns(qIdx, oIdx) {
+        this.quizAnswers[qIdx] = oIdx;
+        const grid = document.getElementById(`q_grid_${qIdx}`);
+        const btns = grid.querySelectorAll('button');
+        btns.forEach((b, i) => {
+          b.style.borderColor = (i === oIdx) ? 'var(--primary)' : 'var(--border)';
+          b.style.background = (i === oIdx) ? '#e1ede6' : '#fff';
+        });
+      }
+
+      async gradeAssessment() {
+        const btn = document.getElementById('btnSubmitQuiz');
+        btn.disabled = true;
+        btn.textContent = 'Grading...';
+
+        const asm = this.activeAssessment;
+        let score = 0;
+        asm.questions.forEach((item, idx) => {
+          const userChoice = this.quizAnswers[idx];
+          const grid = document.getElementById(`q_grid_${idx}`);
+          const btns = grid.querySelectorAll('button');
+          btns.forEach((b, i) => {
+            b.onclick = null;
+            if (i === item.ans) {
+              b.style.background = '#dcfce7';
+              b.style.borderColor = '#16a34a';
+            }
+            if (userChoice === i && userChoice !== item.ans) {
+              b.style.background = '#fee2e2';
+              b.style.borderColor = '#dc2626';
+            }
+          });
+          if (userChoice === item.ans) score++;
+        });
+
+        const pct = Math.round((score / asm.total) * 100);
+        const passed = (score >= asm.target);
+
+        if (this.student) {
+          const subData = {
+            studentName: this.student.name,
+            stage: this.student.stage,
+            teacher: this.student.teacher,
+            grade: this.student.grade,
+            assessmentKey: asm.key,
+            title: asm.title,
+            score: score,
+            total: asm.total,
+            percentage: pct,
+            passed: passed,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+          };
+
+          try {
+            await db.collection("submissions").add(subData);
+            this.studentScores[asm.key] = score;
+          } catch (err) {
+            console.warn("Firestore sync:", err.message);
+          }
+        }
+
+        btn.disabled = false;
+        btn.textContent = 'Submit & Record Score to Cloud • إرسال النتيجة واعتمادها ✅';
+
+        if (passed) {
+          sfx.playCorrect();
+          alert(`🌟 Well Done! You scored ${score}/${asm.total} (${pct}%).\nYour performance is officially certified!`);
+          this.displayCertificate(asm.certTitle, asm.certBody);
+        } else {
+          sfx.playWrong();
+          alert(`Result: ${score}/${asm.total} (${pct}%).\nYou need at least ${asm.target} to pass. Please review the lesson and try again.`);
+        }
+      }
+
+      openWeeklyCert() {
+        const curScore = this.studentScores[`week_${this.currentWeek}`];
+        if (curScore && curScore >= 8) {
+          const data = WEEKS_DATA[this.currentWeek];
+          this.displayCertificate(
+            `Mini STEP Week 0${this.currentWeek} Certificate of Achievement`,
+            `For successfully mastering all skills and benchmarks for <strong>Week 0${this.currentWeek}: ${data.title}</strong> with excellence.`
+          );
+        } else {
+          alert(`🔒 Weekly Certificate is locked!\nYou must achieve at least 8/12 on Week 0${this.currentWeek} Quiz first.`);
+        }
+      }
+
+      openGraduationCert() {
+        if (this.studentScores['final_40'] && this.studentScores['final_40'] >= 32) {
+          this.displayCertificate(
+            `Comprehensive Mini STEP Course Graduation Certificate`,
+            `For successfully completing the complete <strong>Mini STEP English Foundations Course</strong> and passing the Comprehensive 40-Question Benchmark Exam with outstanding distinction.`
+          );
+        } else {
+          alert("🔒 Graduation Certificate is locked!\nYou must complete all weekly modules and score at least 32/40 (80%) on the Comprehensive Final Exam.");
+        }
+      }
+
+      displayCertificate(title, bodyHtml) {
+        if (!this.student) return;
+        document.getElementById('certMainTitle').textContent = title;
+        document.getElementById('certStudentName').textContent = this.student.name.toUpperCase();
+        document.getElementById('certBodyText').innerHTML = bodyHtml;
+        document.getElementById('certStageBadge').textContent = `${this.student.stage} Stage`;
+        document.getElementById('certTeacher').textContent = this.student.teacher;
+        document.getElementById('certPrincipal').textContent = PRINCIPALS[this.student.stage] || "School Principal";
+        document.getElementById('certModal').style.display = 'flex';
+      }
+
+      closeCert() { document.getElementById('certModal').style.display = 'none'; }
+
+      openAdminModal() {
+        document.getElementById('adminModal').style.display = 'flex';
+        document.getElementById('adminLoginForm').style.display = 'block';
+        document.getElementById('adminControls').style.display = 'none';
+      }
+      closeAdminModal() { document.getElementById('adminModal').style.display = 'none'; }
+
+      adminLogin() {
+        const u = document.getElementById('admUser').value.trim();
+        const p = document.getElementById('admPass').value.trim();
+        if (u === 'admin' && p === 'admin135790') {
+          this.isAdmin = true;
+          document.getElementById('adminLoginForm').style.display = 'none';
+          document.getElementById('adminControls').style.display = 'block';
+          this.updateLockUI();
+          this.loadAdminStudents();
+        } else {
+          alert("Invalid administrator credentials!");
+        }
+      }
+
+      updateLockUI() {
+        const btn = document.getElementById('btnToggleLock');
+        const txt = document.getElementById('appLockStatusText');
+        if (this.isPortalLocked) {
+          btn.textContent = 'Unlock Portal (فتح المنصة للطلاب)';
+          btn.className = 'btn btn-primary';
+          txt.textContent = 'Portal is currently LOCKED for students.';
+        } else {
+          btn.textContent = 'Lock Portal (إغلاق المنصة للصيانة)';
+          btn.className = 'btn btn-danger';
+          txt.textContent = 'Portal is currently OPEN for all students.';
+        }
+      }
+
+      async togglePortalLock() {
+        this.isPortalLocked = !this.isPortalLocked;
+        try {
+          await db.collection("system_settings").doc("portal").set({ isLocked: this.isPortalLocked }, { merge: true });
+          this.updateLockUI();
+          this.renderLockState();
+        } catch (e) {
+          alert("Error: " + e.message);
+        }
+      }
+
+      async loadAdminStudents() {
+        const tbody = document.getElementById('adminStudentsTableBody');
+        tbody.innerHTML = '<tr><td colspan="4">Fetching student records...</td></tr>';
+        try {
+          const snap = await db.collection("students").orderBy("createdAt", "desc").get();
+          if (snap.empty) {
+            tbody.innerHTML = '<tr><td colspan="4">No students currently registered.</td></tr>';
+            return;
+          }
+          tbody.innerHTML = '';
+          snap.forEach(doc => {
+            const data = doc.data();
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td><strong>${data.name}</strong></td>
+              <td>${data.stage} • ${data.grade}</td>
+              <td><code>${data.pin}</code></td>
+              <td>
+                <button class="btn btn-danger" style="padding: 4px 10px; font-size: 11px;" onclick="app.purgeStudent('${doc.id}', '${data.name}')">
+                  Delete / تفريغ
+                </button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } catch (e) {
+          tbody.innerHTML = `<tr><td colspan="4">Error loading data: ${e.message}</td></tr>`;
+        }
+      }
+
+      async purgeStudent(docId, studentName) {
+        if (!confirm(`Are you sure you want to completely purge student: ${studentName}? This deletes the account and all test submissions.`)) return;
+        try {
+          await db.collection("students").doc(docId).delete();
+          const subSnap = await db.collection("submissions").where("studentName", "==", studentName).get();
+          const batch = db.batch();
+          subSnap.forEach(subDoc => batch.delete(subDoc.ref));
+          await batch.commit();
+          alert(`Student [${studentName}] has been purged successfully.`);
+          this.loadAdminStudents();
+        } catch (e) {
+          alert("Purge failed: " + e.message);
+        }
+      }
+    }
+
+    const app = new MiniStepApp();
+    window.addEventListener('DOMContentLoaded', () => app.init());
+  </script>
 </body>
-
 </html>
-3. Administrative Control & Security
-The platform includes a robust back-office module accessible via the "Admin Control" button.
-Security Protocol
-Student Privacy: User data is hashed locally and synced to Firebase Firestore using a name-document mapping.
-Access Control: To prevent unauthorized access to assessments, the platform requires a 4-digit PIN for every session.
-Purge Capability: Administrators can invoke app.purgeRecords() to clear the database at the end of an academic semester, ensuring a clean slate for new cohorts.
-4. Assessment Matrix
-The following table outlines the logic for progression and certification:
-
-Assessment Type
-Frequency
-Question Count
-Unlock Condition
-Weekly Quiz
-Every Week
-12
-Completion of Reading
-Milestone Exam
-Every 4 Weeks
-16
-Completion of 4 Weekly Quizzes
-Final Benchmark
-Level 9 Finish
-40
-Completion of all 9 Milestones
-
-5. Certification Authority
-The dynamic signature engine assigns accountability based on the student's current academic level:
-
-Primary (L1-3): Signed by Person (Wael Mohammed Gafary).
-Intermediate (L4-6): Signed by Person (Saleh Shaher Al-Dhaheri).
-Secondary (L7-9): Signed by Person (Dr. Ibrahim Al-Oseimi).
-Global Oversight: All certificates carry the counter-signature of Person (Mohammed Abdullah Othman).
-
